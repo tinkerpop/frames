@@ -1,0 +1,22 @@
+Frames: An Object to Graph Framework
+"http://frames.tinkerpop.com":http://frames.tinkerpop.com
+
+bc. <repository>
+  <id>tinkerpop-repository</id>
+  <name>TinkerPop Maven2 Repository</name>
+  <url>http://tinkerpop.com/maven2</url>
+</repository>
+
+==<hr/>==
+
+h3. Version 0.1 (??? -- NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>frames</artifactId>
+  <version>0.1-SNAPSHOT</version>
+</dependency>
+```
+
+* Initial release of the project

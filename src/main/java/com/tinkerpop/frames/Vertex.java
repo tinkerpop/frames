@@ -7,5 +7,5 @@ import java.lang.annotation.RetentionPolicy;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 @Retention(RetentionPolicy.RUNTIME) 
-public @interface Element {
+public @interface Vertex {
 }

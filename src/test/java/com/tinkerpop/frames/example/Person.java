@@ -1,25 +1,29 @@
 package com.tinkerpop.frames.example;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.frames.Element;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.Relation;
+import com.tinkerpop.frames.Vertex;
+
+import java.util.Collection;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Person {
 
-    @Element
-    private Vertex vertex;
+    @Vertex
+    private com.tinkerpop.blueprints.pgm.Vertex vertex;
     @Property
     private String name;
     @Property
     private int age;
     @Relation(clazz = Person.class)
-    private Iterable<Person> knows;
+    private Collection<Person> knows;
+    @Relation(clazz = Project.class)
+    private Collection<Project> created;
 
-    public Vertex getVertex() {
+
+    public com.tinkerpop.blueprints.pgm.Vertex getVertex() {
         return this.vertex;
     }
 
@@ -35,8 +39,24 @@ public class Person {
         return this.age;
     }
 
-    public Iterable<Person> getKnows() {
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Collection<Person> getKnows() {
         return this.knows;
+    }
+
+    public void addKnows(Person person) {
+        this.knows.add(person);
+    }
+
+    public void addCreated(Project project) {
+        this.created.add(project);
+    }
+
+    public Collection<Project> getCreated() {
+        return this.created;
     }
 
     //public Iterable<Pair<Map,Person>> knows;

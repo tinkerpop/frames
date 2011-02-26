@@ -1,56 +1,56 @@
 package com.tinkerpop.frames.util;
 
-import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.FrameManager;
+import com.tinkerpop.frames.Vertex;
 
+import java.lang.reflect.Field;
+import java.util.AbstractCollection;
 import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Relations<T> implements Iterable<T> {
-
-    final Iterable<? extends Element> elements;
-    final Class<T> clazz;
+public class Relations<T> extends AbstractCollection<T> {
     final FrameManager manager;
 
-    public Relations(FrameManager manager, Iterable<? extends Element> elements, Class<T> clazz) {
-        this.elements = elements;
+    final com.tinkerpop.blueprints.pgm.Vertex vertex;
+    final Direction direction;
+    final String label;
+    final Class<T> clazz;
+    final Field vertexField;
+
+
+    public Relations(final FrameManager manager, final com.tinkerpop.blueprints.pgm.Vertex vertex, final String label, final Direction direction, final Class<T> clazz) {
+        this.vertex = vertex;
+        this.label = label;
         this.clazz = clazz;
         this.manager = manager;
+        this.direction = direction;
+        this.vertexField = FrameManager.getAnnotatedField(clazz, Vertex.class);
+        this.vertexField.setAccessible(true);
+    }
+
+    public boolean add(T t) {
+        try {
+            this.manager.getGraph().addEdge(null, this.vertex, (com.tinkerpop.blueprints.pgm.Vertex) this.vertexField.get(t), this.label);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        return true;
+    }
+
+    public int size() {
+        int counter = 0;
+        for (T t : this) {
+            counter++;
+        }
+        return counter;
     }
 
     public Iterator<T> iterator() {
-        return new RelationsIterator<T>(this.manager, this.elements.iterator(), this.clazz);
+        if (this.direction == Direction.STANDARD)
+            return new RelationsIterator<T>(this.manager, this.vertex.getOutEdges(this.label).iterator(), this.direction, this.clazz);
+        else
+            return new RelationsIterator<T>(this.manager, this.vertex.getInEdges(this.label).iterator(), this.direction, this.clazz);
     }
-
-    private class RelationsIterator<T> implements Iterator<T> {
-        final Iterator<? extends Element> elements;
-        final Class<T> clazz;
-        final FrameManager manager;
-
-        public RelationsIterator(final FrameManager manager, final Iterator<? extends Element> elements, final Class<T> clazz) {
-            this.elements = elements;
-            this.clazz = clazz;
-            this.manager = manager;
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        public boolean hasNext() {
-            return this.elements.hasNext();
-        }
-
-        public T next() {
-            try {
-                return manager.load(clazz, (Vertex) this.elements.next());
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
-    }
-
 }

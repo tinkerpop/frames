@@ -1,13 +1,10 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.util.Relations;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -20,21 +17,26 @@ public class FrameManager {
         this.graph = graph;
     }
 
-    public <T> T load(final Class<T> clazz, final Vertex vertex) throws Exception {
+    public Graph getGraph() {
+        return this.graph;
+    }
+
+    public <T> T load(final Class<T> clazz, final com.tinkerpop.blueprints.pgm.Vertex vertex) throws Exception {
         final T object = clazz.getConstructor().newInstance();
         for (final Field field : clazz.getDeclaredFields()) {
             final boolean isAccessible = field.isAccessible();
             field.setAccessible(true);
-            if (null != field.getAnnotation(Element.class)) {
+            Annotation annotation;
+            if (null != (annotation = field.getAnnotation(Vertex.class))) {
                 field.set(object, vertex);
-            } else if (null != field.getAnnotation(Property.class)) {
+            } else if (null != (annotation = field.getAnnotation(Property.class))) {
                 field.set(object, vertex.getProperty(field.getName()));
-            } else if (null != field.getAnnotation(Relation.class)) {
-                Set<Vertex> relatedVertices = new HashSet<Vertex>();
-                for (Edge edge : vertex.getOutEdges(field.getName())) {
-                    relatedVertices.add(edge.getInVertex());
-                }
-                field.set(object, new Relations<T>(this, relatedVertices, field.getAnnotation(Relation.class).clazz()));
+            } else if (null != (annotation = field.getAnnotation(Relation.class))) {
+                Relation relationAnnotation = (Relation) annotation;
+                if (relationAnnotation.label().equals(Tokens.DEFAULT))
+                    field.set(object, new Relations<T>(this, vertex, field.getName(), relationAnnotation.direction(), relationAnnotation.clazz()));
+                else
+                    field.set(object, new Relations<T>(this, vertex, relationAnnotation.label(), relationAnnotation.direction(), relationAnnotation.clazz()));
             }
             field.setAccessible(isAccessible);
         }
@@ -45,16 +47,16 @@ public class FrameManager {
         if (id instanceof com.tinkerpop.blueprints.pgm.Element) {
             return this.load(clazz, id);
         }
-        final Vertex vertex = this.graph.getVertex(id);
+        final com.tinkerpop.blueprints.pgm.Vertex vertex = this.graph.getVertex(id);
         return this.load(clazz, vertex);
     }
 
     public <T> void save(T object) throws Exception {
 
-        Field vertexField = FrameManager.getAnnotatedField(object.getClass(), Element.class);
+        Field vertexField = FrameManager.getAnnotatedField(object.getClass(), Vertex.class);
         boolean isAccessible = vertexField.isAccessible();
         vertexField.setAccessible(true);
-        Vertex vertex = (Vertex) vertexField.get(object);
+        com.tinkerpop.blueprints.pgm.Vertex vertex = (com.tinkerpop.blueprints.pgm.Vertex) vertexField.get(object);
         vertexField.setAccessible(isAccessible);
 
         for (Field field : object.getClass().getDeclaredFields()) {
@@ -71,7 +73,7 @@ public class FrameManager {
         }
     }
 
-    private static Field getAnnotatedField(Class clazz, Class annotation) {
+    public static Field getAnnotatedField(Class clazz, Class annotation) {
         for (Field field : clazz.getDeclaredFields()) {
             if (null != field.getAnnotation(annotation))
                 return field;

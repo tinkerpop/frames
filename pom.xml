@@ -35,6 +35,11 @@
             <version>0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>com.tinkerpop</groupId>
+            <artifactId>pipes</artifactId>
+            <version>0.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.5</version>
@@ -114,7 +119,7 @@
                 <version>2.4.2</version>
             </plugin>
         </plugins>
-         <extensions>
+        <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ftp</artifactId>
@@ -122,7 +127,7 @@
             </extension>
         </extensions>
     </build>
-        <distributionManagement>
+    <distributionManagement>
         <repository>
             <id>tinkerpop-repository</id>
             <name>TinkerPop Maven2 Repository</name>

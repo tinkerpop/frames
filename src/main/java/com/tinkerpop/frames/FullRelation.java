@@ -7,6 +7,10 @@ import java.lang.annotation.RetentionPolicy;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Property {
-    public String value();
+public @interface FullRelation {
+    public String label();
+
+    public Direction direction();
+
+    public Class kind();
 }

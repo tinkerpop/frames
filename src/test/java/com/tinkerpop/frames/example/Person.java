@@ -1,63 +1,32 @@
 package com.tinkerpop.frames.example;
 
+import com.tinkerpop.frames.Direction;
+import com.tinkerpop.frames.FullRelation;
+import com.tinkerpop.frames.HalfRelation;
 import com.tinkerpop.frames.Property;
-import com.tinkerpop.frames.Relation;
-import com.tinkerpop.frames.Vertex;
 
 import java.util.Collection;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Person {
+public interface Person {
 
-    @Vertex
-    private com.tinkerpop.blueprints.pgm.Vertex vertex;
-    @Property
-    private String name;
-    @Property
-    private int age;
-    @Relation(clazz = Person.class)
-    private Collection<Person> knows;
-    @Relation(clazz = Project.class)
-    private Collection<Project> created;
+    @Property("name")
+    public String getName();
 
+    @Property("age")
+    public Integer getAge();
 
-    public com.tinkerpop.blueprints.pgm.Vertex getVertex() {
-        return this.vertex;
-    }
+    @Property("name")
+    public void setName(final String name);
 
-    public String getName() {
-        return this.name;
-    }
+    @HalfRelation(label = "knows", direction = Direction.STANDARD, kind = Knows.class)
+    public Collection<Knows> getKnows();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @FullRelation(label = "knows", direction = Direction.STANDARD, kind = Person.class)
+    public Collection<Person> getKnowsPerson();
 
-    public int getAge() {
-        return this.age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public Collection<Person> getKnows() {
-        return this.knows;
-    }
-
-    public void addKnows(Person person) {
-        this.knows.add(person);
-    }
-
-    public void addCreated(Project project) {
-        this.created.add(project);
-    }
-
-    public Collection<Project> getCreated() {
-        return this.created;
-    }
-
-    //public Iterable<Pair<Map,Person>> knows;
+    @FullRelation(label = "created", direction = Direction.STANDARD, kind = Project.class)
+    public Collection<Project> getCreatedProject();
 }

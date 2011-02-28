@@ -6,6 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-@Retention(RetentionPolicy.RUNTIME) 
-public @interface Vertex {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface HalfRelation {
+    public String label();
+
+    public Direction direction();
+
+    public Class kind();
 }

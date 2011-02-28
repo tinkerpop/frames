@@ -1,8 +1,8 @@
-package com.tinkerpop.frames.util;
+package com.tinkerpop.frames;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public enum Direction {
-    INVERSE, STANDARD
+    STANDARD, INVERSE
 }

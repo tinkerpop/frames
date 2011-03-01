@@ -30,6 +30,12 @@ public interface Person extends NamedObject {
     @Relation(type = Relation.Type.FULL, label = "created", direction = Relation.Direction.STANDARD)
     public Collection<Project> getCreatedProjects();
 
+    @Relation(type = Relation.Type.FULL, label = "knows", direction = Relation.Direction.STANDARD)
+    public void addKnowsPerson(final Person person);
+
+    @Relation(type = Relation.Type.HALF, label = "knows", direction = Relation.Direction.STANDARD)
+    public Knows addKnows(final Person person);
+
     @Relation(type = Relation.Type.FULL, label = "created", direction = Relation.Direction.STANDARD)
     public void addCreatedProject(final Project project);
 

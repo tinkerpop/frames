@@ -13,6 +13,9 @@ public interface Knows {
     @Property("weight")
     public Float getWeight();
 
+    @Property("weight")
+    public Float setWeight(float weight);
+
     @Domain
     public Person getDomain();
 

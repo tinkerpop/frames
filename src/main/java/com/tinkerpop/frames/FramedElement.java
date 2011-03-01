@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.pgm.Element;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -71,11 +72,15 @@ public abstract class FramedElement implements InvocationHandler {
 
 
     protected Integer proxyHashCode(final Object proxy) {
-        return System.identityHashCode(proxy);
+        return System.identityHashCode(proxy) + this.element.hashCode();
     }
 
     protected Boolean proxyEquals(final Object proxy, final Object other) {
-        return (proxy == other ? Boolean.TRUE : Boolean.FALSE);
+        if (proxy.getClass().equals(other.getClass())) {
+            return ((FramedElement) (Proxy.getInvocationHandler(proxy))).getElement().getId().equals(((FramedElement) (Proxy.getInvocationHandler(other))).getElement().getId());
+        } else {
+            return Boolean.FALSE;
+        }
     }
 
     protected String proxyToString(final Object proxy) {

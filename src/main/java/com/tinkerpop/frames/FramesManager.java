@@ -1,7 +1,8 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.pgm.Element;
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 
 import java.lang.reflect.Proxy;
 
@@ -20,13 +21,13 @@ public class FramesManager {
         return this.graph;
     }
 
-    public <T> T frame(final Element element, final Class<T> clazz) {
-        final FramedElement handler = new FramedElement(this, element);
+    public <T> T frame(final Vertex vertex, final Class<T> clazz) {
+        final FramedElement handler = new FramedVertex(this, vertex);
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, handler);
     }
 
-    public <T> T frame(final Element element, final Class<T> clazz, final Direction direction) {
-        final FramedElement handler = new FramedElement(this, element, direction);
+    public <T> T frame(final Edge edge, final Class<T> clazz, final Relation.Direction direction) {
+        final FramedElement handler = new FramedEdge(this, edge, direction);
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, handler);
     }
 }

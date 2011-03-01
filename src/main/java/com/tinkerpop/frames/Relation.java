@@ -10,5 +10,19 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Range {
+public @interface Relation {
+
+    public static enum Type {
+        HALF, FULL
+    }
+
+    public static enum Direction {
+        STANDARD, INVERSE
+    }
+
+    public Type type();
+
+    public String label();
+
+    public Direction direction();
 }

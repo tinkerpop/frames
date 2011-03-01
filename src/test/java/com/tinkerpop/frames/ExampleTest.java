@@ -1,8 +1,11 @@
-package com.tinkerpop.frames.example;
+package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.frames.FramesManager;
+import com.tinkerpop.frames.domain.objects.Person;
+import com.tinkerpop.frames.domain.objects.Project;
+import com.tinkerpop.frames.domain.relations.CreatedBy;
+import com.tinkerpop.frames.domain.relations.Knows;
 import junit.framework.TestCase;
 
 /**
@@ -36,8 +39,8 @@ public class ExampleTest extends TestCase {
         }
 
         Project project = manager.frame(graph.getVertex(3), Project.class);
-        for(CreatedBy createdBy : project.getCreatedBy()){
-            System.out.println(createdBy.getDomain().getName() + "-->"  + createdBy.getRange().getAge());
+        for (CreatedBy createdBy : project.getCreatedBy()) {
+            System.out.println(createdBy.getDomain().getName() + "-->" + createdBy.getRange().getAge());
         }
 
     }

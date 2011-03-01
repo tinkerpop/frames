@@ -1,6 +1,9 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.util;
 
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.frames.FramesManager;
+import com.tinkerpop.frames.Relation;
+import com.tinkerpop.frames.util.AbstractRelationCollection;
 
 import java.util.Iterator;
 
@@ -10,7 +13,7 @@ import java.util.Iterator;
 public class FullRelationCollection<T> extends AbstractRelationCollection<T> {
 
 
-    public FullRelationCollection(final FramesManager manager, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
+    public FullRelationCollection(final FramesManager manager, final Vertex source, final String label, final Relation.Direction direction, final Class<T> kind) {
         super(manager, source, label, direction, kind);
     }
 

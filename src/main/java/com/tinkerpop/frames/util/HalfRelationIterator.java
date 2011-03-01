@@ -1,6 +1,7 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.util;
 
 import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.frames.Relation;
 
 import java.util.Iterator;
 
@@ -14,7 +15,7 @@ public class HalfRelationIterator<T> implements Iterator<T> {
 
     public HalfRelationIterator(HalfRelationCollection collection) {
         this.collection = collection;
-        if (this.collection.getDirection().equals(Direction.STANDARD))
+        if (this.collection.getDirection().equals(Relation.Direction.STANDARD))
             this.itty = collection.getSource().getOutEdges(collection.getLabel()).iterator();
         else
             this.itty = collection.getSource().getInEdges(collection.getLabel()).iterator();

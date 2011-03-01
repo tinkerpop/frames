@@ -1,8 +1,6 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.blueprints.pgm.Vertex;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -11,14 +9,15 @@ import java.lang.reflect.Method;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FramedElement implements InvocationHandler {
+public abstract class FramedElement implements InvocationHandler {
 
-    private final FramesManager manager;
-    private final Element element;
-    private Direction direction;
+    protected final FramesManager manager;
+    protected final Element element;
     private static Method hashCodeMethod;
     private static Method equalsMethod;
     private static Method toStringMethod;
+
+    protected static Object NO_INVOCATION_PATH = new Object();
 
 
     static {
@@ -36,10 +35,6 @@ public class FramedElement implements InvocationHandler {
         this.manager = manager;
     }
 
-    public FramedElement(final FramesManager manager, final Element element, Direction direction) {
-        this(manager, element);
-        this.direction = direction;
-    }
 
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
         if (method.equals(hashCodeMethod)) {
@@ -57,35 +52,17 @@ public class FramedElement implements InvocationHandler {
             } else if (ann instanceof Property & isSetter(method)) {
                 element.setProperty(((Property) ann).value(), arguments[0]);
                 return null;
-            } else if (ann instanceof HalfRelation & isGetter(method)) {
-                HalfRelation rel = (HalfRelation) ann;
-                return new HalfRelationCollection(this.manager, (Vertex) element, rel.label(), rel.direction(), rel.kind());
-            } else if (ann instanceof FullRelation & isGetter(method)) {
-                FullRelation rel = (FullRelation) ann;
-                return new FullRelationCollection(this.manager, (Vertex) element, rel.label(), rel.direction(), rel.kind());
-            } else if (ann instanceof Domain & isGetter(method)) {
-                if (this.direction.equals(Direction.STANDARD)) {
-                    return this.manager.frame(((Edge) element).getOutVertex(), method.getReturnType());
-                } else {
-                    return this.manager.frame(((Edge) element).getInVertex(), method.getReturnType());
-                }
-            } else if (ann instanceof Range & isGetter(method)) {
-                if (this.direction.equals(Direction.STANDARD)) {
-                    return this.manager.frame(((Edge) element).getInVertex(), method.getReturnType());
-                } else {
-                    return this.manager.frame(((Edge) element).getOutVertex(), method.getReturnType());
-                }
             }
         }
-        return null;
+        return NO_INVOCATION_PATH;
 
     }
 
-    private boolean isGetter(final Method method) {
+    protected boolean isGetter(final Method method) {
         return method.getName().startsWith("get");
     }
 
-    private boolean isSetter(final Method method) {
+    protected boolean isSetter(final Method method) {
         return method.getName().startsWith("set");
     }
 

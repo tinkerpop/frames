@@ -1,7 +1,8 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.util;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.frames.Relation;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
 
@@ -17,7 +18,7 @@ public class FullRelationIterator<T> implements Iterator<T> {
 
     public FullRelationIterator(final FullRelationCollection collection) {
         this.collection = collection;
-        if (this.collection.getDirection().equals(Direction.STANDARD)) {
+        if (this.collection.getDirection().equals(Relation.Direction.STANDARD)) {
             Pipe<Edge, Vertex> pipe = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
             pipe.setStarts(this.collection.getSource().getOutEdges(collection.getLabel()));
             this.itty = pipe.iterator();
@@ -33,8 +34,7 @@ public class FullRelationIterator<T> implements Iterator<T> {
     }
 
     public T next() {
-        T t = (T) this.collection.getManager().frame(this.itty.next(), this.collection.getKind());
-        return t;
+        return (T) this.collection.getManager().frame(this.itty.next(), this.collection.getKind());
     }
 
     public boolean hasNext() {

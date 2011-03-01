@@ -10,9 +10,9 @@ import java.lang.reflect.Method;
  */
 public class FramedEdge extends FramedElement {
 
-    private Relation.Direction direction;
+    private Direction direction;
 
-    public FramedEdge(final FramesManager manager, final Edge edge, final Relation.Direction direction) {
+    public FramedEdge(final FramesManager manager, final Edge edge, final Direction direction) {
         super(manager, edge);
         this.direction = direction;
     }
@@ -25,13 +25,13 @@ public class FramedEdge extends FramedElement {
             final Annotation[] anns = method.getAnnotations();
             for (final Annotation ann : anns) {
                 if (ann instanceof Domain & isGetMethod(method)) {
-                    if (this.direction.equals(Relation.Direction.STANDARD)) {
+                    if (this.direction.equals(Direction.STANDARD)) {
                         return this.manager.frame(((Edge) element).getOutVertex(), method.getReturnType());
                     } else {
                         return this.manager.frame(((Edge) element).getInVertex(), method.getReturnType());
                     }
                 } else if (ann instanceof Range & isGetMethod(method)) {
-                    if (this.direction.equals(Relation.Direction.STANDARD)) {
+                    if (this.direction.equals(Direction.STANDARD)) {
                         return this.manager.frame(((Edge) element).getInVertex(), method.getReturnType());
                     } else {
                         return this.manager.frame(((Edge) element).getOutVertex(), method.getReturnType());

@@ -25,10 +25,10 @@ public class FramedElementTest extends TestCase {
         assertEquals(lop.getName(), "lop");
         assertEquals(lop.getLanguage(), "java");
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Created.class, Relation.Direction.STANDARD);
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Created.class, Direction.STANDARD);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
 
-        CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), CreatedBy.class, Relation.Direction.INVERSE);
+        CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), CreatedBy.class, Direction.INVERSE);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
     }
 
@@ -44,7 +44,7 @@ public class FramedElementTest extends TestCase {
         marko.setAge(31);
         assertEquals(marko.getAge(), new Integer(31));
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Created.class, Relation.Direction.STANDARD);
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Created.class, Direction.STANDARD);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
         markoCreatedLop.setWeight(99.0f);
         assertEquals(markoCreatedLop.getWeight(), 99.0f);

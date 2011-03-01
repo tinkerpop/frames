@@ -1,21 +1,21 @@
 package com.tinkerpop.frames.util;
 
 import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.frames.Relation;
+import com.tinkerpop.frames.Direction;
 
 import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class HalfRelationIterator<T> implements Iterator<T> {
+public class AdjacencyIterator<T> implements Iterator<T> {
 
-    private HalfRelationCollection collection;
+    private AdjacencyCollection collection;
     private Iterator<Edge> itty;
 
-    public HalfRelationIterator(HalfRelationCollection collection) {
+    public AdjacencyIterator(AdjacencyCollection collection) {
         this.collection = collection;
-        if (this.collection.getDirection().equals(Relation.Direction.STANDARD))
+        if (this.collection.getDirection().equals(Direction.STANDARD))
             this.itty = collection.getSource().getOutEdges(collection.getLabel()).iterator();
         else
             this.itty = collection.getSource().getInEdges(collection.getLabel()).iterator();
@@ -26,8 +26,7 @@ public class HalfRelationIterator<T> implements Iterator<T> {
     }
 
     public T next() {
-        T t = (T) this.collection.getManager().frame(this.itty.next(), this.collection.getKind(), this.collection.getDirection());
-        return t;
+        return (T) this.collection.getManager().frame(this.itty.next(), this.collection.getKind(), this.collection.getDirection());
     }
 
     public boolean hasNext() {

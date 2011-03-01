@@ -9,7 +9,7 @@ bc. <repository>
 
 ==<hr/>==
 
-h3. Version 0.1 (??? -- NOT OFFICIALLY RELEASED YET)
+h3. Version 0.1 (Brick By Brick -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>

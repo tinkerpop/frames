@@ -19,7 +19,7 @@ public class FramedEdgeTest extends TestCase {
 
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         Person vadas = manager.frame(graph.getVertex(2), Person.class);
-        Knows knows = manager.frame(graph.getEdge(7), Knows.class, Relation.Direction.STANDARD);
+        Knows knows = manager.frame(graph.getEdge(7), Knows.class, Direction.STANDARD);
         assertEquals(marko, knows.getDomain());
         assertEquals(vadas, knows.getRange());
 

@@ -1,8 +1,8 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.frames.util.FullRelationCollection;
-import com.tinkerpop.frames.util.HalfRelationCollection;
+import com.tinkerpop.frames.util.AdjacencyCollection;
+import com.tinkerpop.frames.util.RelationCollection;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
@@ -26,41 +26,41 @@ public class FramedVertex extends FramedElement {
         if (NO_INVOCATION_PATH != returnObject) {
             return returnObject;
         } else {
-            final Annotation[] anns = method.getAnnotations();
-            for (final Annotation ann : anns) {
-                if (ann instanceof Relation & isGetMethod(method)) {
-                    Relation rel = (Relation) ann;
-                    Class cast;
-                    Type returnType = method.getGenericReturnType();
-                    if (returnType instanceof ParameterizedTypeImpl)
-                        cast = (Class) ((ParameterizedTypeImpl) returnType).getActualTypeArguments()[0];
-                    else
-                        cast = method.getReturnType();
-
-                    if (rel.type().equals(Relation.Type.HALF))
-                        return new HalfRelationCollection(this.manager, (Vertex) this.element, rel.label(), rel.direction(), cast);
-                    else
-                        return new FullRelationCollection(this.manager, (Vertex) this.element, rel.label(), rel.direction(), cast);
-                } else if (ann instanceof Relation && isAddMethod(method)) {
-                    Relation rel = (Relation) ann;
-                    if (rel.type().equals(Relation.Type.FULL)) {
-                        if (rel.direction().equals(Relation.Direction.STANDARD))
-                            this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), rel.label());
+            final Annotation[] annotations = method.getAnnotations();
+            for (final Annotation annotation : annotations) {
+                if (annotation instanceof Relation) {
+                    final Relation relation = (Relation) annotation;
+                    if (isGetMethod(method)) {
+                        return new RelationCollection(this.manager, (Vertex) this.element, relation.label(), relation.direction(), getGenericClass(method));
+                    } else if (isAddMethod(method)) {
+                        if (relation.direction().equals(Direction.STANDARD))
+                            this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), relation.label());
                         else
-                            this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, rel.label());
-
+                            this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, relation.label());
                         return null;
-                    } else {
-                        if (rel.direction().equals(Relation.Direction.STANDARD))
-                            return this.manager.frame(this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), rel.label()), method.getReturnType(), Relation.Direction.STANDARD);
-                        else
-                            return this.manager.frame(this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, rel.label()), method.getReturnType(), Relation.Direction.INVERSE);
                     }
-
+                } else if (annotation instanceof Adjacency) {
+                    final Adjacency adjacency = (Adjacency) annotation;
+                    if (isGetMethod(method)) {
+                        return new AdjacencyCollection(this.manager, (Vertex) this.element, adjacency.label(), adjacency.direction(), getGenericClass(method));
+                    } else if (isAddMethod(method)) {
+                        if (adjacency.direction().equals(Direction.STANDARD))
+                            return this.manager.frame(this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), adjacency.label()), method.getReturnType(), Direction.STANDARD);
+                        else
+                            return this.manager.frame(this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, adjacency.label()), method.getReturnType(), Direction.INVERSE);
+                    }
                 }
             }
             throw new RuntimeException("Proxy can not invoke method: " + method);
         }
+    }
+
+    private Class getGenericClass(final Method method) {
+        final Type returnType = method.getGenericReturnType();
+        if (returnType instanceof ParameterizedTypeImpl)
+            return (Class) ((ParameterizedTypeImpl) returnType).getActualTypeArguments()[0];
+        else
+            return method.getReturnType();
     }
 
     protected boolean isAddMethod(final Method method) {

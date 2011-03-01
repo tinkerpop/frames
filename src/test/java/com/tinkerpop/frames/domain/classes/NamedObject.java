@@ -10,7 +10,6 @@ public interface NamedObject {
     @Property("name")
     public String getName();
 
-
     @Property("name")
     public void setName(final String name);
 }

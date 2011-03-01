@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ElementTest extends TestCase {
+public class FramedElementTest extends TestCase {
 
     public void testGettingProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
@@ -30,5 +30,23 @@ public class ElementTest extends TestCase {
 
         CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), CreatedBy.class, Relation.Direction.INVERSE);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
+    }
+
+    public void testSettingProperties() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        assertEquals(marko.getName(), "marko");
+        marko.setName("pavel");
+        assertEquals(marko.getName(), "pavel");
+        assertEquals(marko.getAge(), new Integer(29));
+        marko.setAge(31);
+        assertEquals(marko.getAge(), new Integer(31));
+
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Created.class, Relation.Direction.STANDARD);
+        assertEquals(markoCreatedLop.getWeight(), 0.4f);
+        markoCreatedLop.setWeight(99.0f);
+        assertEquals(markoCreatedLop.getWeight(), 99.0f);
     }
 }

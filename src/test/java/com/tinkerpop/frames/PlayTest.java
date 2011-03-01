@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ExampleTest extends TestCase {
+public class PlayTest extends TestCase {
 
     public void testPlay() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
@@ -28,9 +28,9 @@ public class ExampleTest extends TestCase {
         }
 
         System.out.println("---");
-        for (Person know : person.getKnowsPerson()) {
+        for (Person know : person.getKnowsPeople()) {
             System.out.println(know.getName());
-            for (Project project : know.getCreatedProject()) {
+            for (Project project : know.getCreatedProjects()) {
                 System.out.println("\t" + project.getName());
                 for (Person p : project.getCreatedByPerson()) {
                     System.out.println("\t\t" + p.getName());
@@ -45,12 +45,12 @@ public class ExampleTest extends TestCase {
 
         Project ripple = manager.frame(graph.getVertex(5), Project.class);
         person.addCreatedProject(ripple);
-        for (Project p : person.getCreatedProject()) {
+        for (Project p : person.getCreatedProjects()) {
             System.out.println(person.getName() + " created " + p.getName());
         }
         Person peter = manager.frame(graph.getVertex(6), Person.class);
         peter.addCreated(ripple);
-        for (Project p : person.getCreatedProject()) {
+        for (Project p : person.getCreatedProjects()) {
             System.out.println(peter.getName() + " created " + p.getName());
         }
 

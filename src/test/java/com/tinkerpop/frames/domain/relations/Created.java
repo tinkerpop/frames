@@ -18,4 +18,7 @@ public interface Created {
 
     @Property("weight")
     public Float getWeight();
+
+    @Property("weight")
+    public void setWeight(float weight);
 }

@@ -1,4 +1,4 @@
-package com.tinkerpop.frames.domain.objects;
+package com.tinkerpop.frames.domain.classes;
 
 import com.tinkerpop.frames.Property;
 

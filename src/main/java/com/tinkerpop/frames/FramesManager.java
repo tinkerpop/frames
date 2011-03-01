@@ -22,12 +22,10 @@ public class FramesManager {
     }
 
     public <T> T frame(final Vertex vertex, final Class<T> clazz) {
-        final FramedElement handler = new FramedVertex(this, vertex);
-        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, handler);
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new FramedVertex(this, vertex));
     }
 
     public <T> T frame(final Edge edge, final Class<T> clazz, final Relation.Direction direction) {
-        final FramedElement handler = new FramedEdge(this, edge, direction);
-        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, handler);
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new FramedEdge(this, edge, direction));
     }
 }

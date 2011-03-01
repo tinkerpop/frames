@@ -17,6 +17,9 @@ public abstract class FramedElement implements InvocationHandler {
     private static Method equalsMethod;
     private static Method toStringMethod;
 
+    private static final String SET = "set";
+    private static final String GET = "get";
+
     protected static Object NO_INVOCATION_PATH = new Object();
 
 
@@ -47,10 +50,10 @@ public abstract class FramedElement implements InvocationHandler {
 
         Annotation[] anns = method.getAnnotations();
         for (Annotation ann : anns) {
-            if (ann instanceof Property & isGetter(method)) {
-                return element.getProperty(((Property) ann).value());
-            } else if (ann instanceof Property & isSetter(method)) {
-                element.setProperty(((Property) ann).value(), arguments[0]);
+            if (ann instanceof Property & isGetMethod(method)) {
+                return this.element.getProperty(((Property) ann).value());
+            } else if (ann instanceof Property & isSetMethod(method)) {
+                this.element.setProperty(((Property) ann).value(), arguments[0]);
                 return null;
             }
         }
@@ -58,12 +61,12 @@ public abstract class FramedElement implements InvocationHandler {
 
     }
 
-    protected boolean isGetter(final Method method) {
-        return method.getName().startsWith("get");
+    protected boolean isGetMethod(final Method method) {
+        return method.getName().startsWith(GET);
     }
 
-    protected boolean isSetter(final Method method) {
-        return method.getName().startsWith("set");
+    protected boolean isSetMethod(final Method method) {
+        return method.getName().startsWith(SET);
     }
 
 
@@ -77,6 +80,10 @@ public abstract class FramedElement implements InvocationHandler {
 
     protected String proxyToString(final Object proxy) {
         return proxy.getClass().getName() + '@' + Integer.toHexString(proxy.hashCode());
+    }
+
+    protected Element getElement() {
+        return this.element;
     }
 
 }

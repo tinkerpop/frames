@@ -24,13 +24,13 @@ public class FramedEdge extends FramedElement {
         } else {
             final Annotation[] anns = method.getAnnotations();
             for (final Annotation ann : anns) {
-                if (ann instanceof Domain & isGetter(method)) {
+                if (ann instanceof Domain & isGetMethod(method)) {
                     if (this.direction.equals(Relation.Direction.STANDARD)) {
                         return this.manager.frame(((Edge) element).getOutVertex(), method.getReturnType());
                     } else {
                         return this.manager.frame(((Edge) element).getInVertex(), method.getReturnType());
                     }
-                } else if (ann instanceof Range & isGetter(method)) {
+                } else if (ann instanceof Range & isGetMethod(method)) {
                     if (this.direction.equals(Relation.Direction.STANDARD)) {
                         return this.manager.frame(((Edge) element).getInVertex(), method.getReturnType());
                     } else {
@@ -40,5 +40,9 @@ public class FramedEdge extends FramedElement {
             }
             throw new RuntimeException("Proxy can not invoke method: " + method);
         }
+    }
+
+    protected Edge getEdge() {
+        return (Edge) this.element;
     }
 }

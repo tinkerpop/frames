@@ -2,8 +2,8 @@ package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.frames.domain.objects.Person;
-import com.tinkerpop.frames.domain.objects.Project;
+import com.tinkerpop.frames.domain.classes.Person;
+import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.relations.CreatedBy;
 import com.tinkerpop.frames.domain.relations.Knows;
 import junit.framework.TestCase;
@@ -41,6 +41,17 @@ public class ExampleTest extends TestCase {
         Project project = manager.frame(graph.getVertex(3), Project.class);
         for (CreatedBy createdBy : project.getCreatedBy()) {
             System.out.println(createdBy.getDomain().getName() + "-->" + createdBy.getRange().getAge());
+        }
+
+        Project ripple = manager.frame(graph.getVertex(5), Project.class);
+        person.addCreatedProject(ripple);
+        for (Project p : person.getCreatedProject()) {
+            System.out.println(person.getName() + " created " + p.getName());
+        }
+        Person peter = manager.frame(graph.getVertex(6), Person.class);
+        peter.addCreated(ripple);
+        for (Project p : person.getCreatedProject()) {
+            System.out.println(peter.getName() + " created " + p.getName());
         }
 
     }

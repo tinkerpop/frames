@@ -9,8 +9,7 @@ import com.tinkerpop.frames.domain.classes.Project;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public interface CreatedBy {
-
+public interface Created {
     @Domain
     public Project getDomain();
 

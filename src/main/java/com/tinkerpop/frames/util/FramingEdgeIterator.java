@@ -26,6 +26,6 @@ public class FramingEdgeIterator<T> implements Iterator<T> {
     }
 
     public T next() {
-        return (T) this.framing.manager.frame(this.iterator.next(), this.framing.kind, framing.direction);
+        return (T) this.framing.manager.frame(this.iterator.next(), framing.direction, this.framing.kind);
     }
 }

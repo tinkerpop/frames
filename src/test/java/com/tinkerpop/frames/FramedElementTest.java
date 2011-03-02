@@ -25,10 +25,10 @@ public class FramedElementTest extends TestCase {
         assertEquals(lop.getName(), "lop");
         assertEquals(lop.getLanguage(), "java");
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Created.class, Direction.STANDARD);
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
 
-        CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), CreatedBy.class, Direction.INVERSE);
+        CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), Direction.INVERSE, CreatedBy.class);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
     }
 
@@ -44,9 +44,20 @@ public class FramedElementTest extends TestCase {
         marko.setAge(31);
         assertEquals(marko.getAge(), new Integer(31));
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Created.class, Direction.STANDARD);
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
         markoCreatedLop.setWeight(99.0f);
         assertEquals(markoCreatedLop.getWeight(), 99.0f);
+    }
+
+    public void testToString() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        System.out.println(marko);
+
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
+        System.out.println(markoCreatedLop);
     }
 }

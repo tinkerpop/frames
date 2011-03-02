@@ -26,7 +26,7 @@ public class AdjacencyIterator<T> implements Iterator<T> {
     }
 
     public T next() {
-        return (T) this.collection.getManager().frame(this.itty.next(), this.collection.getKind(), this.collection.getDirection());
+        return (T) this.collection.getManager().frame(this.itty.next(), this.collection.getDirection(), this.collection.getKind());
     }
 
     public boolean hasNext() {

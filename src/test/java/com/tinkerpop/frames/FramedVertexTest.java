@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  */
 public class FramedVertexTest extends TestCase {
 
-    public void testGettingFullRelations() {
+    public void testGettingRelations() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramesManager manager = new FramesManager(graph);
 
@@ -43,7 +43,7 @@ public class FramedVertexTest extends TestCase {
 
     }
 
-    public void testGettingHalfRelations() {
+    public void testGettingAdjacencies() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramesManager manager = new FramesManager(graph);
 
@@ -73,7 +73,7 @@ public class FramedVertexTest extends TestCase {
         assertEquals(counter, 1);
     }
 
-    public void testAddingHalfRelations() {
+    public void testAddingAdjacencies() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramesManager manager = new FramesManager(graph);
 
@@ -104,7 +104,7 @@ public class FramedVertexTest extends TestCase {
         assertEquals(markoKnowsPeter.getWeight(), 1.0f);
     }
 
-    public void testAddingFullRelations() {
+    public void testAddingRelations() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramesManager manager = new FramesManager(graph);
 

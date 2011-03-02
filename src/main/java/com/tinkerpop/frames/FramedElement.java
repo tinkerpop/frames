@@ -84,7 +84,7 @@ public abstract class FramedElement implements InvocationHandler {
     }
 
     protected String proxyToString(final Object proxy) {
-        return proxy.getClass().getName() + '@' + Integer.toHexString(proxy.hashCode());
+        return "Framed[" + ((FramedElement) Proxy.getInvocationHandler(proxy)).getElement().toString() + "]";
     }
 
     protected Element getElement() {

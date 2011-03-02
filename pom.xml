@@ -11,7 +11,7 @@
     <description>
         Frames is a framework for exposing the elements of a Blueprints graph as Java objects.
         Instead of writing software in terms of vertices and edges, with Frames,
-        software is written in terms of domain objects and their relations to each other.
+        software is written in terms of domain objects and their relationships to each other.
     </description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,19 +28,13 @@
         <!-- GRAPHDB SUPPORT -->
         <dependency>
             <groupId>com.tinkerpop</groupId>
-            <artifactId>graphdb-deps-all</artifactId>
-            <version>0.5-SNAPSHOT</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>com.tinkerpop</groupId>
             <artifactId>blueprints</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>pipes</artifactId>
-            <version>0.4-SNAPSHOT</version>
+            <version>0.3.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

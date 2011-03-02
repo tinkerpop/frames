@@ -45,9 +45,9 @@ public class FramedVertex extends FramedElement {
                         return new AdjacencyCollection(this.manager, (Vertex) this.element, adjacency.label(), adjacency.direction(), getGenericClass(method));
                     } else if (isAddMethod(method)) {
                         if (adjacency.direction().equals(Direction.STANDARD))
-                            return this.manager.frame(this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), adjacency.label()), method.getReturnType(), Direction.STANDARD);
+                            return this.manager.frame(this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), adjacency.label()), Direction.STANDARD, method.getReturnType());
                         else
-                            return this.manager.frame(this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, adjacency.label()), method.getReturnType(), Direction.INVERSE);
+                            return this.manager.frame(this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, adjacency.label()), Direction.INVERSE, method.getReturnType());
                     }
                 }
             }

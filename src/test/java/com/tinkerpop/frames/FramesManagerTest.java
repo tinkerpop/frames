@@ -14,6 +14,14 @@ import junit.framework.TestCase;
  */
 public class FramesManagerTest extends TestCase {
 
+    public void testFrameEquality() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        assertEquals(manager.frame(graph.getVertex(1), Person.class), manager.frameVertex(1, Person.class));
+        assertEquals(manager.frame(graph.getEdge(7), Direction.STANDARD, Knows.class), manager.frameEdge(7, Direction.STANDARD, Knows.class));
+    }
+
     public void testFrameVertices() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramesManager manager = new FramesManager(graph);
@@ -39,7 +47,7 @@ public class FramesManagerTest extends TestCase {
         FramesManager manager = new FramesManager(graph);
 
         int counter = 0;
-        for (Knows knows : manager.frameEdges(Index.EDGES, AutomaticIndex.LABEL, "knows", Knows.class, Direction.STANDARD)) {
+        for (Knows knows : manager.frameEdges(Index.EDGES, AutomaticIndex.LABEL, "knows", Direction.STANDARD, Knows.class)) {
             counter++;
             assertEquals(knows.getDomain().getName(), "marko");
             assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas"));

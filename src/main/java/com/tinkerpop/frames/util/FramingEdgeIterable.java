@@ -15,7 +15,7 @@ public class FramingEdgeIterable<T> implements Iterable<T> {
     protected final Iterable<Edge> iterable;
     protected final FramesManager manager;
 
-    public FramingEdgeIterable(final FramesManager manager, final Iterable<Edge> iterable, final Class<T> kind, final Direction direction) {
+    public FramingEdgeIterable(final FramesManager manager, final Iterable<Edge> iterable, final Direction direction, final Class<T> kind) {
         this.manager = manager;
         this.iterable = iterable;
         this.kind = kind;

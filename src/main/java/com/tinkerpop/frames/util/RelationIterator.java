@@ -13,8 +13,8 @@ import java.util.Iterator;
  */
 public class RelationIterator<T> implements Iterator<T> {
 
-    private RelationCollection collection;
-    private Iterator<Vertex> itty;
+    private final RelationCollection collection;
+    private final Iterator<Vertex> itty;
 
     public RelationIterator(final RelationCollection collection) {
         this.collection = collection;

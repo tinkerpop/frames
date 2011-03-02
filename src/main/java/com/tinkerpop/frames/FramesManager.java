@@ -31,12 +31,12 @@ public class FramesManager {
 
     public <T> Iterable<T> frameVertices(final String indexName, final String key, final Object value, final Class<T> kind) {
         final Index<Vertex> index = ((IndexableGraph) this.graph).getIndex(indexName, Vertex.class);
-        return new FramingVertexIterable<T>(this, kind, index.get(key, value));
+        return new FramingVertexIterable<T>(this, index.get(key, value), kind);
     }
 
     public <T> Iterable<T> frameEdges(final String indexName, final String key, final Object value, final Class<T> kind, final Direction direction) {
         final Index<Edge> index = ((IndexableGraph) this.graph).getIndex(indexName, Edge.class);
-        return new FramingEdgeIterable<T>(this, kind, direction, index.get(key, value));
+        return new FramingEdgeIterable<T>(this, index.get(key, value), kind, direction);
     }
 
 

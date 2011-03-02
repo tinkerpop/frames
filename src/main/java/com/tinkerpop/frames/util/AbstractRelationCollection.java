@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
-import com.tinkerpop.frames.Relation;
 
 import java.util.AbstractCollection;
 
@@ -35,7 +34,7 @@ public abstract class AbstractRelationCollection<T> extends AbstractCollection<T
         else
             iterable = this.source.getInEdges(this.label);
 
-        for (Edge edge : iterable) {
+        for (final Edge edge : iterable) {
             counter++;
         }
         return counter;

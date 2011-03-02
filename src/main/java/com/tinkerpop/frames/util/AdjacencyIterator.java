@@ -13,7 +13,7 @@ public class AdjacencyIterator<T> implements Iterator<T> {
     private AdjacencyCollection collection;
     private Iterator<Edge> itty;
 
-    public AdjacencyIterator(AdjacencyCollection collection) {
+    public AdjacencyIterator(final AdjacencyCollection collection) {
         this.collection = collection;
         if (this.collection.getDirection().equals(Direction.STANDARD))
             this.itty = collection.getSource().getOutEdges(collection.getLabel()).iterator();

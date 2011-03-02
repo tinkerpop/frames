@@ -12,7 +12,7 @@ public class FramingVertexIterator<T> implements Iterator<T> {
     private Iterator<Vertex> iterator;
     private FramingVertexIterable framing;
 
-    public FramingVertexIterator(FramingVertexIterable<T> framing, Iterator<Vertex> iterator) {
+    public FramingVertexIterator(final FramingVertexIterable<T> framing, final Iterator<Vertex> iterator) {
         this.iterator = iterator;
         this.framing = framing;
     }

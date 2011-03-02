@@ -9,10 +9,10 @@ import java.util.Iterator;
  */
 public class FramingEdgeIterator<T> implements Iterator<T> {
 
-    private Iterator<Edge> iterator;
-    private FramingEdgeIterable framing;
+    private final Iterator<Edge> iterator;
+    private final FramingEdgeIterable framing;
 
-    public FramingEdgeIterator(FramingEdgeIterable<T> framing, Iterator<Edge> iterator) {
+    public FramingEdgeIterator(final FramingEdgeIterable<T> framing, final Iterator<Edge> iterator) {
         this.iterator = iterator;
         this.framing = framing;
     }

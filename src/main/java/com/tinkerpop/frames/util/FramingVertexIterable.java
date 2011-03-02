@@ -13,10 +13,10 @@ public class FramingVertexIterable<T> implements Iterable<T> {
     protected final Iterable<Vertex> iterable;
     protected final FramesManager manager;
 
-    public FramingVertexIterable(final FramesManager manager, final Class<T> kind, Iterable<Vertex> iterable) {
-        this.kind = kind;
-        this.iterable = iterable;
+    public FramingVertexIterable(final FramesManager manager, final Iterable<Vertex> iterable, final Class<T> kind) {
         this.manager = manager;
+        this.iterable = iterable;
+        this.kind = kind;
     }
 
     public Iterator<T> iterator() {

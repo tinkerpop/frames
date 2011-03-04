@@ -50,6 +50,16 @@ public class FramedElementTest extends TestCase {
         assertEquals(markoCreatedLop.getWeight(), 99.0f);
     }
 
+    public void testRemoveProperties() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        assertEquals(marko.getAge(), new Integer(29));
+        marko.removeAge();
+        assertNull(marko.getAge());
+    }
+
     public void testToString() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramesManager manager = new FramesManager(graph);

@@ -17,9 +17,15 @@ public interface Project extends NamedObject {
     public String getLanguage();
 
     @Relation(label = "created", direction = Direction.INVERSE)
-    public Collection<Person> getCreatedByPerson();
+    public Collection<Person> getCreatedByPeople();
 
     @Adjacency(label = "created", direction = Direction.INVERSE)
     public Collection<CreatedBy> getCreatedBy();
+
+    @Relation(label = "created", direction = Direction.INVERSE)
+    public void removeCreatedByPerson(Person person);
+
+    @Adjacency(label = "created", direction = Direction.INVERSE)
+    public void removeCreatedBy(CreatedBy createdBy);
 }
 

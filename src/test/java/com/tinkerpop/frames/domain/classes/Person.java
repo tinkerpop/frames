@@ -19,6 +19,9 @@ public interface Person extends NamedObject {
     @Property("age")
     public void setAge(int age);
 
+    @Property("age")
+    public void removeAge();
+
     @Adjacency(label = "knows")
     public Collection<Knows> getKnows();
 
@@ -42,4 +45,11 @@ public interface Person extends NamedObject {
 
     @Adjacency(label = "created")
     public Created addCreated(final Project project);
+
+    @Relation(label = "knows")
+    public void removeKnowsPerson(final Person person);
+
+    @Adjacency(label = "knows")
+    public void removeKnows(final Knows knows);
+
 }

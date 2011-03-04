@@ -1,5 +1,6 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
@@ -8,6 +9,9 @@ import com.tinkerpop.frames.domain.relations.Created;
 import com.tinkerpop.frames.domain.relations.CreatedBy;
 import com.tinkerpop.frames.domain.relations.Knows;
 import junit.framework.TestCase;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -35,7 +39,7 @@ public class FramedVertexTest extends TestCase {
 
         counter = 0;
         Project ripple = manager.frame(graph.getVertex(5), Project.class);
-        for (Person person : ripple.getCreatedByPerson()) {
+        for (Person person : ripple.getCreatedByPeople()) {
             counter++;
             assertEquals(person.getName(), "josh");
         }
@@ -127,5 +131,92 @@ public class FramedVertexTest extends TestCase {
             assertTrue(project.getName().equals("lop") || project.getName().equals("ripple"));
         }
         assertEquals(counter, 2);
+    }
+
+    public void testRemoveAdjacencies() {
+
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        int counter = 0;
+        List<Knows> toRemove = new LinkedList<Knows>();
+        for (Knows knows : marko.getKnows()) {
+            counter++;
+            if (knows.getRange().getName().equals("josh")) {
+                toRemove.add(knows);
+            }
+        }
+        assertEquals(counter, 2);
+        for (Knows knows : toRemove) {
+            marko.removeKnows(knows);
+        }
+        counter = 0;
+        for (Knows knows : marko.getKnows()) {
+            counter++;
+            assertEquals(knows.getRange().getName(), "vadas");
+        }
+        assertEquals(counter, 1);
+
+
+        Project lop = manager.frame(graph.getVertex(3), Project.class);
+        counter = 0;
+        List<CreatedBy> toRemove2 = new LinkedList<CreatedBy>();
+        for (CreatedBy createdBy : lop.getCreatedBy()) {
+            counter++;
+            toRemove2.add(createdBy);
+        }
+        assertEquals(counter, 3);
+        for (CreatedBy createdBy : toRemove2) {
+            lop.removeCreatedBy(createdBy);
+        }
+        counter = 0;
+        for (CreatedBy createdBy : lop.getCreatedBy()) {
+            counter++;
+
+        }
+        assertEquals(counter, 0);
+    }
+
+    public void testRemovingRelations() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person vadas = manager.frame(graph.getVertex(2), Person.class);
+        Project lop = manager.frame(graph.getVertex(3), Project.class);
+
+        marko.removeKnowsPerson(vadas);
+        int counter = 0;
+        for (Edge edge : graph.getVertex(1).getOutEdges("knows")) {
+            if (edge.getLabel().equals("knows")) {
+                counter++;
+                assertEquals(edge.getInVertex().getProperty("name"), "josh");
+            }
+        }
+        assertEquals(counter, 1);
+        counter = 0;
+        for (Person person : marko.getKnowsPeople()) {
+            counter++;
+            assertEquals(person.getName(), "josh");
+        }
+        assertEquals(counter, 1);
+
+        lop.removeCreatedByPerson(marko);
+        counter = 0;
+        for (Edge edge : graph.getVertex(3).getInEdges("created")) {
+            if (edge.getLabel().equals("created")) {
+                counter++;
+                assertTrue(edge.getOutVertex().getProperty("name").equals("josh") || edge.getOutVertex().getProperty("name").equals("peter"));
+            }
+        }
+        assertEquals(counter, 2);
+        counter = 0;
+        for (Person person : lop.getCreatedByPeople()) {
+            counter++;
+            assertTrue(person.getName().equals("josh") || person.getName().equals("peter"));
+        }
+        assertEquals(counter, 2);
+
     }
 }

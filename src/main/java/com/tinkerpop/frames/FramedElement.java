@@ -20,6 +20,7 @@ public abstract class FramedElement implements InvocationHandler {
 
     private static final String SET = "set";
     private static final String GET = "get";
+    private static final String REMOVE = "remove";
 
     protected static Object NO_INVOCATION_PATH = new Object();
 
@@ -49,15 +50,21 @@ public abstract class FramedElement implements InvocationHandler {
             return proxyToString(proxy);
         }
 
-        Annotation[] anns = method.getAnnotations();
-        for (Annotation ann : anns) {
-            if (ann instanceof Property & isGetMethod(method)) {
-                return this.element.getProperty(((Property) ann).value());
-            } else if (ann instanceof Property & isSetMethod(method)) {
-                this.element.setProperty(((Property) ann).value(), arguments[0]);
-                return null;
+        final Annotation[] annotations = method.getAnnotations();
+        for (final Annotation annotation : annotations) {
+            if (annotation instanceof Property) {
+                if (isGetMethod(method)) {
+                    return this.element.getProperty(((Property) annotation).value());
+                } else if (isSetMethod(method)) {
+                    this.element.setProperty(((Property) annotation).value(), arguments[0]);
+                    return null;
+                } else if (isRemoveMethod(method)) {
+                    this.element.removeProperty(((Property) annotation).value());
+                    return null;
+                }
             }
         }
+
         return NO_INVOCATION_PATH;
 
     }
@@ -68,6 +75,10 @@ public abstract class FramedElement implements InvocationHandler {
 
     protected boolean isSetMethod(final Method method) {
         return method.getName().startsWith(SET);
+    }
+
+    protected boolean isRemoveMethod(final Method method) {
+        return method.getName().startsWith(REMOVE);
     }
 
 

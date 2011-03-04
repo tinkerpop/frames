@@ -3,7 +3,6 @@ package com.tinkerpop.frames.util;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
-import com.tinkerpop.frames.Relation;
 
 import java.util.Iterator;
 

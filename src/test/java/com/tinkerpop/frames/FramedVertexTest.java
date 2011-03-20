@@ -219,4 +219,17 @@ public class FramedVertexTest extends TestCase {
         assertEquals(counter, 2);
 
     }
+
+    public void testGetInference() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        int counter = 0;
+        for (Person coCreator : marko.getCoCreators()) {
+            counter++;
+            assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
+        }
+        assertEquals(counter, 2);
+    }
 }

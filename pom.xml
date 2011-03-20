@@ -37,6 +37,11 @@
             <version>0.3.1</version>
         </dependency>
         <dependency>
+            <groupId>com.tinkerpop</groupId>
+            <artifactId>gremlin</artifactId>
+            <version>0.8</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.5</version>

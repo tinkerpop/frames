@@ -1,6 +1,7 @@
 package com.tinkerpop.frames.domain.classes;
 
 import com.tinkerpop.frames.Adjacency;
+import com.tinkerpop.frames.GremlinInference;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.Relation;
 import com.tinkerpop.frames.domain.relations.Created;
@@ -51,5 +52,8 @@ public interface Person extends NamedObject {
 
     @Adjacency(label = "knows")
     public void removeKnows(final Knows knows);
+
+    @GremlinInference(script = "_{x=it}.outE('created').inV.inE('created').outV{it!=x}")
+    public Collection<Person> getCoCreators();
 
 }

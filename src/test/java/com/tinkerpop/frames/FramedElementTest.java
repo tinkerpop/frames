@@ -1,6 +1,7 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
@@ -30,6 +31,11 @@ public class FramedElementTest extends TestCase {
 
         CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), Direction.INVERSE, CreatedBy.class);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
+
+        Person temp = manager.frame(graph.addVertex(null), Person.class);
+        assertNull(temp.getName());
+        assertNull(temp.getAge());
+
     }
 
     public void testSettingProperties() {
@@ -69,5 +75,13 @@ public class FramedElementTest extends TestCase {
 
         Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
         System.out.println(markoCreatedLop);
+    }
+
+    public void testEquality() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        assertEquals(manager.frame(graph.getVertex(1), Person.class), manager.frame(graph.getVertex(1), Person.class));
+
     }
 }

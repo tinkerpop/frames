@@ -67,7 +67,6 @@ public class FramedVertex extends FramedElement {
                 } else if (annotation instanceof GremlinInference) {
                     final GremlinInference gremlinInference = (GremlinInference) annotation;
                     if (isGetMethod(method)) {
-                        Gremlin.load();
                         Pipe<Vertex, Vertex> pipe = Gremlin.compile(gremlinInference.script());
                         pipe.setStarts(new SingleIterator<Vertex>(this.getVertex()));
                         return new IterableCollection(new FramingVertexIterable(this.manager, pipe, getGenericClass(method)));

@@ -220,7 +220,7 @@ public class FramedVertexTest extends TestCase {
 
     }
 
-    public void testGetInference() {
+    /*public void testGetInference() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramesManager manager = new FramesManager(graph);
 
@@ -231,5 +231,5 @@ public class FramedVertexTest extends TestCase {
             assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
         }
         assertEquals(counter, 2);
-    }
+    }*/
 }

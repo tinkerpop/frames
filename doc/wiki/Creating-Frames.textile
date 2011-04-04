@@ -1,0 +1,16 @@
+When you develop a Frames-annotation Java interface, you provide it "life" by binding it to the underlying "Blueprints":http://blueprints.tinkerpop.com graph. To make this binding, the @FramesManager@ is used. In @FramesManager@ there a collection of helpful methods which are articulate using the toy graph diagrammed below and the example Java code.
+
+[[https://github.com/tinkerpop/blueprints/raw/master/doc/images/graph-example-1.jpg|width=450px]]
+
+```java
+Graph graph = ... // get a reference to the graph
+FramesManager manager = new FramesManager(graph); // create a manager for the graph
+
+Person marko = manager.frame(graph.getVertex(1), Person.class);
+Person peter = manager.frameVertex(6, Person.class);
+Iterable<Project> javaProjects = manager.frameVertices(Index.VERTICES, "lang", "java", Project.class);
+
+Knows markoKnowsVadas = manager.frame(graph.getEdge(7), Knows.class);
+Knows markoKnowsJosh = manager.frameEdge(8, Knows.class);
+Iterable<CreatedBy> createdByRelations = manager.frameEdges(Index.EDGES, AutomaticIndex.LABEL, "created", Direction.INVERSE, CreatedBy.class);
+```

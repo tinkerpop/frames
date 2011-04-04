@@ -1,7 +1,6 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;

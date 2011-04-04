@@ -1,13 +1,16 @@
-Frames: An Object to Graph Framework
-"http://frames.tinkerpop.com":http://frames.tinkerpop.com
+All releases can be accessed through the TinkerPop Maven2 repository identified below.
 
-bc. <repository>
+```xml
+<repository>
   <id>tinkerpop-repository</id>
   <name>TinkerPop Maven2 Repository</name>
   <url>http://tinkerpop.com/maven2</url>
 </repository>
+```
 
 ==<hr/>==
+
+!https://github.com/tinkerpop/frames/raw/master/doc/images/frames-brick-by-brick.png!
 
 h3. Version 0.1 (Brick By Brick -- April 4, 2011)
 

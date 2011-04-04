@@ -4,12 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.util.AdjacencyCollection;
-import com.tinkerpop.frames.util.FramingVertexIterable;
-import com.tinkerpop.frames.util.IterableCollection;
 import com.tinkerpop.frames.util.RelationCollection;
-import com.tinkerpop.gremlin.Gremlin;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.SingleIterator;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
@@ -64,14 +59,14 @@ public class FramedVertex extends FramedElement {
                         this.manager.getGraph().removeEdge(((FramedEdge) Proxy.getInvocationHandler(arguments[0])).getEdge());
                         return null;
                     }
-                } else if (annotation instanceof GremlinInference) {
+                } /*else if (annotation instanceof GremlinInference) {
                     final GremlinInference gremlinInference = (GremlinInference) annotation;
                     if (isGetMethod(method)) {
                         Pipe<Vertex, Vertex> pipe = Gremlin.compile(gremlinInference.script());
                         pipe.setStarts(new SingleIterator<Vertex>(this.getVertex()));
                         return new IterableCollection(new FramingVertexIterable(this.manager, pipe, getGenericClass(method)));
                     }
-                }
+                }*/
             }
             throw new RuntimeException("Proxy can not invoke method: " + method);
         }

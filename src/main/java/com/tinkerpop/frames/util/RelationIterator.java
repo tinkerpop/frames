@@ -4,7 +4,8 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.Direction;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
+import com.tinkerpop.pipes.pgm.OutVertexPipe;
 
 import java.util.Iterator;
 
@@ -19,11 +20,11 @@ public class RelationIterator<T> implements Iterator<T> {
     public RelationIterator(final RelationCollection collection) {
         this.collection = collection;
         if (this.collection.getDirection().equals(Direction.STANDARD)) {
-            Pipe<Edge, Vertex> pipe = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+            Pipe<Edge, Vertex> pipe = new InVertexPipe();
             pipe.setStarts(this.collection.getSource().getOutEdges(collection.getLabel()));
             this.itty = pipe.iterator();
         } else {
-            Pipe<Edge, Vertex> pipe = new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX);
+            Pipe<Edge, Vertex> pipe = new OutVertexPipe();
             pipe.setStarts(this.collection.getSource().getInEdges(collection.getLabel()));
             this.itty = pipe.iterator();
         }

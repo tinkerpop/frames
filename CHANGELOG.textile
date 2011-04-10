@@ -9,6 +9,8 @@ bc. <repository>
 
 ==<hr/>==
 
+!https://github.com/tinkerpop/frames/raw/master/doc/images/frames-huff-and-puff.png!
+
 h3. Version 0.2 (Huff and Puff -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
@@ -22,6 +24,8 @@ h3. Version 0.2 (Huff and Puff -- NOT OFFICIALLY RELEASED YET)
 * Added JavaDoc
 
 ==<hr/>==
+
+!https://github.com/tinkerpop/frames/raw/master/doc/images/frames-brick-by-brick.png!
 
 h3. Version 0.1 (Brick By Brick -- April 4, 2011)
 

@@ -6,6 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The source of the relation.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 @Retention(RetentionPolicy.RUNTIME)

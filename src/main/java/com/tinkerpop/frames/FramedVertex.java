@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * The proxy class of a framed vertex.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FramedVertex extends FramedElement {

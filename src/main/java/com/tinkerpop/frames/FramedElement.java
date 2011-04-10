@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
+ * The proxy class of a framed element.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public abstract class FramedElement implements InvocationHandler {

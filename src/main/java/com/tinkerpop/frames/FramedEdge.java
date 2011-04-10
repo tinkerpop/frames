@@ -6,6 +6,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
+ * The proxy class of a framed edge.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FramedEdge extends FramedElement {

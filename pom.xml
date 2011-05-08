@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tinkerpop</groupId>
     <artifactId>frames</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
     <url>http://frames.tinkerpop.com</url>
     <name>Frames: An Object to Graph Framework</name>
@@ -25,16 +25,15 @@
     </developers>
     <inceptionYear>2011</inceptionYear>
     <dependencies>
-        <!-- GRAPHDB SUPPORT -->
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-core</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>pipes</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -56,7 +55,7 @@
     </repositories>
     <build>
         <directory>${basedir}/target</directory>
-        <finalName>${artifactId}-${version}
+        <finalName>${project.artifactId}-${project.version}
         </finalName>
         <resources>
             <resource>
@@ -73,6 +72,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -104,14 +104,18 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.4.2</version>
             </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-ftp</artifactId>
+                        <version>1.0-alpha-6</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>1.0-alpha-6</version>
-            </extension>
-        </extensions>
     </build>
     <distributionManagement>
         <repository>

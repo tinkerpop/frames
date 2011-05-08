@@ -1,0 +1,53 @@
+!https://github.com/tinkerpop/frames/raw/master/doc/images/frames-logo.png!
+
+Frames exposes any "Blueprints":http://blueprints.tinkerpop.com graph as a collection of interrelated domain objects. Frames makes heavy use of @InvocationHandler@, @Proxy@ classes, and @Annotations@ to allow a developer to _frame_ a graph element (vertex or edge) in terms of a particular Java interface. With Frames, its easy to ensure that data within a graph is respective of a schema represented as a collection of annotated Java interfaces. 
+
+Please join the Gremlin users group at "http://groups.google.com/group/gremlin-users":http://groups.google.com/group/gremlin-users for all "TinkerPop":http://tinkerpop.com related discussions.
+
+Frames 0.2-SNAPSHOT "JavaDoc":https://github.com/tinkerpop/frames/tree/master/src/main/java/com/tinkerpop/frames (viewed through GitHub source)
+Frames 0.1 "JavaDoc":http://tinkerpop.com/maven2/com/tinkerpop/frames/0.1/api/
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>frames</artifactId>
+  <version>0.1</version>
+</dependency>
+```
+
+For non-Maven users, *download the requisite jar*:
+* "http://tinkerpop.com/maven2/com/tinkerpop/frames/0.1/frames-0.1.jar":http://tinkerpop.com/maven2/com/tinkerpop/frames/0.1/frames-0.1.jar
+
+```java
+public interface Person {
+  @Property("name")
+  public Integer getName();
+  @Adjacency(label="knows")
+  public Collection<Knows> getKnows();
+  @Relation(label="knows")
+  public Collection<Person> getKnowsPeople();
+  @Relation(label="knows")
+  public void addKnowsPerson(final Person person);
+}
+
+public class Frames {
+  public Frames() {
+   Graph graph =  new Neo4jGraph("/tmp/neo4j");
+   FramesManager manager = new FramesManager(graph);
+   Person person = manager.frame(graph.getVertex(1), Person.class);
+   person.getName(); // equals "marko"
+  }
+}
+```
+
+Frames can be used with "Rexster":http://rexster.tinkerpop.com through the "Rexster Kibbles":http://rexster-kibbles.tinkerpop.com Frames extension.
+
+==<hr/>==
+
+* [[Introduction]]
+** [[Getting Started]]
+**** [[Frames Ecosystem]]
+** [[Creating Frames]]
+** [[Annotations]] (*Cheat Sheet*)
+* Conclusion
+** [[Release Notes]]

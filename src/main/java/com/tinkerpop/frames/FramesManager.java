@@ -1,10 +1,6 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Index;
-import com.tinkerpop.blueprints.pgm.IndexableGraph;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.*;
 import com.tinkerpop.frames.util.FramingEdgeIterable;
 import com.tinkerpop.frames.util.FramingVertexIterable;
 

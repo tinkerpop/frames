@@ -9,6 +9,20 @@ bc. <repository>
 
 ==<hr/>==
 
+h3. Version 0.3 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>frames</artifactId>
+  <version>0.3-SNAPSHOT</version>
+</dependency>
+```
+
+* Added JavaDoc
+
+==<hr/>==
+
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-huff-and-puff.png!
 
 h3. Version 0.2 (Huff and Puff -- May 8, 2011)

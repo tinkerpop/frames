@@ -9,7 +9,9 @@ bc. <repository>
 
 ==<hr/>==
 
-h3. Version 0.3 (NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/frames/raw/master/doc/images/frames-lumber.png!
+
+h3. Version 0.3 (Lumber -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>

@@ -32,6 +32,10 @@ public class FramedVertex extends FramedElement {
         if (NO_INVOCATION_PATH != returnObject) {
             return returnObject;
         } else {
+            if (isElementGetter(method)) {
+                return getVertex();
+            }
+
             final Annotation[] annotations = method.getAnnotations();
             for (final Annotation annotation : annotations) {
                 if (annotation instanceof Relation) {

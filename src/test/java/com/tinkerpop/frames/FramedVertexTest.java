@@ -10,6 +10,7 @@ import com.tinkerpop.frames.domain.relations.CreatedBy;
 import com.tinkerpop.frames.domain.relations.Knows;
 import junit.framework.TestCase;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,6 +46,58 @@ public class FramedVertexTest extends TestCase {
         }
         assertEquals(counter, 1);
 
+    }
+
+    public void testSettingRelations() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+        int counter;
+
+        Person josh = manager.frame(graph.getVertex(4), Person.class);
+        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person peter = manager.frame(graph.getVertex(6), Person.class);
+
+        assertEquals(josh.getKnowsPeople().size(), 0);
+
+        Collection<Person> knows = new LinkedList<Person>();
+        knows.add(peter);
+        knows.add(marko);
+        josh.setKnowsPeople(knows);
+
+        counter = 0;
+        for (Person person : josh.getKnowsPeople()) {
+            counter++;
+            assertTrue(person.getName().equals("marko") || person.getName().equals("peter"));
+        }
+        assertEquals(counter, 2);
+
+        knows.clear();
+        knows.add(josh);
+        josh.setKnowsPeople(knows);
+        counter = 0;
+        for (Person person : josh.getKnowsPeople()) {
+            counter++;
+            assertTrue(person.getName().equals("josh"));
+        }
+        assertEquals(counter, 1);
+    }
+
+    public void testGettingAndSettingFunctionalRelations() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+
+        Person josh = manager.frame(graph.getVertex(4), Person.class);
+
+        Project rdfAgents = manager.frame(graph.addVertex(null), Project.class);
+        Project tinkerNotes = manager.frame(graph.addVertex(null), Project.class);
+
+        assertNull(josh.getLatestProject());
+
+        josh.setLatestProject(rdfAgents);
+        assertEquals(rdfAgents.element().getId(), josh.getLatestProject().element().getId());
+
+        josh.setLatestProject(tinkerNotes);
+        assertEquals(tinkerNotes.element().getId(), josh.getLatestProject().element().getId());
     }
 
     public void testGettingAdjacencies() {

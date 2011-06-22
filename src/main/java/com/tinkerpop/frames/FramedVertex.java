@@ -11,6 +11,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,6 +28,16 @@ public class FramedVertex extends FramedElement {
         super(manager, vertex);
     }
 
+    private boolean returnsCollection(final Method method) {
+        return Collection.class.isAssignableFrom(method.getReturnType());
+    }
+
+    private boolean acceptsCollection(final Method method) {
+
+        return 1 == method.getParameterTypes().length
+                && Collection.class.isAssignableFrom(method.getParameterTypes()[0]);
+    }
+
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
         final Object returnObject = super.invoke(proxy, method, arguments);
         if (NO_INVOCATION_PATH != returnObject) {
@@ -41,7 +52,12 @@ public class FramedVertex extends FramedElement {
                 if (annotation instanceof Relation) {
                     final Relation relation = (Relation) annotation;
                     if (isGetMethod(method)) {
-                        return new RelationCollection(this.manager, (Vertex) this.element, relation.label(), relation.direction(), getGenericClass(method));
+                        RelationCollection r = new RelationCollection(this.manager, (Vertex) this.element, relation.label(), relation.direction(), getGenericClass(method));
+                        if (returnsCollection(method)) {
+                            return r;
+                        } else {
+                            return r.iterator().hasNext() ? r.iterator().next() : null;
+                        }
                     } else if (isAddMethod(method)) {
                         if (relation.direction().equals(Direction.STANDARD))
                             this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), relation.label());
@@ -51,6 +67,24 @@ public class FramedVertex extends FramedElement {
                     } else if (isRemoveMethod(method)) {
                         this.removeEdges(relation.direction(), relation.label(), ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex());
                         return null;
+                    } else if (isSetMethod(method)) {
+                        this.removeEdges(relation.direction(), relation.label(), null);
+                        if (acceptsCollection(method)) {
+                            for (Object o : (Collection) arguments[0]) {
+                                Vertex v = ((FramedVertex) Proxy.getInvocationHandler(o)).getVertex();
+                                if (relation.direction().equals(Direction.STANDARD))
+                                    this.manager.getGraph().addEdge(null, (Vertex) this.element, v, relation.label());
+                                else
+                                    this.manager.getGraph().addEdge(null, v, (Vertex) this.element, relation.label());
+                            }
+                            return null;
+                        } else {
+                            if (relation.direction().equals(Direction.STANDARD))
+                                this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), relation.label());
+                            else
+                                this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, relation.label());
+                            return null;
+                        }
                     }
                 } else if (annotation instanceof Adjacency) {
                     final Adjacency adjacency = (Adjacency) annotation;
@@ -91,13 +125,13 @@ public class FramedVertex extends FramedElement {
         List<Edge> toRemove = new LinkedList<Edge>();
         if (direction.equals(Direction.STANDARD)) {
             for (final Edge edge : this.getVertex().getOutEdges(label)) {
-                if (edge.getInVertex().equals(otherVertex)) {
+                if (null == otherVertex || edge.getInVertex().equals(otherVertex)) {
                     toRemove.add(edge);
                 }
             }
         } else {
             for (final Edge edge : this.getVertex().getInEdges(label)) {
-                if (edge.getOutVertex().equals(otherVertex)) {
+                if (null == otherVertex || edge.getOutVertex().equals(otherVertex)) {
                     toRemove.add(edge);
                 }
             }

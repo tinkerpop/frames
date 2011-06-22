@@ -28,6 +28,9 @@ public interface Person extends NamedObject {
     @Relation(label = "knows")
     public Collection<Person> getKnowsPeople();
 
+    @Relation(label = "knows")
+    public void setKnowsPeople(final Collection<Person> knows);
+
     @Adjacency(label = "created")
     public Collection<Created> getCreated();
 
@@ -51,6 +54,12 @@ public interface Person extends NamedObject {
 
     @Adjacency(label = "knows")
     public void removeKnows(final Knows knows);
+
+    @Relation(label = "latestProject")
+    public Project getLatestProject();
+
+    @Relation(label = "latestProject")
+    public void setLatestProject(final Project latestProject);
 
     /*@GremlinInference(script = "_{x=it}.outE('created').inV.inE('created').outV{it!=x}")
     public Collection<Person> getCoCreators();*/

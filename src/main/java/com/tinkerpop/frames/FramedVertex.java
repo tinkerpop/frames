@@ -43,7 +43,7 @@ public class FramedVertex extends FramedElement {
         if (NO_INVOCATION_PATH != returnObject) {
             return returnObject;
         } else {
-            if (isElementGetter(method)) {
+            if (isVertexGetter(method)) {
                 return getVertex();
             }
 
@@ -110,6 +110,10 @@ public class FramedVertex extends FramedElement {
             }
             throw new RuntimeException("Proxy can not invoke method: " + method);
         }
+    }
+
+    protected boolean isVertexGetter(final Method method) {
+        return method.getName().equals("asVertex");
     }
 
     private Class getGenericClass(final Method method) {

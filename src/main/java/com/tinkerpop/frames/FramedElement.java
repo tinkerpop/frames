@@ -44,9 +44,6 @@ public abstract class FramedElement implements InvocationHandler {
 
 
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
-        if (isElementGetter(method)) {
-            return getElement();
-        }
 
         if (method.equals(hashCodeMethod)) {
             return proxyHashCode(proxy);
@@ -73,10 +70,6 @@ public abstract class FramedElement implements InvocationHandler {
 
         return NO_INVOCATION_PATH;
 
-    }
-
-    protected boolean isElementGetter(final Method method) {
-        return method.getName().equals("element");
     }
 
     protected boolean isGetMethod(final Method method) {

@@ -8,5 +8,5 @@ import com.tinkerpop.blueprints.pgm.Edge;
  * Time: 9:43 PM
  */
 public interface EdgeFrame {
-    Edge element();
+    Edge asEdge();
 }

@@ -94,10 +94,10 @@ public class FramedVertexTest extends TestCase {
         assertNull(josh.getLatestProject());
 
         josh.setLatestProject(rdfAgents);
-        assertEquals(rdfAgents.element().getId(), josh.getLatestProject().element().getId());
+        assertEquals(rdfAgents.asVertex().getId(), josh.getLatestProject().asVertex().getId());
 
         josh.setLatestProject(tinkerNotes);
-        assertEquals(tinkerNotes.element().getId(), josh.getLatestProject().element().getId());
+        assertEquals(tinkerNotes.asVertex().getId(), josh.getLatestProject().asVertex().getId());
     }
 
     public void testGettingAdjacencies() {

@@ -8,5 +8,5 @@ import com.tinkerpop.blueprints.pgm.Vertex;
  * Time: 9:42 PM
  */
 public interface VertexFrame {
-    Vertex element();
+    Vertex asVertex();
 }

@@ -24,6 +24,10 @@ public class FramedEdge extends FramedElement {
         if (NO_INVOCATION_PATH != returnObject) {
             return returnObject;
         } else {
+            if (isEdgeGetter(method)) {
+                return getElement();
+            }
+
             final Annotation[] anns = method.getAnnotations();
             for (final Annotation ann : anns) {
                 if (ann instanceof Domain & isGetMethod(method)) {
@@ -42,6 +46,10 @@ public class FramedEdge extends FramedElement {
             }
             throw new RuntimeException("Proxy can not invoke method: " + method);
         }
+    }
+
+    protected boolean isEdgeGetter(final Method method) {
+        return method.getName().equals("asEdge");
     }
 
     protected Edge getEdge() {

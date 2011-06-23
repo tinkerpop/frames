@@ -3,9 +3,9 @@ package com.tinkerpop.frames;
 import com.tinkerpop.blueprints.pgm.Vertex;
 
 /**
- * User: josh
- * Date: 6/18/11
- * Time: 9:42 PM
+ * An interface for Vertex-based frames which provides access to the underlying Vertex.
+ *
+ * @author Joshua Shinavier (http://fortytwo.net)
  */
 public interface VertexFrame {
     Vertex asVertex();

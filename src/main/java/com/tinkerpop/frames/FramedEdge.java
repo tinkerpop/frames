@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
  * The proxy class of a framed edge.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Joshua Shinavier (http://fortytwo.net)
  */
 public class FramedEdge extends FramedElement {
 

@@ -3,9 +3,9 @@ package com.tinkerpop.frames;
 import com.tinkerpop.blueprints.pgm.Edge;
 
 /**
- * User: josh
- * Date: 6/18/11
- * Time: 9:43 PM
+ * An interface for Edge-based frames which provides access to the underlying Edge.
+ *
+ * @author Joshua Shinavier (http://fortytwo.net)
  */
 public interface EdgeFrame {
     Edge asEdge();

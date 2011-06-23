@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Joshua Shinavier (http://fortytwo.net)
  */
 public class FramedVertexTest extends TestCase {
 

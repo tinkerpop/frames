@@ -73,17 +73,21 @@ public class FramedVertex extends FramedElement {
                         if (acceptsCollection(method)) {
                             for (Object o : (Collection) arguments[0]) {
                                 Vertex v = ((FramedVertex) Proxy.getInvocationHandler(o)).getVertex();
-                                if (relation.direction().equals(Direction.STANDARD))
+                                if (relation.direction().equals(Direction.STANDARD)) {
                                     this.manager.getGraph().addEdge(null, (Vertex) this.element, v, relation.label());
-                                else
+                                } else {
                                     this.manager.getGraph().addEdge(null, v, (Vertex) this.element, relation.label());
+                                }
                             }
                             return null;
                         } else {
-                            if (relation.direction().equals(Direction.STANDARD))
-                                this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), relation.label());
-                            else
-                                this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, relation.label());
+                            if (null != arguments[0]) {
+                                if (relation.direction().equals(Direction.STANDARD)) {
+                                    this.manager.getGraph().addEdge(null, (Vertex) this.element, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), relation.label());
+                                } else {
+                                    this.manager.getGraph().addEdge(null, ((FramedVertex) Proxy.getInvocationHandler(arguments[0])).getVertex(), (Vertex) this.element, relation.label());
+                                }
+                            }
                             return null;
                         }
                     }

@@ -99,6 +99,9 @@ public class FramedVertexTest extends TestCase {
 
         josh.setLatestProject(tinkerNotes);
         assertEquals(tinkerNotes.asVertex().getId(), josh.getLatestProject().asVertex().getId());
+
+        josh.setLatestProject(null);
+        assertNull(josh.getLatestProject());
     }
 
     public void testGettingAdjacencies() {

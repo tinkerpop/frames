@@ -19,11 +19,18 @@ import java.util.List;
  * @author Joshua Shinavier (http://fortytwo.net)
  */
 public class FramedVertexTest extends TestCase {
+    private Graph graph;
+    private FramesManager manager;
+
+    public void setUp() {
+        graph = TinkerGraphFactory.createTinkerGraph();
+        manager = new FramesManager(graph);
+    }
+
+    public void tearDown() {
+    }
 
     public void testGettingRelations() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Project project : marko.getCreatedProjects()) {
@@ -50,8 +57,6 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testSettingRelations() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
         int counter;
 
         Person josh = manager.frame(graph.getVertex(4), Person.class);
@@ -84,9 +89,6 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testGettingAndSettingFunctionalRelations() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person josh = manager.frame(graph.getVertex(4), Person.class);
 
         Project rdfAgents = manager.frame(graph.addVertex(null), Project.class);
@@ -102,12 +104,24 @@ public class FramedVertexTest extends TestCase {
 
         josh.setLatestProject(null);
         assertNull(josh.getLatestProject());
+
+        // It's safe to set an already-null object to null.
+        josh.setLatestProject(null);
+        assertNull(josh.getLatestProject());
+    }
+
+    public void testImproperSettingRelations() {
+        Person josh = manager.frame(graph.getVertex(4), Person.class);
+        boolean good = false;
+        try {
+            josh.setKnowsPeople(null);
+        } catch (NullPointerException e) {
+            good = true;
+        }
+        assertTrue(good);
     }
 
     public void testGettingAdjacencies() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Created created : marko.getCreated()) {
@@ -135,9 +149,6 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testAddingAdjacencies() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         Project ripple = manager.frame(graph.getVertex(5), Project.class);
         Person peter = manager.frame(graph.getVertex(6), Person.class);
@@ -166,9 +177,6 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testAddingRelations() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         Project ripple = manager.frame(graph.getVertex(5), Project.class);
         Person peter = manager.frame(graph.getVertex(6), Person.class);
@@ -191,10 +199,6 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testRemoveAdjacencies() {
-
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         List<Knows> toRemove = new LinkedList<Knows>();
@@ -236,9 +240,6 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testRemovingRelations() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         Person vadas = manager.frame(graph.getVertex(2), Person.class);
         Project lop = manager.frame(graph.getVertex(3), Project.class);
@@ -278,9 +279,6 @@ public class FramedVertexTest extends TestCase {
     }
 
     /*public void testGetInference() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Person coCreator : marko.getCoCreators()) {

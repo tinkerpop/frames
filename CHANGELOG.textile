@@ -9,6 +9,22 @@ bc. <repository>
 
 ==<hr/>==
 
+h3. Version 0.4 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>frames</artifactId>
+  <version>0.4-SNAPSHOT</version>
+</dependency>
+```
+
+* Added 'set to null' / 'remove all' functionality for functional relations.
+* Added @VertexFrame@ and @EdgeFrame@ interfaces to provide access to underlying vertices and edges of frames.
+* Extended @Relation@ support to both multiple-valued and single-valued (functional) relations.
+
+==<hr/>==
+
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-lumber.png!
 
 h3. Version 0.3 (Lumber -- June 11, 2011)

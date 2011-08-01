@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tinkerpop</groupId>
     <artifactId>frames</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <packaging>jar</packaging>
     <url>http://frames.tinkerpop.com</url>
     <name>Frames: An Object to Graph Framework</name>
@@ -22,18 +22,23 @@
             <email>marko@markorodriguez.com</email>
             <url>http://markorodriguez.com</url>
         </developer>
+        <developer>
+            <name>Joshua Shinavier</name>
+            <email>josh@fortytwo.net</email>
+            <url>http://fortytwo.net</url>
+        </developer>
     </developers>
     <inceptionYear>2011</inceptionYear>
     <dependencies>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-core</artifactId>
-            <version>0.9-SNAPSHOT</version>
+            <version>0.9</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>pipes</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

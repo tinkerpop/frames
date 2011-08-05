@@ -40,7 +40,7 @@
             <artifactId>pipes</artifactId>
             <version>0.8-SNAPSHOT</version>
         </dependency>
-        <!-- Test dependencies -->
+        <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -51,6 +51,7 @@
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-sail-graph</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <repositories>

@@ -9,6 +9,8 @@ bc. <repository>
 
 ==<hr/>==
 
+!https://github.com/tinkerpop/frames/raw/master/doc/images/frames-beams.png!
+
 h3. Version 0.5 (NOT OFFICIALLY RELEASED YET)
 
 ```xml

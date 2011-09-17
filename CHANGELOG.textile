@@ -11,13 +11,13 @@ bc. <repository>
 
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-beams.png!
 
-h3. Version 0.5 (NOT OFFICIALLY RELEASED YET)
+h3. Version 0.5 (Beams -- September 18, 2011)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>frames</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.5</version>
 </dependency>
 ```
 

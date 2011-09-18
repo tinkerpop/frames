@@ -1,0 +1,12 @@
+Frames is a bare-bones library. Luckily, its part of a larger ecosystem of graph technologies. When using Frames, you will find yourself making use of framed domain objects and "Blueprints":http://blueprints.tinkerpop.com.
+
+h2. Managing Transactions
+
+Frames has no notion of transaction management. To manage transactions, use Blueprints.
+
+```java
+Graph graph = ... // get reference to graph
+graph.startTransaction();
+// do Frames related mutations to the graph
+graph.stopTransaction(Conclusion.SUCCESS);
+```

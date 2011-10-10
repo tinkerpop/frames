@@ -3,9 +3,9 @@ package com.tinkerpop.frames.util;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.Direction;
+import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
+import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.transform.InVertexPipe;
-import com.tinkerpop.pipes.transform.OutVertexPipe;
 
 import java.util.Iterator;
 

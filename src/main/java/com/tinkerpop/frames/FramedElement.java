@@ -93,7 +93,7 @@ public class FramedElement implements InvocationHandler {
     }
 
     private String proxyToString(final Object proxy) {
-        return "Framed[" + ((FramedElement) Proxy.getInvocationHandler(proxy)).getElement().toString() + "]";
+        return "framed[" + ((FramedElement) Proxy.getInvocationHandler(proxy)).getElement().toString() + "]";
     }
 
     public Element getElement() {

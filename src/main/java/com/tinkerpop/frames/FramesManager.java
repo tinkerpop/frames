@@ -28,7 +28,7 @@ public class FramesManager {
 
     private final Graph graph;
     private final Map<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>> annotationHandlers;
-    
+
     /**
      * Construct a FramesManager that will frame elements of the provided graph.
      *
@@ -37,7 +37,7 @@ public class FramesManager {
     public FramesManager(final Graph graph) {
         this.graph = graph;
         this.annotationHandlers = new HashMap<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>>();
-    
+
         registerAnnotationHandler(new PropertyAnnotationHandler());
         registerAnnotationHandler(new RelationAnnotationHandler());
         registerAnnotationHandler(new AdjacencyAnnotationHandler());
@@ -115,8 +115,7 @@ public class FramesManager {
      * @return an iterable of proxy objects backed by the vertices and interpreted from the perspective of the annotate interface
      */
     public <T> Iterable<T> frameVertices(final String indexName, final String key, final Object value, final Class<T> kind) {
-        final Index<Vertex> index = ((IndexableGraph) this.graph).getIndex(indexName, Vertex.class);
-        return new FramingVertexIterable<T>(this, index.get(key, value), kind);
+        return this.frameVertices(((IndexableGraph) this.graph).getIndex(indexName, Vertex.class).get(key, value), kind);
     }
 
     /**
@@ -131,35 +130,57 @@ public class FramesManager {
      * @return an iterable of proxy objects backed by the edges and interpreted from the perspective of the annotate interface
      */
     public <T> Iterable<T> frameEdges(final String indexName, final String key, final Object value, final Direction direction, final Class<T> kind) {
-        final Index<Edge> index = ((IndexableGraph) this.graph).getIndex(indexName, Edge.class);
-        return new FramingEdgeIterable<T>(this, index.get(key, value), direction, kind);
+        return this.frameEdges(((IndexableGraph) this.graph).getIndex(indexName, Edge.class).get(key, value), direction, kind);
     }
-    
+
+    /**
+     * Frame vertices pulled from an index according to a particular kind of annotated interface.
+     *
+     * @param vertices an iterable of vertices to frame as T
+     * @param kind     the annotated interface to frame the vertices as
+     * @param <T>      the type of the annotated interface
+     * @return an iterable of proxy objects backed by the vertices and interpreted from the perspective of the annotate interface
+     */
+    public <T> Iterable<T> frameVertices(Iterable<Vertex> vertices, final Class<T> kind) {
+        return new FramingVertexIterable<T>(this, vertices, kind);
+    }
+
+    /**
+     * Frame edges pulled from an index according to a particular kind of annotated interface.
+     *
+     * @param edges     an iterable of edges to frame as T
+     * @param direction the direction of the edges
+     * @param kind      the annotated interface to frame the edges as
+     * @param <T>       the type of the annotated interface
+     * @return an iterable of proxy objects backed by the edges and interpreted from the perspective of the annotate interface
+     */
+    public <T> Iterable<T> frameEdges(Iterable<Edge> edges, final Direction direction, final Class<T> kind) {
+        return new FramingEdgeIterable<T>(this, edges, direction, kind);
+    }
+
     /**
      * The method used to register a new annotation handler
      * for every new annotation a new annotation handler has to be registered in the manager
-     * 
+     *
      * @param handler the annotation handler
      */
-    public void registerAnnotationHandler(AnnotationHandler<? extends Annotation> handler){
-    	annotationHandlers.put(handler.getAnnotationType(), handler);
+    public void registerAnnotationHandler(AnnotationHandler<? extends Annotation> handler) {
+        annotationHandlers.put(handler.getAnnotationType(), handler);
     }
-    
+
     /**
-     * 
      * @param annotationType the type of annotation handled by the annotation handler
      * @return the annotation handler associated with the specified type
      */
     public AnnotationHandler getAnnotationHandler(Class<? extends Annotation> annotationType) {
-    	return annotationHandlers.get(annotationType);
+        return annotationHandlers.get(annotationType);
     }
-    
+
     /**
-     * 
      * @param annotationType the type of annotation handled by the annotation handler
      * @return a boolean indicating if the manager has registered an annotation handler for the specified type
      */
     public boolean hasAnnotationHandler(Class<? extends Annotation> annotationType) {
-    	return annotationHandlers.containsKey(annotationType);
+        return annotationHandlers.containsKey(annotationType);
     }
 }

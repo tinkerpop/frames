@@ -1,6 +1,8 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;
+import com.tinkerpop.blueprints.pgm.Vertex;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -12,17 +14,14 @@ import java.lang.reflect.Proxy;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public abstract class FramedElement implements InvocationHandler {
+public class FramedElement implements InvocationHandler {
 
-    protected final FramesManager manager;
+    private final Direction direction;
+	protected final FramesManager manager;
     protected final Element element;
     private static Method hashCodeMethod;
     private static Method equalsMethod;
     private static Method toStringMethod;
-
-    private static final String SET = "set";
-    private static final String GET = "get";
-    private static final String REMOVE = "remove";
 
     protected static Object NO_INVOCATION_PATH = new Object();
 
@@ -37,12 +36,16 @@ public abstract class FramedElement implements InvocationHandler {
         }
     }
 
-    public FramedElement(final FramesManager manager, final Element element) {
+    public FramedElement(final FramesManager manager, final Element element, final Direction direction) {
         this.element = element;
         this.manager = manager;
+        this.direction = direction;
+    }
+    public FramedElement(final FramesManager manager, final Element element) {
+        this(manager, element, null);
     }
 
-
+    
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
 
         if (method.equals(hashCodeMethod)) {
@@ -52,19 +55,23 @@ public abstract class FramedElement implements InvocationHandler {
         } else if (method.equals(toStringMethod)) {
             return proxyToString(proxy);
         }
-
+        
+        if (isVertexGetter(method) && element instanceof Vertex) {
+            return (Vertex) getElement();
+        }else if(isEdgeGetter(method) && element instanceof Edge) {
+        	return (Edge) getElement();
+        }
+        
         final Annotation[] annotations = method.getAnnotations();
         for (final Annotation annotation : annotations) {
-            if (annotation instanceof Property) {
-                if (isGetMethod(method)) {
-                    return this.element.getProperty(((Property) annotation).value());
-                } else if (isSetMethod(method)) {
-                    this.element.setProperty(((Property) annotation).value(), arguments[0]);
-                    return null;
-                } else if (isRemoveMethod(method)) {
-                    this.element.removeProperty(((Property) annotation).value());
-                    return null;
-                }
+    		if(manager.hasAnnotationHandler(annotation.annotationType())){
+    			if(element instanceof Vertex){
+    				return manager.getAnnotationHandler(annotation.annotationType())
+    	            		.processVertex(annotation, method, arguments, this.manager, (Vertex)this.element);
+    			}else if(element instanceof Edge){
+    				return manager.getAnnotationHandler(annotation.annotationType())
+    	            		.processEdge(annotation, method, arguments, this.manager, (Edge)this.element, direction);
+    			}
             }
         }
 
@@ -72,24 +79,12 @@ public abstract class FramedElement implements InvocationHandler {
 
     }
 
-    protected boolean isGetMethod(final Method method) {
-        return method.getName().startsWith(GET);
-    }
 
-    protected boolean isSetMethod(final Method method) {
-        return method.getName().startsWith(SET);
-    }
-
-    protected boolean isRemoveMethod(final Method method) {
-        return method.getName().startsWith(REMOVE);
-    }
-
-
-    protected Integer proxyHashCode(final Object proxy) {
+    private Integer proxyHashCode(final Object proxy) {
         return System.identityHashCode(proxy) + this.element.hashCode();
     }
 
-    protected Boolean proxyEquals(final Object proxy, final Object other) {
+    private Boolean proxyEquals(final Object proxy, final Object other) {
         if (proxy.getClass().equals(other.getClass())) {
             return ((FramedElement) (Proxy.getInvocationHandler(proxy))).getElement().getId().equals(((FramedElement) (Proxy.getInvocationHandler(other))).getElement().getId());
         } else {
@@ -97,12 +92,19 @@ public abstract class FramedElement implements InvocationHandler {
         }
     }
 
-    protected String proxyToString(final Object proxy) {
+    private String proxyToString(final Object proxy) {
         return "Framed[" + ((FramedElement) Proxy.getInvocationHandler(proxy)).getElement().toString() + "]";
     }
 
-    protected Element getElement() {
+    public Element getElement() {
         return this.element;
     }
-
+    
+    protected boolean isVertexGetter(final Method method) {
+        return method.getName().equals("asVertex");
+    }
+    
+    protected boolean isEdgeGetter(final Method method) {
+        return method.getName().equals("asEdge");
+    }
 }

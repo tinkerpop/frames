@@ -17,7 +17,7 @@ import java.lang.reflect.Proxy;
 public class FramedElement implements InvocationHandler {
 
     private final Direction direction;
-	protected final FramesManager manager;
+    protected final FramesManager manager;
     protected final Element element;
     private static Method hashCodeMethod;
     private static Method equalsMethod;
@@ -41,11 +41,12 @@ public class FramedElement implements InvocationHandler {
         this.manager = manager;
         this.direction = direction;
     }
+
     public FramedElement(final FramesManager manager, final Element element) {
         this(manager, element, null);
     }
 
-    
+
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
 
         if (method.equals(hashCodeMethod)) {
@@ -55,23 +56,23 @@ public class FramedElement implements InvocationHandler {
         } else if (method.equals(toStringMethod)) {
             return proxyToString(proxy);
         }
-        
+
         if (isVertexGetter(method) && element instanceof Vertex) {
             return (Vertex) getElement();
-        }else if(isEdgeGetter(method) && element instanceof Edge) {
-        	return (Edge) getElement();
+        } else if (isEdgeGetter(method) && element instanceof Edge) {
+            return (Edge) getElement();
         }
-        
+
         final Annotation[] annotations = method.getAnnotations();
         for (final Annotation annotation : annotations) {
-    		if(manager.hasAnnotationHandler(annotation.annotationType())){
-    			if(element instanceof Vertex){
-    				return manager.getAnnotationHandler(annotation.annotationType())
-    	            		.processVertex(annotation, method, arguments, this.manager, (Vertex)this.element);
-    			}else if(element instanceof Edge){
-    				return manager.getAnnotationHandler(annotation.annotationType())
-    	            		.processEdge(annotation, method, arguments, this.manager, (Edge)this.element, direction);
-    			}
+            if (manager.hasAnnotationHandler(annotation.annotationType())) {
+                if (element instanceof Vertex) {
+                    return manager.getAnnotationHandler(annotation.annotationType())
+                            .processVertex(annotation, method, arguments, this.manager, (Vertex) this.element);
+                } else if (element instanceof Edge) {
+                    return manager.getAnnotationHandler(annotation.annotationType())
+                            .processEdge(annotation, method, arguments, this.manager, (Edge) this.element, direction);
+                }
             }
         }
 
@@ -99,11 +100,11 @@ public class FramedElement implements InvocationHandler {
     public Element getElement() {
         return this.element;
     }
-    
+
     protected boolean isVertexGetter(final Method method) {
         return method.getName().equals("asVertex");
     }
-    
+
     protected boolean isEdgeGetter(final Method method) {
         return method.getName().equals("asEdge");
     }

@@ -19,6 +19,10 @@ h3. Version 0.7 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Added support for registering annotations
+* Added more @frame@-based methods to @FramesManager@
+* Added support for inference determined by a @GremlinGroovy@ annotation
+
 ==<hr/>==
 
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-truss.png!

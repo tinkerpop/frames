@@ -53,7 +53,7 @@
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.gremlin</groupId>
-            <artifactId>gremlin-java</artifactId>
+            <artifactId>gremlin-groovy</artifactId>
             <version>1.5-SNAPSHOT</version>
         </dependency>
         <!-- TEST -->

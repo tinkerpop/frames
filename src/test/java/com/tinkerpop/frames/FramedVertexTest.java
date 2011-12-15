@@ -278,7 +278,7 @@ public class FramedVertexTest extends TestCase {
 
     }
 
-    /*public void testGetInference() {
+    public void testGetGremlinGroovy() {
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Person coCreator : marko.getCoCreators()) {
@@ -286,5 +286,5 @@ public class FramedVertexTest extends TestCase {
             assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
         }
         assertEquals(counter, 2);
-    }*/
+    }
 }

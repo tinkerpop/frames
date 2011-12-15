@@ -2,7 +2,6 @@ package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
@@ -11,6 +10,7 @@ import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.RelationAnnotationHandler;
+import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
 import com.tinkerpop.frames.util.FramingEdgeIterable;
 import com.tinkerpop.frames.util.FramingVertexIterable;
 
@@ -43,6 +43,7 @@ public class FramesManager {
         registerAnnotationHandler(new AdjacencyAnnotationHandler());
         registerAnnotationHandler(new DomainAnnotationHandler());
         registerAnnotationHandler(new RangeAnnotationHandler());
+        registerAnnotationHandler(new GremlinGroovyAnnotationHandler());
     }
 
     /**

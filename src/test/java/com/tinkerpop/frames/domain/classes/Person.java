@@ -3,6 +3,7 @@ package com.tinkerpop.frames.domain.classes;
 import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.Relation;
+import com.tinkerpop.frames.annotations.gremlin.GremlinGroovy;
 import com.tinkerpop.frames.domain.relations.Created;
 import com.tinkerpop.frames.domain.relations.Knows;
 
@@ -61,7 +62,7 @@ public interface Person extends NamedObject {
     @Relation(label = "latestProject")
     public void setLatestProject(final Project latestProject);
 
-    /*@GremlinInference(script = "_{x=it}.outE('created').inV.inE('created').outV{it!=x}")
-    public Collection<Person> getCoCreators();*/
+    @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}")
+    public Collection<Person> getCoCreators();
 
 }

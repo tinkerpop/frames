@@ -9,6 +9,18 @@ bc. <repository>
 
 ==<hr/>==
 
+h3. Version 0.7 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>frames</artifactId>
+  <version>0.7-SNAPSHOT</version>
+</dependency>
+```
+
+==<hr/>==
+
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-truss.png!
 
 h3. Version 0.6 (Truss -- December 7, 2011)

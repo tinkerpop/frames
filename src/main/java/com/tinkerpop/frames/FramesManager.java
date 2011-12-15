@@ -5,10 +5,19 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
+import com.tinkerpop.frames.annotations.AnnotationHandler;
+import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
+import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
+import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
+import com.tinkerpop.frames.annotations.RelationAnnotationHandler;
 import com.tinkerpop.frames.util.FramingEdgeIterable;
 import com.tinkerpop.frames.util.FramingVertexIterable;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The primary class for interpreting/framing elements of a graph in terms of particulate annotated interfaces.
@@ -18,7 +27,8 @@ import java.lang.reflect.Proxy;
 public class FramesManager {
 
     private final Graph graph;
-
+    private final Map<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>> annotationHandlers;
+    
     /**
      * Construct a FramesManager that will frame elements of the provided graph.
      *
@@ -26,6 +36,13 @@ public class FramesManager {
      */
     public FramesManager(final Graph graph) {
         this.graph = graph;
+        this.annotationHandlers = new HashMap<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>>();
+    
+        registerAnnotationHandler(new PropertyAnnotationHandler());
+        registerAnnotationHandler(new RelationAnnotationHandler());
+        registerAnnotationHandler(new AdjacencyAnnotationHandler());
+        registerAnnotationHandler(new DomainAnnotationHandler());
+        registerAnnotationHandler(new RangeAnnotationHandler());
     }
 
     /**
@@ -46,7 +63,7 @@ public class FramesManager {
      * @return a proxy object backed by the vertex and interpreted from the perspective of the annotate interface
      */
     public <T> T frame(final Vertex vertex, final Class<T> kind) {
-        return (T) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedVertex(this, vertex));
+        return (T) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedElement(this, vertex));
     }
 
     /**
@@ -59,7 +76,7 @@ public class FramesManager {
      * @return a proxy object backed by the edge and interpreted from the perspective of the annotate interface
      */
     public <T> T frame(final Edge edge, final Direction direction, final Class<T> kind) {
-        return (T) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedEdge(this, edge, direction));
+        return (T) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedElement(this, edge, direction));
     }
 
     /**
@@ -117,6 +134,32 @@ public class FramesManager {
         final Index<Edge> index = ((IndexableGraph) this.graph).getIndex(indexName, Edge.class);
         return new FramingEdgeIterable<T>(this, index.get(key, value), direction, kind);
     }
-
-
+    
+    /**
+     * The method used to register a new annotation handler
+     * for every new annotation a new annotation handler has to be registered in the manager
+     * 
+     * @param handler the annotation handler
+     */
+    public void registerAnnotationHandler(AnnotationHandler<? extends Annotation> handler){
+    	annotationHandlers.put(handler.getAnnotationType(), handler);
+    }
+    
+    /**
+     * 
+     * @param annotationType the type of annotation handled by the annotation handler
+     * @return the annotation handler associated with the specified type
+     */
+    public AnnotationHandler getAnnotationHandler(Class<? extends Annotation> annotationType) {
+    	return annotationHandlers.get(annotationType);
+    }
+    
+    /**
+     * 
+     * @param annotationType the type of annotation handled by the annotation handler
+     * @return a boolean indicating if the manager has registered an annotation handler for the specified type
+     */
+    public boolean hasAnnotationHandler(Class<? extends Annotation> annotationType) {
+    	return annotationHandlers.containsKey(annotationType);
+    }
 }

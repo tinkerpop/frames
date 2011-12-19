@@ -1,5 +1,11 @@
 package com.tinkerpop.frames.annotations;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
@@ -9,12 +15,6 @@ import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.Relation;
 import com.tinkerpop.frames.util.ClassUtils;
 import com.tinkerpop.frames.util.RelationCollection;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 public class RelationAnnotationHandler implements AnnotationHandler<Relation> {
 

@@ -1,10 +1,10 @@
 package com.tinkerpop.frames.util;
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
+
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 public class ClassUtils {
     private static final String SET = "set";

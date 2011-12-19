@@ -1,5 +1,8 @@
 package com.tinkerpop.frames.annotations;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.Adjacency;
@@ -8,9 +11,6 @@ import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.util.AdjacencyCollection;
 import com.tinkerpop.frames.util.ClassUtils;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> {
 

@@ -21,7 +21,10 @@ public class RelationIterator<T> implements Iterator<T> {
         this.collection = collection;
         if (this.collection.getDirection().equals(Direction.STANDARD)) {
             Pipe<Edge, Vertex> pipe = new InVertexPipe();
-            pipe.setStarts(this.collection.getSource().getOutEdges(collection.getLabel()));
+            String label = collection.getLabel();
+            Vertex source = this.collection.getSource();
+            Iterable<Edge> starts = source.getOutEdges(label);
+            pipe.setStarts(starts);
             this.itty = pipe.iterator();
         } else {
             Pipe<Edge, Vertex> pipe = new OutVertexPipe();

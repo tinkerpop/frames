@@ -70,10 +70,10 @@ public class FramedElementTest extends TestCase {
         FramesManager manager = new FramesManager(graph);
 
         Person marko = manager.frame(graph.getVertex(1), Person.class);
-        System.out.println(marko);
+        assertEquals("framed[v[1]]", marko.toString());
 
         Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
-        System.out.println(markoCreatedLop);
+        assertEquals("framed[e[9][1-created->3]]", markoCreatedLop.toString());
     }
 
     public void testEquality() {

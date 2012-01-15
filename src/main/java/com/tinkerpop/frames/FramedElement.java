@@ -37,6 +37,14 @@ public class FramedElement implements InvocationHandler {
     }
 
     public FramedElement(final FramesManager manager, final Element element, final Direction direction) {
+        if (null == manager) {
+            throw new IllegalArgumentException("null manager");
+        }
+
+        if (null == element) {
+            throw new IllegalArgumentException("null element");
+        }
+
         this.element = element;
         this.manager = manager;
         this.direction = direction;
@@ -94,7 +102,9 @@ public class FramedElement implements InvocationHandler {
     }
 
     private String proxyToString(final Object proxy) {
-        return "framed[" + ((FramedElement) Proxy.getInvocationHandler(proxy)).getElement().toString() + "]";
+        FramedElement f = (FramedElement) Proxy.getInvocationHandler(proxy);
+        Element el = f.getElement();
+        return "framed[" + el.toString() + "]";
     }
 
     public Element getElement() {

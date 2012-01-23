@@ -1,8 +1,11 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.AutomaticIndex;
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Index;
+import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
@@ -54,4 +57,31 @@ public class FramesManagerTest extends TestCase {
         }
         assertEquals(counter, 2);
     }
+
+    public void testCreateFrame() {
+        Graph graph = new TinkerGraph();
+        FramesManager manager = new FramesManager(graph);
+        Person person = manager.createFramedVertex(Person.class);
+        assertEquals(person.asVertex(), graph.getVertices().iterator().next());
+        int counter = 0;
+        for (Vertex v : graph.getVertices()) {
+            counter++;
+        }
+        assertEquals(counter, 1);
+        counter = 0;
+        for (Edge e : graph.getEdges()) {
+            counter++;
+        }
+        assertEquals(counter, 0);
+        Person person2 = manager.createFramedVertex("aPerson", Person.class);
+        assertEquals(person2.asVertex().getId(), "aPerson");
+        counter = 0;
+        for (Vertex v : graph.getVertices()) {
+            counter++;
+        }
+        assertEquals(counter, 2);
+
+
+    }
+
 }

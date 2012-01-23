@@ -1,7 +1,5 @@
 package com.tinkerpop.frames.annotations;
 
-import java.lang.reflect.Method;
-
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Vertex;
@@ -9,6 +7,8 @@ import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.util.ClassUtils;
+
+import java.lang.reflect.Method;
 
 public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
 

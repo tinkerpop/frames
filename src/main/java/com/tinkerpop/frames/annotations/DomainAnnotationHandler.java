@@ -1,12 +1,12 @@
 package com.tinkerpop.frames.annotations;
 
-import java.lang.reflect.Method;
-
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.Domain;
 import com.tinkerpop.frames.FramesManager;
+
+import java.lang.reflect.Method;
 
 public class DomainAnnotationHandler implements AnnotationHandler<Domain> {
 

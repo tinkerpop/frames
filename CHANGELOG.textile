@@ -22,6 +22,7 @@ h3. Version 0.7 (NOT OFFICIALLY RELEASED YET)
 * Added support for registering annotations
 * Added more @frame@-based methods to @FramesManager@
 * Added support for inference determined by a @GremlinGroovy@ annotation
+* Added helper method @FramesManager.createFramedVertex()@
 
 ==<hr/>==
 

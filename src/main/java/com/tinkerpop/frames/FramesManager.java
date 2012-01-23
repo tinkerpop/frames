@@ -2,7 +2,6 @@ package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
@@ -91,6 +90,29 @@ public class FramesManager {
      */
     public <T> T frameVertex(final Object id, final Class<T> kind) {
         return this.frame(this.graph.getVertex(id), kind);
+    }
+
+    /**
+     * Create a vertex in the underlying graph and frame it according to provided annotated interface.
+     *
+     * @param kind the annotated interface to frame the created vertex as
+     * @param <T>  the type of the annotated interface
+     * @return a proxy object backed by the vertex and interpreted from the perspective of the annotate interface
+     */
+    public <T> T createFramedVertex(final Class<T> kind) {
+        return this.frame(graph.addVertex(null), kind);
+    }
+
+    /**
+     * Create a vertex (with provided id) in the underlying graph and frame it according to provided annotated interface.
+     *
+     * @param id   the id to use when creating the underlying vertex
+     * @param kind the annotated interface to frame the created vertex as
+     * @param <T>  the type of the annotated interface
+     * @return a proxy object backed by the vertex and interpreted from the perspective of the annotate interface
+     */
+    public <T> T createFramedVertex(final Object id, final Class<T> kind) {
+        return this.frame(graph.addVertex(id), kind);
     }
 
     /**

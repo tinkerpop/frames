@@ -11,7 +11,7 @@ import com.tinkerpop.frames.util.FramingVertexIterable;
 import com.tinkerpop.frames.util.IterableCollection;
 import com.tinkerpop.gremlin.groovy.Gremlin;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.util.SingleIterator;
+import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
 import java.lang.reflect.Method;
 

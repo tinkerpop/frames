@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.tinkerpop</groupId>
     <artifactId>frames</artifactId>
-    <version>0.7-SNAPSHOT</version>
+    <version>0.7</version>
     <packaging>jar</packaging>
     <url>http://frames.tinkerpop.com</url>
     <name>Frames: An Object to Graph Framework</name>
@@ -49,12 +49,12 @@
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-core</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.gremlin</groupId>
             <artifactId>gremlin-groovy</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>1.5</version>
         </dependency>
         <!-- TEST -->
         <dependency>
@@ -66,7 +66,7 @@
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-sail-graph</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

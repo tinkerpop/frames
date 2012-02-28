@@ -1,0 +1,47 @@
+[[http://duke.kenai.com/models/Duke3DprogressionSmall.jpg|height=125px]]
+
+In Frames, a schema is defined by a collection of Java interfaces. The rules that bind the Java interfaces to the underlying graph representation are defined by the following:
+
+* Method name prefixes: get, set, add, remove
+* Annotations: method metadata.
+
+Below specifies that annotations that can be used when defining a Frames interface. By specifying the method argument and return types, the underlying graph is constrained to the interface specification.
+
+|_. annotation |_. method prefix |_. arguments |_. description |_. example |
+| @@Property@ | @get@ | @value@ |get the property value of an element | @@Property("name")@ |
+| @@Property@ | @set@ | @value@ | set the property value of an element | @@Property("name")@ |
+| @@Property@ | @remove@ | @value@ | remove the property of an element | @@Property("name")@ |
+| @@Relation@ | @get@ | @label@, @direction@ | get the vertex or vertices @X@ related to the vertex | @@Relation(label="X", direction=Direction.STANDARD)@ |
+| @@Relation@ | @set@ | @label@, @direction@ | set the vertex or vertices @X@ related to the vertex | @@Relation(label="X", direction=Direction.STANDARD)@ |
+| @@Relation@ | @add@ | @label@, @direction@ | add a vertex @X@ related to the vertex | @@Relation(label="X", direction=Direction.STANDARD)@ |
+| @@Relation@ | @remove@ | @label@, @direction@ | remove a vertex @X@ related to the vertex | @@Relation(label="X", direction=Direction.STANDARD)@ |
+| @@Adjacency@ | @get@ | @label@, @direction@ | get the edges @X@ related to the vertex | @@Adjacency(label="X", direction=Direction.STANDARD)@ |
+| @@Adjacency@ | @add@ | @label@, @direction@ | add an edge @X@ related to the vertex | @@Adjacency(label="X", direction=Direction.STANDARD)@ |
+| @@Adjacency@ | @remove@ | @label@, @direction@ | remove an edge @X@ related to the vertex | @@Adjacency(label="X", direction=Direction.STANDARD)@ |
+| @@Domain@ | @get@ | none | get the domain of the relation (i.e the source) | @@Domain@ |
+| @@Range@ | @get@ | none | get the range of the relation (i.e. the target) | @@Range@ |
+
+Note that "get" and "set" methods for @@Relations@ can be either single-valued or collection-valued.  For example:
+
+```java
+public interface Person {
+    @Relation(label = "spouse")
+    Person getSpouse();
+    
+    @Relation(label = "spouse")
+    void setSpouse(Person spouse);
+    
+    @Relation(label = "child")
+    Collection<Person> getChildren();
+    
+    @Relation(label = "child")
+    void setChildren(Collection<Person> children);
+}
+```
+
+The above interface uses both styles of getter and setter: a collection-valued style which allows you to set multiple values simultaneously, and gives you back all values at once, and a "functional" style which requires you to specify exactly one value (which can be null), and gives you back at most one value.  Each style has its advantages, depending on your application.
+
+h2. Using Gremlin in a Frame
+
+|_. annotation |_. method prefix |_. arguments |_. description |_. example |
+| @@GremlinGroovy@ | @get@ | @value@ | get the objects at then end of the expression | @@GremlinGroovy("out('knows')")@ |

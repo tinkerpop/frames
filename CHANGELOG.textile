@@ -3,6 +3,19 @@ Frames: An Object to Graph Framework
 
 ==<hr/>==
 
+h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>frames</artifactId>
+  <version>0.8-SNAPSHOT</version>
+</dependency>
+```
+
+
+==<hr/>==
+
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-bracket.png!
 
 h3. Version 0.7 (Bracket -- February 28, 2012)

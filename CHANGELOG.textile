@@ -13,6 +13,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Removed @IndexableGraph@ helper methods in @FramesManager@
 
 ==<hr/>==
 

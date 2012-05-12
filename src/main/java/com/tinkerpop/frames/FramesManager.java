@@ -131,35 +131,6 @@ public class FramesManager {
     /**
      * Frame vertices pulled from an index according to a particular kind of annotated interface.
      *
-     * @param indexName the name of the index to pull the vertices from
-     * @param key       the key that the vertices are indexed by
-     * @param value     the value that the vertices are indexed by
-     * @param kind      the annotated interface to frame the vertices as
-     * @param <T>       the type of the annotated interface
-     * @return an iterable of proxy objects backed by the vertices and interpreted from the perspective of the annotate interface
-     */
-    public <T> Iterable<T> frameVertices(final String indexName, final String key, final Object value, final Class<T> kind) {
-        return this.frameVertices(((IndexableGraph) this.graph).getIndex(indexName, Vertex.class).get(key, value), kind);
-    }
-
-    /**
-     * Frame edges pulled from an index according to a particular kind of annotated interface.
-     *
-     * @param indexName the name of the index to pull edges from
-     * @param key       the key that the vertices are indexed by
-     * @param value     the value that the vertices are indexed by
-     * @param direction the direction of the edges
-     * @param kind      the annotated interface to frame the edges as
-     * @param <T>       the type of the annotated interface
-     * @return an iterable of proxy objects backed by the edges and interpreted from the perspective of the annotate interface
-     */
-    public <T> Iterable<T> frameEdges(final String indexName, final String key, final Object value, final Direction direction, final Class<T> kind) {
-        return this.frameEdges(((IndexableGraph) this.graph).getIndex(indexName, Edge.class).get(key, value), direction, kind);
-    }
-
-    /**
-     * Frame vertices pulled from an index according to a particular kind of annotated interface.
-     *
      * @param vertices an iterable of vertices to frame as T
      * @param kind     the annotated interface to frame the vertices as
      * @param <T>      the type of the annotated interface

@@ -1,8 +1,8 @@
 package com.tinkerpop.frames.annotations.gremlin;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Element;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.annotations.AnnotationHandler;

@@ -1,8 +1,8 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Element;
+import com.tinkerpop.blueprints.Vertex;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;

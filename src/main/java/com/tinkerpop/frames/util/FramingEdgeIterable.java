@@ -1,6 +1,6 @@
 package com.tinkerpop.frames.util;
 
-import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
 

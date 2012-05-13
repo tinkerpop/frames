@@ -1,8 +1,8 @@
 package com.tinkerpop.frames.annotations;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramesManager;

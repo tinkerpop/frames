@@ -1,6 +1,6 @@
 package com.tinkerpop.frames.util;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.FramesManager;
 
 import java.util.Iterator;

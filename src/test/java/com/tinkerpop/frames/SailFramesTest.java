@@ -1,7 +1,7 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.impls.sail.SailGraph;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,6 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
@@ -246,7 +247,7 @@ public class FramedVertexTest extends TestCase {
 
         marko.removeKnowsPerson(vadas);
         int counter = 0;
-        for (Edge edge : graph.getVertex(1).getOutEdges("knows")) {
+        for (Edge edge : graph.getVertex(1).getEdges(Direction.OUT, "knows")) {
             if (edge.getLabel().equals("knows")) {
                 counter++;
                 assertEquals(edge.getInVertex().getProperty("name"), "josh");
@@ -262,7 +263,7 @@ public class FramedVertexTest extends TestCase {
 
         lop.removeCreatedByPerson(marko);
         counter = 0;
-        for (Edge edge : graph.getVertex(3).getInEdges("created")) {
+        for (Edge edge : graph.getVertex(3).getEdges(Direction.IN, "created")) {
             if (edge.getLabel().equals("created")) {
                 counter++;
                 assertTrue(edge.getOutVertex().getProperty("name").equals("josh") || edge.getOutVertex().getProperty("name").equals("peter"));

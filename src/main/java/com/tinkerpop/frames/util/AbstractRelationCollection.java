@@ -1,8 +1,8 @@
 package com.tinkerpop.frames.util;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
 
 import java.util.AbstractCollection;
@@ -29,10 +29,10 @@ public abstract class AbstractRelationCollection<T> extends AbstractCollection<T
     public int size() {
         int counter = 0;
         final Iterable<Edge> iterable;
-        if (direction.equals(Direction.STANDARD))
-            iterable = this.source.getOutEdges(this.label);
+        if (direction.equals(Direction.OUT))
+            iterable = this.source.getEdges(Direction.OUT, this.label);
         else
-            iterable = this.source.getInEdges(this.label);
+            iterable = this.source.getEdges(Direction.IN, this.label);
 
         for (final Edge edge : iterable) {
             counter++;

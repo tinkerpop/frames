@@ -1,5 +1,7 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Direction;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,5 +28,5 @@ public @interface Adjacency {
      *
      * @return the edge direction
      */
-    public Direction direction() default Direction.STANDARD;
+    public Direction direction() default Direction.OUT;
 }

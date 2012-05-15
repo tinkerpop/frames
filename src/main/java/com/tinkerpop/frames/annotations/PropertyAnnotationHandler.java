@@ -1,9 +1,9 @@
 package com.tinkerpop.frames.annotations;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.util.ClassUtils;

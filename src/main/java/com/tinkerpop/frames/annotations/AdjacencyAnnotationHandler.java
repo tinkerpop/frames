@@ -1,9 +1,9 @@
 package com.tinkerpop.frames.annotations;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.Adjacency;
-import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.util.AdjacencyCollection;
@@ -24,10 +24,10 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
         if (ClassUtils.isGetMethod(method)) {
             return new AdjacencyCollection(manager, element, adjacency.label(), adjacency.direction(), ClassUtils.getGenericClass(method));
         } else if (ClassUtils.isAddMethod(method)) {
-            if (adjacency.direction().equals(Direction.STANDARD))
-                return manager.frame(manager.getGraph().addEdge(null, element, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), adjacency.label()), Direction.STANDARD, method.getReturnType());
+            if (adjacency.direction().equals(Direction.OUT))
+                return manager.frame(manager.getGraph().addEdge(null, element, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), adjacency.label()), Direction.OUT, method.getReturnType());
             else
-                return manager.frame(manager.getGraph().addEdge(null, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), element, adjacency.label()), Direction.INVERSE, method.getReturnType());
+                return manager.frame(manager.getGraph().addEdge(null, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), element, adjacency.label()), Direction.IN, method.getReturnType());
         } else if (ClassUtils.isRemoveMethod(method)) {
             manager.getGraph().removeEdge((Edge) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement());
             return null;

@@ -1,7 +1,7 @@
 package com.tinkerpop.frames.util;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
 
 import java.util.Iterator;

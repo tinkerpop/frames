@@ -1,5 +1,6 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
@@ -25,10 +26,10 @@ public class FramedElementTest extends TestCase {
         assertEquals(lop.getName(), "lop");
         assertEquals(lop.getLanguage(), "java");
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.OUT, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
 
-        CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), Direction.INVERSE, CreatedBy.class);
+        CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), Direction.IN, CreatedBy.class);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
 
         Person temp = manager.frame(graph.addVertex(null), Person.class);
@@ -49,7 +50,7 @@ public class FramedElementTest extends TestCase {
         marko.setAge(31);
         assertEquals(marko.getAge(), new Integer(31));
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.OUT, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
         markoCreatedLop.setWeight(99.0f);
         assertEquals(markoCreatedLop.getWeight(), 99.0f);
@@ -72,7 +73,7 @@ public class FramedElementTest extends TestCase {
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         assertEquals("framed[v[1]]", marko.toString());
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.STANDARD, Created.class);
+        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.OUT, Created.class);
         assertEquals("framed[e[9][1-created->3]]", markoCreatedLop.toString());
     }
 

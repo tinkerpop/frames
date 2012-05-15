@@ -1,8 +1,8 @@
 package com.tinkerpop.frames.annotations;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.Range;
 
@@ -22,7 +22,7 @@ public class RangeAnnotationHandler implements AnnotationHandler<Range> {
 
     @Override
     public Object processEdge(Range annotation, Method method, Object[] arguments, FramesManager manager, Edge element, Direction direction) {
-        if (direction.equals(Direction.STANDARD)) {
+        if (direction.equals(Direction.OUT)) {
             return manager.frame(((Edge) element).getInVertex(), method.getReturnType());
         } else {
             return manager.frame(((Edge) element).getOutVertex(), method.getReturnType());

@@ -1,8 +1,8 @@
 package com.tinkerpop.frames.util;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.Direction;
 import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.pipes.Pipe;
@@ -19,16 +19,16 @@ public class RelationIterator<T> implements Iterator<T> {
 
     public RelationIterator(final RelationCollection collection) {
         this.collection = collection;
-        if (this.collection.getDirection().equals(Direction.STANDARD)) {
+        if (this.collection.getDirection().equals(Direction.OUT)) {
             Pipe<Edge, Vertex> pipe = new InVertexPipe();
             String label = collection.getLabel();
             Vertex source = this.collection.getSource();
-            Iterable<Edge> starts = source.getOutEdges(label);
+            Iterable<Edge> starts = source.getEdges(Direction.OUT, label);
             pipe.setStarts(starts);
             this.itty = pipe.iterator();
         } else {
             Pipe<Edge, Vertex> pipe = new OutVertexPipe();
-            pipe.setStarts(this.collection.getSource().getInEdges(collection.getLabel()));
+            pipe.setStarts(this.collection.getSource().getEdges(Direction.IN, collection.getLabel()));
             this.itty = pipe.iterator();
         }
     }

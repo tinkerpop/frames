@@ -1,9 +1,9 @@
 package com.tinkerpop.frames.annotations;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.Direction;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.Relation;
@@ -12,8 +12,8 @@ import com.tinkerpop.frames.util.RelationCollection;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 public class RelationAnnotationHandler implements AnnotationHandler<Relation> {
@@ -33,7 +33,7 @@ public class RelationAnnotationHandler implements AnnotationHandler<Relation> {
                 return r.iterator().hasNext() ? r.iterator().next() : null;
             }
         } else if (ClassUtils.isAddMethod(method)) {
-            if (relation.direction().equals(Direction.STANDARD))
+            if (relation.direction().equals(Direction.OUT))
                 manager.getGraph().addEdge(null, element, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), relation.label());
             else
                 manager.getGraph().addEdge(null, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), (Vertex) element, relation.label());
@@ -46,7 +46,7 @@ public class RelationAnnotationHandler implements AnnotationHandler<Relation> {
             if (ClassUtils.acceptsCollection(method)) {
                 for (Object o : (Collection) arguments[0]) {
                     Vertex v = (Vertex) ((FramedElement) Proxy.getInvocationHandler(o)).getElement();
-                    if (relation.direction().equals(Direction.STANDARD)) {
+                    if (relation.direction().equals(Direction.OUT)) {
                         manager.getGraph().addEdge(null, (Vertex) element, v, relation.label());
                     } else {
                         manager.getGraph().addEdge(null, v, (Vertex) element, relation.label());
@@ -55,7 +55,7 @@ public class RelationAnnotationHandler implements AnnotationHandler<Relation> {
                 return null;
             } else {
                 if (null != arguments[0]) {
-                    if (relation.direction().equals(Direction.STANDARD)) {
+                    if (relation.direction().equals(Direction.OUT)) {
                         manager.getGraph().addEdge(null, (Vertex) element, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), relation.label());
                     } else {
                         manager.getGraph().addEdge(null, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), (Vertex) element, relation.label());
@@ -75,15 +75,15 @@ public class RelationAnnotationHandler implements AnnotationHandler<Relation> {
 
     private void removeEdges(final Direction direction, final String label, final Vertex element, final Vertex otherVertex, final FramesManager manager) {
         final Graph graph = manager.getGraph();
-        List<Edge> toRemove = new LinkedList<Edge>();
-        if (direction.equals(Direction.STANDARD)) {
-            for (final Edge edge : element.getOutEdges(label)) {
+        List<Edge> toRemove = new ArrayList<Edge>();
+        if (direction.equals(Direction.OUT)) {
+            for (final Edge edge : element.getEdges(Direction.OUT, label)) {
                 if (null == otherVertex || edge.getInVertex().equals(otherVertex)) {
                     toRemove.add(edge);
                 }
             }
         } else {
-            for (final Edge edge : element.getInEdges(label)) {
+            for (final Edge edge : element.getEdges(Direction.IN, label)) {
                 if (null == otherVertex || edge.getOutVertex().equals(otherVertex)) {
                     toRemove.add(edge);
                 }

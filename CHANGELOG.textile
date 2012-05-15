@@ -14,6 +14,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 ```
 
 * Removed @IndexableGraph@ helper methods in @FramesManager@
+* Removed @Direction@ as now Blueprints @Direction@ enum is used
 
 ==<hr/>==
 

@@ -1,5 +1,6 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -20,7 +21,7 @@ public class FramesManagerTest extends TestCase {
         FramesManager manager = new FramesManager(graph);
 
         assertEquals(manager.frame(graph.getVertex(1), Person.class), manager.frameVertex(1, Person.class));
-        assertEquals(manager.frame(graph.getEdge(7), Direction.STANDARD, Knows.class), manager.frameEdge(7, Direction.STANDARD, Knows.class));
+        assertEquals(manager.frame(graph.getEdge(7), Direction.OUT, Knows.class), manager.frameEdge(7, Direction.OUT, Knows.class));
     }
 
     public void testFrameVertices() {

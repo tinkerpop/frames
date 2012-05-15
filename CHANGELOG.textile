@@ -3,13 +3,17 @@ Frames: An Object to Graph Framework
 
 ==<hr/>==
 
-h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
+
+
+h2. Frames 2.y.z
+
+h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>frames</artifactId>
-  <version>0.8-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -19,7 +23,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 * Renamed @Adjacency@ to @Incident@ for vertex-edge connections
 * Renamed @Relation@ to @Adjacency@ for vertex-vertex connections
 
-==<hr/>==
+h2. Frames 0.x
 
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-bracket.png!
 

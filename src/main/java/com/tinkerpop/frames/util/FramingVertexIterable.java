@@ -20,6 +20,20 @@ public class FramingVertexIterable<T> implements Iterable<T> {
     }
 
     public Iterator<T> iterator() {
-        return new FramingVertexIterator<T>(this, this.iterable.iterator());
+        return new Iterator<T>() {
+            private Iterator<Vertex> iterator = iterable.iterator();
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+
+            public boolean hasNext() {
+                return this.iterator.hasNext();
+            }
+
+            public T next() {
+                return manager.frame(this.iterator.next(), kind);
+            }
+        };
     }
 }

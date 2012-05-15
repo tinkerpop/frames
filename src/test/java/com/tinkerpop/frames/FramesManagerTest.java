@@ -8,7 +8,7 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
-import com.tinkerpop.frames.domain.relations.Knows;
+import com.tinkerpop.frames.domain.incidences.Knows;
 import junit.framework.TestCase;
 
 /**
@@ -43,19 +43,6 @@ public class FramesManagerTest extends TestCase {
         assertEquals(counter, 2);
 
     }
-
-    /*public void testFrameEdges() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
-
-        int counter = 0;
-        for (Knows knows : manager.frameEdges(Index.EDGES, AutomaticIndex.LABEL, "knows", Direction.STANDARD, Knows.class)) {
-            counter++;
-            assertEquals(knows.getDomain().getName(), "marko");
-            assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas"));
-        }
-        assertEquals(counter, 2);
-    }*/
 
     public void testCreateFrame() {
         Graph graph = new TinkerGraph();

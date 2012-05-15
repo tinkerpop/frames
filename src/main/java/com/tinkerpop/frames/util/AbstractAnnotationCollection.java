@@ -10,7 +10,7 @@ import java.util.AbstractCollection;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public abstract class AbstractRelationCollection<T> extends AbstractCollection<T> {
+public abstract class AbstractAnnotationCollection<T> extends AbstractCollection<T> {
 
     protected final FramesManager manager;
     protected final Vertex source;
@@ -18,7 +18,7 @@ public abstract class AbstractRelationCollection<T> extends AbstractCollection<T
     protected final Direction direction;
     protected final Class<T> kind;
 
-    public AbstractRelationCollection(final FramesManager manager, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
+    public AbstractAnnotationCollection(final FramesManager manager, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
         this.manager = manager;
         this.source = source;
         this.label = label;
@@ -28,13 +28,7 @@ public abstract class AbstractRelationCollection<T> extends AbstractCollection<T
 
     public int size() {
         int counter = 0;
-        final Iterable<Edge> iterable;
-        if (direction.equals(Direction.OUT))
-            iterable = this.source.getEdges(Direction.OUT, this.label);
-        else
-            iterable = this.source.getEdges(Direction.IN, this.label);
-
-        for (final Edge edge : iterable) {
+        for (final Edge edge : this.source.getEdges(this.direction, this.label)) {
             counter++;
         }
         return counter;

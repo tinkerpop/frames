@@ -1,11 +1,11 @@
 package com.tinkerpop.frames.domain.classes;
 
 import com.tinkerpop.frames.Adjacency;
+import com.tinkerpop.frames.Incident;
 import com.tinkerpop.frames.Property;
-import com.tinkerpop.frames.Relation;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovy;
-import com.tinkerpop.frames.domain.relations.Created;
-import com.tinkerpop.frames.domain.relations.Knows;
+import com.tinkerpop.frames.domain.incidences.Created;
+import com.tinkerpop.frames.domain.incidences.Knows;
 
 import java.util.Collection;
 
@@ -23,43 +23,43 @@ public interface Person extends NamedObject {
     @Property("age")
     public void removeAge();
 
-    @Adjacency(label = "knows")
+    @Incident(label = "knows")
     public Collection<Knows> getKnows();
 
-    @Relation(label = "knows")
+    @Adjacency(label = "knows")
     public Collection<Person> getKnowsPeople();
 
-    @Relation(label = "knows")
+    @Adjacency(label = "knows")
     public void setKnowsPeople(final Collection<Person> knows);
 
-    @Adjacency(label = "created")
+    @Incident(label = "created")
     public Collection<Created> getCreated();
 
-    @Relation(label = "created")
+    @Adjacency(label = "created")
     public Collection<Project> getCreatedProjects();
 
-    @Relation(label = "knows")
+    @Adjacency(label = "knows")
     public void addKnowsPerson(final Person person);
 
-    @Adjacency(label = "knows")
+    @Incident(label = "knows")
     public Knows addKnows(final Person person);
 
-    @Relation(label = "created")
+    @Adjacency(label = "created")
     public void addCreatedProject(final Project project);
 
-    @Adjacency(label = "created")
+    @Incident(label = "created")
     public Created addCreated(final Project project);
 
-    @Relation(label = "knows")
+    @Adjacency(label = "knows")
     public void removeKnowsPerson(final Person person);
 
-    @Adjacency(label = "knows")
+    @Incident(label = "knows")
     public void removeKnows(final Knows knows);
 
-    @Relation(label = "latestProject")
+    @Adjacency(label = "latestProject")
     public Project getLatestProject();
 
-    @Relation(label = "latestProject")
+    @Adjacency(label = "latestProject")
     public void setLatestProject(final Project latestProject);
 
     @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}")

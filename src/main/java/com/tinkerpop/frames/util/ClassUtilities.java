@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-public class ClassUtils {
+public class ClassUtilities {
     private static final String SET = "set";
     private static final String GET = "get";
     private static final String REMOVE = "remove";
@@ -25,8 +25,7 @@ public class ClassUtils {
     }
 
     public static boolean acceptsCollection(final Method method) {
-        return 1 == method.getParameterTypes().length
-                && Collection.class.isAssignableFrom(method.getParameterTypes()[0]);
+        return 1 == method.getParameterTypes().length && Collection.class.isAssignableFrom(method.getParameterTypes()[0]);
     }
 
     public static boolean returnsCollection(final Method method) {

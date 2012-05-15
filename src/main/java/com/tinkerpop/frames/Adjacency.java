@@ -8,25 +8,25 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Adjacency annotate getters and adders to represent a Vertex adjacent to an Edge.
+ * Adjacencies annotate getters and adders to represent a Vertex adjacent to a Vertex.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Adjacency {
-
     /**
-     * The labels of the edges that are adjacent to the vertex.
+     * The label of the edges making the adjacency between the vertices.
      *
      * @return the edge label
      */
     public String label();
 
     /**
-     * The direction of the edges (incoming/inverse or outgoing/standard).
+     * The edge direction of the adjacency.
      *
-     * @return the edge direction
+     * @return the direction of the edges composing the adjacency
      */
+
     public Direction direction() default Direction.OUT;
 }

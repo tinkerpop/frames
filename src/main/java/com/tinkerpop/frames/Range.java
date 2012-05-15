@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The target of the relation.
+ * The target of the adjacency.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

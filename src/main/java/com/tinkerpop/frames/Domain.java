@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The source of the relation.
+ * The source of the adjacency.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

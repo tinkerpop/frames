@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.FramesManager;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
-import com.tinkerpop.frames.util.ClassUtils;
+import com.tinkerpop.frames.util.ClassUtilities;
 import com.tinkerpop.frames.util.FramingVertexIterable;
 import com.tinkerpop.frames.util.IterableCollection;
 import com.tinkerpop.gremlin.groovy.Gremlin;
@@ -26,26 +26,25 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
     }
 
     @Override
-    public Object processVertex(GremlinGroovy annotation, Method method, Object[] arguments, FramesManager manager, Vertex element) {
-        return process(annotation, method, arguments, manager, element);
+    public Object processVertex(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramesManager manager, final Vertex vertex) {
+        return process(annotation, method, arguments, manager, vertex);
     }
 
     @Override
-    public Object processEdge(GremlinGroovy annotation, Method method, Object[] arguments, FramesManager manager, Edge element, Direction direction) {
-        return process(annotation, method, arguments, manager, element);
+    public Object processEdge(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramesManager manager, final Edge edge, final Direction direction) {
+        return process(annotation, method, arguments, manager, edge);
     }
 
-    private Object process(GremlinGroovy annotation, Method method, Object[] arguments, FramesManager manager, Element element) {
-        Pipe pipe = Gremlin.compile(annotation.value());
-        if (ClassUtils.isGetMethod(method)) {
-            pipe.setStarts(new SingleIterator<Element>(element));
+    private Object process(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramesManager manager, final Element element) {
+        if (ClassUtilities.isGetMethod(method)) {
             if (element instanceof Vertex) {
-                return new IterableCollection(new FramingVertexIterable(manager, pipe, ClassUtils.getGenericClass(method)));
+                final Pipe pipe = Gremlin.compile(annotation.value());
+                pipe.setStarts(new SingleIterator<Element>(element));
+                return new IterableCollection(new FramingVertexIterable(manager, pipe, ClassUtilities.getGenericClass(method)));
             } else {
                 throw new UnsupportedOperationException("This method only works for vertices");
             }
         }
-
         return null;
     }
 }

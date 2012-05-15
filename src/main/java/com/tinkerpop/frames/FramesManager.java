@@ -4,12 +4,12 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
+import com.tinkerpop.frames.annotations.IncidentAnnotationHandler;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
-import com.tinkerpop.frames.annotations.RelationAnnotationHandler;
+import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
 import com.tinkerpop.frames.util.FramingEdgeIterable;
 import com.tinkerpop.frames.util.FramingVertexIterable;
@@ -39,8 +39,8 @@ public class FramesManager {
         this.annotationHandlers = new HashMap<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>>();
 
         registerAnnotationHandler(new PropertyAnnotationHandler());
-        registerAnnotationHandler(new RelationAnnotationHandler());
         registerAnnotationHandler(new AdjacencyAnnotationHandler());
+        registerAnnotationHandler(new IncidentAnnotationHandler());
         registerAnnotationHandler(new DomainAnnotationHandler());
         registerAnnotationHandler(new RangeAnnotationHandler());
         registerAnnotationHandler(new GremlinGroovyAnnotationHandler());

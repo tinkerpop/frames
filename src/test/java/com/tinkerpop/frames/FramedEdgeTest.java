@@ -5,8 +5,8 @@ import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
-import com.tinkerpop.frames.domain.relations.CreatedBy;
-import com.tinkerpop.frames.domain.relations.Knows;
+import com.tinkerpop.frames.domain.incidences.CreatedBy;
+import com.tinkerpop.frames.domain.incidences.Knows;
 import junit.framework.TestCase;
 
 /**

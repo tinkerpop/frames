@@ -18,8 +18,8 @@ Below specifies that annotations that can be used when defining a Frames interfa
 | @@Adjacency@ | @get@ | @label@, @direction@ | get the edges @X@ related to the vertex | @@Adjacency(label="X", direction=Direction.STANDARD)@ |
 | @@Adjacency@ | @add@ | @label@, @direction@ | add an edge @X@ related to the vertex | @@Adjacency(label="X", direction=Direction.STANDARD)@ |
 | @@Adjacency@ | @remove@ | @label@, @direction@ | remove an edge @X@ related to the vertex | @@Adjacency(label="X", direction=Direction.STANDARD)@ |
-| @@Domain@ | @get@ | none | get the domain of the relation (i.e the source) | @@Domain@ |
-| @@Range@ | @get@ | none | get the range of the relation (i.e. the target) | @@Range@ |
+| @@Domain@ | @get@ | none | get the domain of the adjacency (i.e the source) | @@Domain@ |
+| @@Range@ | @get@ | none | get the range of the adjacency (i.e. the target) | @@Range@ |
 
 Note that "get" and "set" methods for @@Relations@ can be either single-valued or collection-valued.  For example:
 

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Use a Gremlin Groovy script to determine a vertex-to-vertex relation.
+ * Use a Gremlin Groovy script to determine a vertex-to-vertex adjacency.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

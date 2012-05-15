@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Property annotations are for getter and setters to manipulate the property value of a Vertex.
+ * Property annotations are for getter and setters to manipulate the property value of an Element.
  * The key of the property map of the vertex.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)

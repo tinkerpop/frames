@@ -16,16 +16,16 @@ public class RangeAnnotationHandler implements AnnotationHandler<Range> {
     }
 
     @Override
-    public Object processVertex(Range annotation, Method method, Object[] arguments, FramesManager manager, Vertex element) {
+    public Object processVertex(final Range annotation, final Method method, final Object[] arguments, final FramesManager manager, final Vertex vertex) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object processEdge(Range annotation, Method method, Object[] arguments, FramesManager manager, Edge element, Direction direction) {
+    public Object processEdge(final Range annotation, final Method method, final Object[] arguments, final FramesManager manager, final Edge edge, final Direction direction) {
         if (direction.equals(Direction.OUT)) {
-            return manager.frame(((Edge) element).getInVertex(), method.getReturnType());
+            return manager.frame(edge.getInVertex(), method.getReturnType());
         } else {
-            return manager.frame(((Edge) element).getOutVertex(), method.getReturnType());
+            return manager.frame(edge.getOutVertex(), method.getReturnType());
         }
     }
 

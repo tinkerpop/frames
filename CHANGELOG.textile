@@ -15,6 +15,9 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 
 * Removed @IndexableGraph@ helper methods in @FramesManager@
 * Removed @Direction@ as now Blueprints @Direction@ enum is used
+* Compressed the number of classes with anonymous inner classes for @Iterators@
+* Renamed @Adjacency@ to @Incident@ for vertex-edge connections
+* Renamed @Relation@ to @Adjacency@ for vertex-vertex connections
 
 ==<hr/>==
 

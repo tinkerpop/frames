@@ -90,10 +90,10 @@ public class SailFramesTest {
     }
 
     private interface Concept extends RDFFrame {
-        @Relation(label = "http://www.w3.org/2004/02/skos/core#narrower")
+        @Adjacency(label = "http://www.w3.org/2004/02/skos/core#narrower")
         public Collection<Concept> getNarrower();
 
-        @Relation(label = "http://www.w3.org/2000/01/rdf-schema#label")
+        @Adjacency(label = "http://www.w3.org/2000/01/rdf-schema#label")
         public RDFFrame getLabel();
     }
 }

@@ -16,16 +16,16 @@ public class DomainAnnotationHandler implements AnnotationHandler<Domain> {
     }
 
     @Override
-    public Object processVertex(Domain annotation, Method method, Object[] arguments, FramesManager manager, Vertex element) {
+    public Object processVertex(Domain annotation, Method method, Object[] arguments, FramesManager manager, Vertex vertex) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object processEdge(Domain annotation, Method method, Object[] arguments, FramesManager manager, Edge element, Direction direction) {
+    public Object processEdge(Domain annotation, Method method, Object[] arguments, FramesManager manager, Edge edge, Direction direction) {
         if (direction.equals(Direction.OUT)) {
-            return manager.frame(((Edge) element).getOutVertex(), method.getReturnType());
+            return manager.frame(edge.getOutVertex(), method.getReturnType());
         } else {
-            return manager.frame(((Edge) element).getInVertex(), method.getReturnType());
+            return manager.frame(edge.getInVertex(), method.getReturnType());
         }
     }
 

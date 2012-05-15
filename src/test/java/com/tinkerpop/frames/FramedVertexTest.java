@@ -250,7 +250,7 @@ public class FramedVertexTest extends TestCase {
         for (Edge edge : graph.getVertex(1).getEdges(Direction.OUT, "knows")) {
             if (edge.getLabel().equals("knows")) {
                 counter++;
-                assertEquals(edge.getInVertex().getProperty("name"), "josh");
+                assertEquals(edge.getVertex(Direction.IN).getProperty("name"), "josh");
             }
         }
         assertEquals(counter, 1);
@@ -266,7 +266,7 @@ public class FramedVertexTest extends TestCase {
         for (Edge edge : graph.getVertex(3).getEdges(Direction.IN, "created")) {
             if (edge.getLabel().equals("created")) {
                 counter++;
-                assertTrue(edge.getOutVertex().getProperty("name").equals("josh") || edge.getOutVertex().getProperty("name").equals("peter"));
+                assertTrue(edge.getVertex(Direction.OUT).getProperty("name").equals("josh") || edge.getVertex(Direction.OUT).getProperty("name").equals("peter"));
             }
         }
         assertEquals(counter, 2);

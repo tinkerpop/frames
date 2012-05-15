@@ -33,24 +33,4 @@ public abstract class AbstractAnnotationCollection<T> extends AbstractCollection
         }
         return counter;
     }
-
-    protected Vertex getSource() {
-        return this.source;
-    }
-
-    protected String getLabel() {
-        return this.label;
-    }
-
-    protected Direction getDirection() {
-        return this.direction;
-    }
-
-    protected Class<T> getKind() {
-        return this.kind;
-    }
-
-    protected FramesManager getManager() {
-        return this.manager;
-    }
 }

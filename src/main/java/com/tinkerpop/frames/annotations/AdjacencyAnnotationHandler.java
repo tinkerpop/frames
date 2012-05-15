@@ -76,17 +76,9 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
     private void removeEdges(final Direction direction, final String label, final Vertex element, final Vertex otherVertex, final FramesManager manager) {
         final Graph graph = manager.getGraph();
         List<Edge> toRemove = new ArrayList<Edge>();
-        if (direction.equals(Direction.OUT)) {
-            for (final Edge edge : element.getEdges(Direction.OUT, label)) {
-                if (null == otherVertex || edge.getInVertex().equals(otherVertex)) {
-                    toRemove.add(edge);
-                }
-            }
-        } else {
-            for (final Edge edge : element.getEdges(Direction.IN, label)) {
-                if (null == otherVertex || edge.getOutVertex().equals(otherVertex)) {
-                    toRemove.add(edge);
-                }
+        for (final Edge edge : element.getEdges(direction, label)) {
+            if (null == otherVertex || edge.getVertex(direction.opposite()).equals(otherVertex)) {
+                toRemove.add(edge);
             }
         }
         for (final Edge edge : toRemove) {

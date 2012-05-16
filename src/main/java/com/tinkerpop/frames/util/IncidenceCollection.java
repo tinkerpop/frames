@@ -10,9 +10,9 @@ import java.util.Iterator;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IncidentCollection<T> extends AbstractAnnotationCollection<T> {
+public class IncidenceCollection<T> extends AbstractAnnotationCollection<T> {
 
-    public IncidentCollection(final FramesManager manager, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
+    public IncidenceCollection(final FramesManager manager, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
         super(manager, source, label, direction, kind);
     }
 

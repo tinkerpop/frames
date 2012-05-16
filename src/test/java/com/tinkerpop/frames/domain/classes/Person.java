@@ -1,7 +1,7 @@
 package com.tinkerpop.frames.domain.classes;
 
 import com.tinkerpop.frames.Adjacency;
-import com.tinkerpop.frames.Incident;
+import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovy;
 import com.tinkerpop.frames.domain.incidences.Created;
@@ -23,7 +23,7 @@ public interface Person extends NamedObject {
     @Property("age")
     public void removeAge();
 
-    @Incident(label = "knows")
+    @Incidence(label = "knows")
     public Collection<Knows> getKnows();
 
     @Adjacency(label = "knows")
@@ -32,7 +32,7 @@ public interface Person extends NamedObject {
     @Adjacency(label = "knows")
     public void setKnowsPeople(final Collection<Person> knows);
 
-    @Incident(label = "created")
+    @Incidence(label = "created")
     public Collection<Created> getCreated();
 
     @Adjacency(label = "created")
@@ -41,19 +41,19 @@ public interface Person extends NamedObject {
     @Adjacency(label = "knows")
     public void addKnowsPerson(final Person person);
 
-    @Incident(label = "knows")
+    @Incidence(label = "knows")
     public Knows addKnows(final Person person);
 
     @Adjacency(label = "created")
     public void addCreatedProject(final Project project);
 
-    @Incident(label = "created")
+    @Incidence(label = "created")
     public Created addCreated(final Project project);
 
     @Adjacency(label = "knows")
     public void removeKnowsPerson(final Person person);
 
-    @Incident(label = "knows")
+    @Incidence(label = "knows")
     public void removeKnows(final Knows knows);
 
     @Adjacency(label = "latestProject")

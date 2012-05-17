@@ -11,6 +11,7 @@ import com.tinkerpop.frames.domain.incidences.Knows;
 import com.tinkerpop.frames.domain.incidences.Created;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class FramedVertexTest extends TestCase {
 
         assertEquals(josh.getKnowsPeople().size(), 0);
 
-        Collection<Person> knows = new LinkedList<Person>();
+        Collection<Person> knows = new ArrayList<Person>();
         knows.add(peter);
         knows.add(marko);
         josh.setKnowsPeople(knows);
@@ -202,7 +203,7 @@ public class FramedVertexTest extends TestCase {
     public void testRemoveIncidences() {
         Person marko = manager.frame(graph.getVertex(1), Person.class);
         int counter = 0;
-        List<Knows> toRemove = new LinkedList<Knows>();
+        List<Knows> toRemove = new ArrayList<Knows>();
         for (Knows knows : marko.getKnows()) {
             counter++;
             if (knows.getRange().getName().equals("josh")) {
@@ -223,7 +224,7 @@ public class FramedVertexTest extends TestCase {
 
         Project lop = manager.frame(graph.getVertex(3), Project.class);
         counter = 0;
-        List<CreatedBy> toRemove2 = new LinkedList<CreatedBy>();
+        List<CreatedBy> toRemove2 = new ArrayList<CreatedBy>();
         for (CreatedBy createdBy : lop.getCreatedBy()) {
             counter++;
             toRemove2.add(createdBy);

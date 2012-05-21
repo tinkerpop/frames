@@ -1,5 +1,6 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.sail.SailGraph;
 import org.junit.After;
@@ -54,8 +55,8 @@ public class SailFramesTest {
 
         Vertex p = sailGraph.getVertex(planet.stringValue());
 
-        FramesManager manager = new FramesManager(sailGraph);
-        Concept planetFrame = manager.frame(p, Concept.class);
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(sailGraph);
+        Concept planetFrame = framedGraph.frame(p, Concept.class);
         assertNotNull(planetFrame);
 
         assertEquals("uri", planetFrame.getKind());

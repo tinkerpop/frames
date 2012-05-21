@@ -17,11 +17,11 @@ h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Removed @IndexableGraph@ helper methods in @FramesManager@
 * Removed @Direction@ as now Blueprints @Direction@ enum is used
 * Compressed the number of classes with anonymous inner classes for @Iterators@
 * Renamed @Adjacency@ to @Incidence@ for vertex-edge connections
 * Renamed @Relation@ to @Adjacency@ for vertex-vertex connections
+* @FramesManager@ is replaced by @FramedGraph implements WrapperGraph@
 
 h2. Frames 0.x
 

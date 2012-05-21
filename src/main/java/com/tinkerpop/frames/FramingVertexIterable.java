@@ -1,7 +1,7 @@
-package com.tinkerpop.frames.util;
+package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.FramesManager;
 
 import java.util.Iterator;
 
@@ -11,10 +11,10 @@ import java.util.Iterator;
 public class FramingVertexIterable<T> implements Iterable<T> {
     protected final Class<T> kind;
     protected final Iterable<Vertex> iterable;
-    protected final FramesManager manager;
+    protected final FramedGraph<? extends Graph> framedGraph;
 
-    public FramingVertexIterable(final FramesManager manager, final Iterable<Vertex> iterable, final Class<T> kind) {
-        this.manager = manager;
+    public FramingVertexIterable(final FramedGraph framedGraph, final Iterable<Vertex> iterable, final Class<T> kind) {
+        this.framedGraph = framedGraph;
         this.iterable = iterable;
         this.kind = kind;
     }
@@ -32,7 +32,7 @@ public class FramingVertexIterable<T> implements Iterable<T> {
             }
 
             public T next() {
-                return manager.frame(this.iterator.next(), kind);
+                return framedGraph.frame(this.iterator.next(), kind);
             }
         };
     }

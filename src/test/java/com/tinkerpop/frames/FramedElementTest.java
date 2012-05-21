@@ -2,6 +2,7 @@ package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
@@ -16,23 +17,23 @@ public class FramedElementTest extends TestCase {
 
     public void testGettingProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getName(), "marko");
         assertEquals(marko.getAge(), new Integer(29));
 
-        Project lop = manager.frame(graph.getVertex(3), Project.class);
+        Project lop = framedGraph.getVertex(3, Project.class);
         assertEquals(lop.getName(), "lop");
         assertEquals(lop.getLanguage(), "java");
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.OUT, Created.class);
+        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
 
-        CreatedBy lopCreatedByMarko = manager.frame(graph.getEdge(9), Direction.IN, CreatedBy.class);
+        CreatedBy lopCreatedByMarko = framedGraph.getEdge(9, Direction.IN, CreatedBy.class);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
 
-        Person temp = manager.frame(graph.addVertex(null), Person.class);
+        Person temp = framedGraph.frame(graph.addVertex(null), Person.class);
         assertNull(temp.getName());
         assertNull(temp.getAge());
 
@@ -40,9 +41,9 @@ public class FramedElementTest extends TestCase {
 
     public void testSettingProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getName(), "marko");
         marko.setName("pavel");
         assertEquals(marko.getName(), "pavel");
@@ -50,7 +51,7 @@ public class FramedElementTest extends TestCase {
         marko.setAge(31);
         assertEquals(marko.getAge(), new Integer(31));
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.OUT, Created.class);
+        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
         markoCreatedLop.setWeight(99.0f);
         assertEquals(markoCreatedLop.getWeight(), 99.0f);
@@ -58,9 +59,9 @@ public class FramedElementTest extends TestCase {
 
     public void testRemoveProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getAge(), new Integer(29));
         marko.removeAge();
         assertNull(marko.getAge());
@@ -68,20 +69,20 @@ public class FramedElementTest extends TestCase {
 
     public void testToString() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
-        assertEquals("framed[v[1]]", marko.toString());
+        Person marko = framedGraph.getVertex(1, Person.class);
+        assertEquals("v[1]", marko.toString());
 
-        Created markoCreatedLop = manager.frame(graph.getEdge(9), Direction.OUT, Created.class);
-        assertEquals("framed[e[9][1-created->3]]", markoCreatedLop.toString());
+        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
+        assertEquals("e[9][1-created->3]", markoCreatedLop.toString());
     }
 
     public void testEquality() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
+        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
+        FramedGraph<TinkerGraph> framedGraph = new FramedGraph<TinkerGraph>(graph);
 
-        assertEquals(manager.frame(graph.getVertex(1), Person.class), manager.frame(graph.getVertex(1), Person.class));
+        assertEquals(framedGraph.getVertex(1, Person.class), framedGraph.frame(graph.getVertex(1), Person.class));
 
     }
 }

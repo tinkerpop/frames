@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.FramesManager;
+import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.util.ClassUtilities;
 
@@ -18,12 +18,12 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
     }
 
     @Override
-    public Object processVertex(final Property annotation, final Method method, final Object[] arguments, final FramesManager manager, final Vertex vertex) {
+    public Object processVertex(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Vertex vertex) {
         return process(annotation, method, arguments, vertex);
     }
 
     @Override
-    public Object processEdge(final Property annotation, final Method method, final Object[] arguments, final FramesManager manager, final Edge edge, final Direction direction) {
+    public Object processEdge(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge, final Direction direction) {
         return process(annotation, method, arguments, edge);
     }
 

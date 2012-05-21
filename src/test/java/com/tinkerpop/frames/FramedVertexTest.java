@@ -6,14 +6,13 @@ import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
+import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
 import com.tinkerpop.frames.domain.incidences.Knows;
-import com.tinkerpop.frames.domain.incidences.Created;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,19 +20,11 @@ import java.util.List;
  * @author Joshua Shinavier (http://fortytwo.net)
  */
 public class FramedVertexTest extends TestCase {
-    private Graph graph;
-    private FramesManager manager;
-
-    public void setUp() {
-        graph = TinkerGraphFactory.createTinkerGraph();
-        manager = new FramesManager(graph);
-    }
-
-    public void tearDown() {
-    }
+    private Graph graph = TinkerGraphFactory.createTinkerGraph();
+    private FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
     public void testGettingAdjacencies() {
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Project project : marko.getCreatedProjects()) {
             counter++;
@@ -49,7 +40,7 @@ public class FramedVertexTest extends TestCase {
         assertEquals(counter, 2);
 
         counter = 0;
-        Project ripple = manager.frame(graph.getVertex(5), Project.class);
+        Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
         for (Person person : ripple.getCreatedByPeople()) {
             counter++;
             assertEquals(person.getName(), "josh");
@@ -61,9 +52,9 @@ public class FramedVertexTest extends TestCase {
     public void testSettingAdjacencies() {
         int counter;
 
-        Person josh = manager.frame(graph.getVertex(4), Person.class);
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
-        Person peter = manager.frame(graph.getVertex(6), Person.class);
+        Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
 
         assertEquals(josh.getKnowsPeople().size(), 0);
 
@@ -91,10 +82,10 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testGettingAndSettingFunctionalAdjacencies() {
-        Person josh = manager.frame(graph.getVertex(4), Person.class);
+        Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
 
-        Project rdfAgents = manager.frame(graph.addVertex(null), Project.class);
-        Project tinkerNotes = manager.frame(graph.addVertex(null), Project.class);
+        Project rdfAgents = framedGraph.frame(graph.addVertex(null), Project.class);
+        Project tinkerNotes = framedGraph.frame(graph.addVertex(null), Project.class);
 
         assertNull(josh.getLatestProject());
 
@@ -113,7 +104,7 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testImproperSettingAdjacencies() {
-        Person josh = manager.frame(graph.getVertex(4), Person.class);
+        Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
         boolean good = false;
         try {
             josh.setKnowsPeople(null);
@@ -124,7 +115,7 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testGettingIncidences() {
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Created created : marko.getCreated()) {
             counter++;
@@ -141,7 +132,7 @@ public class FramedVertexTest extends TestCase {
         assertEquals(counter, 2);
 
         counter = 0;
-        Project ripple = manager.frame(graph.getVertex(5), Project.class);
+        Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
         for (CreatedBy createdBy : ripple.getCreatedBy()) {
             counter++;
             assertEquals(createdBy.getRange().getName(), "josh");
@@ -151,9 +142,9 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testAddingIncidences() {
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
-        Project ripple = manager.frame(graph.getVertex(5), Project.class);
-        Person peter = manager.frame(graph.getVertex(6), Person.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
+        Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
 
         Created markoCreatedRipple = marko.addCreated(ripple);
         int counter = 0;
@@ -179,9 +170,9 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testAddingAdjacencies() {
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
-        Project ripple = manager.frame(graph.getVertex(5), Project.class);
-        Person peter = manager.frame(graph.getVertex(6), Person.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
+        Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
 
         marko.addKnowsPerson(peter);
         int counter = 0;
@@ -201,7 +192,7 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testRemoveIncidences() {
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         List<Knows> toRemove = new ArrayList<Knows>();
         for (Knows knows : marko.getKnows()) {
@@ -222,7 +213,7 @@ public class FramedVertexTest extends TestCase {
         assertEquals(counter, 1);
 
 
-        Project lop = manager.frame(graph.getVertex(3), Project.class);
+        Project lop = framedGraph.frame(graph.getVertex(3), Project.class);
         counter = 0;
         List<CreatedBy> toRemove2 = new ArrayList<CreatedBy>();
         for (CreatedBy createdBy : lop.getCreatedBy()) {
@@ -242,9 +233,9 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testRemovingAdjacencies() {
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
-        Person vadas = manager.frame(graph.getVertex(2), Person.class);
-        Project lop = manager.frame(graph.getVertex(3), Project.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person vadas = framedGraph.frame(graph.getVertex(2), Person.class);
+        Project lop = framedGraph.frame(graph.getVertex(3), Project.class);
 
         marko.removeKnowsPerson(vadas);
         int counter = 0;
@@ -281,7 +272,7 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testGetGremlinGroovy() {
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Person coCreator : marko.getCoCreators()) {
             counter++;

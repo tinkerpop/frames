@@ -2,7 +2,7 @@ package com.tinkerpop.frames.util;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.FramesManager;
+import com.tinkerpop.frames.FramedGraph;
 
 import java.util.Iterator;
 
@@ -11,8 +11,8 @@ import java.util.Iterator;
  */
 public class AdjacencyCollection<T> extends AbstractAnnotationCollection<T> {
 
-    public AdjacencyCollection(final FramesManager manager, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
-        super(manager, source, label, direction, kind);
+    public AdjacencyCollection(final FramedGraph framedGraph, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
+        super(framedGraph, source, label, direction, kind);
     }
 
     public Iterator<T> iterator() {
@@ -24,7 +24,7 @@ public class AdjacencyCollection<T> extends AbstractAnnotationCollection<T> {
             }
 
             public T next() {
-                return manager.frame(this.itty.next(), kind);
+                return framedGraph.frame(this.itty.next(), kind);
             }
 
             public boolean hasNext() {

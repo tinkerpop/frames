@@ -16,15 +16,15 @@ public class FramedEdgeTest extends TestCase {
 
     public void testGettingDomainAndRange() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramesManager manager = new FramesManager(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
-        Person marko = manager.frame(graph.getVertex(1), Person.class);
-        Person vadas = manager.frame(graph.getVertex(2), Person.class);
-        Knows knows = manager.frame(graph.getEdge(7), Direction.OUT, Knows.class);
+        Person marko = framedGraph.getVertex(1, Person.class);
+        Person vadas = framedGraph.getVertex(2, Person.class);
+        Knows knows = framedGraph.getEdge(7, Direction.OUT, Knows.class);
         assertEquals(marko, knows.getDomain());
         assertEquals(vadas, knows.getRange());
 
-        Project lop = manager.frame(graph.getVertex(3), Project.class);
+        Project lop = framedGraph.getVertex(3, Project.class);
         CreatedBy createdBy = lop.getCreatedBy().iterator().next();
         assertEquals(lop, createdBy.getDomain());
         assertEquals(marko, createdBy.getRange());

@@ -3,7 +3,7 @@ package com.tinkerpop.frames.util;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.FramesManager;
+import com.tinkerpop.frames.FramedGraph;
 
 import java.util.Iterator;
 
@@ -12,8 +12,8 @@ import java.util.Iterator;
  */
 public class IncidenceCollection<T> extends AbstractAnnotationCollection<T> {
 
-    public IncidenceCollection(final FramesManager manager, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
-        super(manager, source, label, direction, kind);
+    public IncidenceCollection(final FramedGraph framedGraph, final Vertex source, final String label, final Direction direction, final Class<T> kind) {
+        super(framedGraph, source, label, direction, kind);
     }
 
     public Iterator<T> iterator() {
@@ -25,7 +25,7 @@ public class IncidenceCollection<T> extends AbstractAnnotationCollection<T> {
             }
 
             public T next() {
-                return manager.frame(this.itty.next(), direction, kind);
+                return framedGraph.frame(this.itty.next(), direction, kind);
             }
 
             public boolean hasNext() {

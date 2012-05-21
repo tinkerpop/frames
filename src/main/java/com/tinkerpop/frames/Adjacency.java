@@ -27,6 +27,5 @@ public @interface Adjacency {
      *
      * @return the direction of the edges composing the adjacency
      */
-
     public Direction direction() default Direction.OUT;
 }

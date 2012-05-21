@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Incidence {
-
     /**
      * The labels of the edges that are incident to the vertex.
      *

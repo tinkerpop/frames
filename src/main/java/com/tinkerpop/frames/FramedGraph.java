@@ -136,6 +136,15 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
         return this.baseGraph.getEdge(id);
     }
 
+    /**
+     * Frame an edge according to a particular kind of annotated interface.
+     *
+     * @param id        the id of the edge
+     * @param direction the direction of the edge
+     * @param kind      the annotated interface to frame the edge as
+     * @param <F>       the type of the annotated interface
+     * @return a proxy object backed by the edge and interpreted from the perspective of the annotate interface
+     */
     public <F> F getEdge(final Object id, final Direction direction, final Class<F> kind) {
         return this.frame(this.baseGraph.getEdge(id), direction, kind);
     }
@@ -144,6 +153,18 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
         return this.baseGraph.addEdge(id, outVertex, inVertex, label);
     }
 
+    /**
+     * Add an edge to the underlying graph and return it as a framed edge.
+     *
+     * @param id        the id of the newly created edge
+     * @param outVertex the outgoing vertex
+     * @param inVertex  the incoming vertex
+     * @param label     the label of the edge
+     * @param direction the direction of the edge
+     * @param kind      the annotated interface to frame the edge as
+     * @param <F>       the type of the annotated interface
+     * @return a proxy object backed by the edge and interpreted from the perspective of the annotate interface
+     */
     public <F> F addEdge(final Object id, final Vertex outVertex, final Vertex inVertex, final String label, final Direction direction, final Class<F> kind) {
         return this.frame(this.baseGraph.addEdge(id, outVertex, inVertex, label), direction, kind);
     }

@@ -100,8 +100,7 @@ public class FramedElement implements InvocationHandler {
     }
 
     private String proxyToString(final Object proxy) {
-        final FramedElement f = (FramedElement) Proxy.getInvocationHandler(proxy);
-        return f.getElement().toString();
+        return ((FramedElement) Proxy.getInvocationHandler(proxy)).getElement().toString();
     }
 
     public Element getElement() {

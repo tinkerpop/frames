@@ -20,6 +20,7 @@ import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
 import java.lang.reflect.Method;
+import java.util.HashSet;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -30,9 +31,15 @@ public class FramedGraphTest extends GraphTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
-        for (AnnotationHandler a : framedGraph.getAnnotationHandlers()) {
+        int counter = framedGraph.getAnnotationHandlers().size();
+        for (AnnotationHandler a : new HashSet<AnnotationHandler>(framedGraph.getAnnotationHandlers())) {
             assertTrue(framedGraph.hasAnnotationHandler(a.getAnnotationType()));
+            counter--;
+            framedGraph.unregisterAnnotationHandler(a.getAnnotationType());
+            assertEquals(framedGraph.getAnnotationHandlers().size(), counter);
+
         }
+        assertEquals(framedGraph.getAnnotationHandlers().size(), 0);
     }
 
     public void testFrameEquality() {

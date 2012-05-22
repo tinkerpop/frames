@@ -1,10 +1,9 @@
-package com.tinkerpop.frames.util;
+package com.tinkerpop.frames;
 
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Collection;
 
 public class ClassUtilities {
     private static final String SET = "set";
@@ -24,12 +23,12 @@ public class ClassUtilities {
         return method.getName().startsWith(REMOVE);
     }
 
-    public static boolean acceptsCollection(final Method method) {
-        return 1 == method.getParameterTypes().length && Collection.class.isAssignableFrom(method.getParameterTypes()[0]);
+    public static boolean acceptsIterable(final Method method) {
+        return 1 == method.getParameterTypes().length && Iterable.class.isAssignableFrom(method.getParameterTypes()[0]);
     }
 
-    public static boolean returnsCollection(final Method method) {
-        return Collection.class.isAssignableFrom(method.getReturnType());
+    public static boolean returnsIterable(final Method method) {
+        return Iterable.class.isAssignableFrom(method.getReturnType());
     }
 
     public static boolean isAddMethod(final Method method) {

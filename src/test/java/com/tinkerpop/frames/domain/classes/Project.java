@@ -6,8 +6,6 @@ import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
 
-import java.util.Collection;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -17,10 +15,10 @@ public interface Project extends NamedObject {
     public String getLanguage();
 
     @Adjacency(label = "created", direction = Direction.IN)
-    public Collection<Person> getCreatedByPeople();
+    public Iterable<Person> getCreatedByPeople();
 
     @Incidence(label = "created", direction = Direction.IN)
-    public Collection<CreatedBy> getCreatedBy();
+    public Iterable<CreatedBy> getCreatedBy();
 
     @Adjacency(label = "created", direction = Direction.IN)
     public void removeCreatedByPerson(Person person);

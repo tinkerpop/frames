@@ -14,8 +14,6 @@ import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.memory.MemoryStore;
 
-import java.util.Collection;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -67,8 +65,13 @@ public class SailFramesTest {
         assertEquals("en", label.getLang());
         assertEquals("planet", label.getValue());
 
-        Collection<Concept> narrowerConcepts = planetFrame.getNarrower();
-        assertEquals(1, narrowerConcepts.size());
+        Iterable<Concept> narrowerConcepts = planetFrame.getNarrower();
+        int counter = 0;
+        for (Concept c : narrowerConcepts) {
+            counter++;
+        }
+        assertEquals(counter, 1);
+
         Concept gasGiantFrame = narrowerConcepts.iterator().next();
         label = gasGiantFrame.getLabel();
         assertEquals("literal", label.getKind());
@@ -92,7 +95,7 @@ public class SailFramesTest {
 
     private interface Concept extends RDFFrame {
         @Adjacency(label = "http://www.w3.org/2004/02/skos/core#narrower")
-        public Collection<Concept> getNarrower();
+        public Iterable<Concept> getNarrower();
 
         @Adjacency(label = "http://www.w3.org/2000/01/rdf-schema#label")
         public RDFFrame getLabel();

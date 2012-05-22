@@ -12,7 +12,6 @@ import com.tinkerpop.frames.domain.incidences.Knows;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -50,15 +49,18 @@ public class FramedVertexTest extends TestCase {
     }
 
     public void testSettingAdjacencies() {
-        int counter;
 
         Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
 
-        assertEquals(josh.getKnowsPeople().size(), 0);
+        int counter = 0;
+        for (Person p : josh.getKnowsPeople()) {
+            counter++;
+        }
+        assertEquals(counter, 0);
 
-        Collection<Person> knows = new ArrayList<Person>();
+        List<Person> knows = new ArrayList<Person>();
         knows.add(peter);
         knows.add(marko);
         josh.setKnowsPeople(knows);

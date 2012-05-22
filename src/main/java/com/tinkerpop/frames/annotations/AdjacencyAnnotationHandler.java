@@ -5,14 +5,13 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.Adjacency;
+import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramedGraph;
-import com.tinkerpop.frames.util.AdjacencyCollection;
-import com.tinkerpop.frames.util.ClassUtilities;
+import com.tinkerpop.frames.FramedVertexIterable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Collection;
 
 public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> {
 
@@ -24,8 +23,8 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
     @Override
     public Object processVertex(final Adjacency adjacency, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Vertex vertex) {
         if (ClassUtilities.isGetMethod(method)) {
-            final AdjacencyCollection r = new AdjacencyCollection(framedGraph, vertex, adjacency.label(), adjacency.direction(), ClassUtilities.getGenericClass(method));
-            if (ClassUtilities.returnsCollection(method)) {
+            final FramedVertexIterable r = new FramedVertexIterable(framedGraph, vertex.getVertices(adjacency.direction(), adjacency.label()), ClassUtilities.getGenericClass(method));
+            if (ClassUtilities.returnsIterable(method)) {
                 return r;
             } else {
                 return r.iterator().hasNext() ? r.iterator().next() : null;
@@ -41,8 +40,8 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             return null;
         } else if (ClassUtilities.isSetMethod(method)) {
             removeEdges(adjacency.direction(), adjacency.label(), vertex, null, framedGraph);
-            if (ClassUtilities.acceptsCollection(method)) {
-                for (Object o : (Collection) arguments[0]) {
+            if (ClassUtilities.acceptsIterable(method)) {
+                for (Object o : (Iterable) arguments[0]) {
                     Vertex v = (Vertex) ((FramedElement) Proxy.getInvocationHandler(o)).getElement();
                     if (adjacency.direction().equals(Direction.OUT)) {
                         framedGraph.getBaseGraph().addEdge(null, vertex, v, adjacency.label());

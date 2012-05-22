@@ -7,8 +7,6 @@ import com.tinkerpop.frames.annotations.gremlin.GremlinGroovy;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
-import java.util.Collection;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -24,19 +22,19 @@ public interface Person extends NamedObject {
     public void removeAge();
 
     @Incidence(label = "knows")
-    public Collection<Knows> getKnows();
+    public Iterable<Knows> getKnows();
 
     @Adjacency(label = "knows")
-    public Collection<Person> getKnowsPeople();
+    public Iterable<Person> getKnowsPeople();
 
     @Adjacency(label = "knows")
-    public void setKnowsPeople(final Collection<Person> knows);
+    public void setKnowsPeople(final Iterable<Person> knows);
 
     @Incidence(label = "created")
-    public Collection<Created> getCreated();
+    public Iterable<Created> getCreated();
 
     @Adjacency(label = "created")
-    public Collection<Project> getCreatedProjects();
+    public Iterable<Project> getCreatedProjects();
 
     @Adjacency(label = "knows")
     public void addKnowsPerson(final Person person);
@@ -63,6 +61,6 @@ public interface Person extends NamedObject {
     public void setLatestProject(final Project latestProject);
 
     @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}")
-    public Collection<Person> getCoCreators();
+    public Iterable<Person> getCoCreators();
 
 }

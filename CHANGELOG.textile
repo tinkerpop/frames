@@ -22,6 +22,7 @@ h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 * Renamed @Adjacency@ to @Incidence@ for vertex-edge connections
 * Renamed @Relation@ to @Adjacency@ for vertex-vertex connections
 * @FramesManager@ is replaced by @FramedGraph implements WrapperGraph@
+* @Collection@ no longer supported, only @Iterable@ as this is the true underlying representation
 
 h2. Frames 0.x
 

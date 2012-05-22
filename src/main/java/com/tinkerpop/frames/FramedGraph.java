@@ -84,7 +84,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by a vertex and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> frameVertices(final Iterable<Vertex> vertices, final Class<F> kind) {
-        return new FramingVertexIterable<F>(this, vertices, kind);
+        return new FramedVertexIterable<F>(this, vertices, kind);
     }
 
     /**
@@ -97,7 +97,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> frameEdges(final Iterable<Edge> edges, final Direction direction, final Class<F> kind) {
-        return new FramingEdgeIterable<F>(this, edges, direction, kind);
+        return new FramedEdgeIterable<F>(this, edges, direction, kind);
     }
 
     public Vertex getVertex(final Object id) {
@@ -195,7 +195,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by the vertices and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> getVertices(final String key, final Object value, final Class<F> kind) {
-        return new FramingVertexIterable(this, this.baseGraph.getVertices(key, value), kind);
+        return new FramedVertexIterable(this, this.baseGraph.getVertices(key, value), kind);
     }
 
     public Iterable<Edge> getEdges() {
@@ -217,7 +217,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by the edges and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> getEdges(final String key, final Object value, final Direction direction, final Class<F> kind) {
-        return new FramingEdgeIterable(this, this.baseGraph.getEdges(key, value), direction, kind);
+        return new FramedEdgeIterable(this, this.baseGraph.getEdges(key, value), direction, kind);
     }
 
     public Features getFeatures() {

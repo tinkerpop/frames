@@ -3,11 +3,11 @@ package com.tinkerpop.frames.annotations;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.ClassUtilities;
+import com.tinkerpop.frames.FramedEdgeIterable;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.Incidence;
-import com.tinkerpop.frames.util.ClassUtilities;
-import com.tinkerpop.frames.util.IncidenceCollection;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -22,7 +22,7 @@ public class IncidenceAnnotationHandler implements AnnotationHandler<Incidence> 
     @Override
     public Object processVertex(final Incidence incidence, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Vertex element) {
         if (ClassUtilities.isGetMethod(method)) {
-            return new IncidenceCollection(framedGraph, element, incidence.label(), incidence.direction(), ClassUtilities.getGenericClass(method));
+            return new FramedEdgeIterable(framedGraph, element.getEdges(incidence.direction(), incidence.label()), incidence.direction(), ClassUtilities.getGenericClass(method));
         } else if (ClassUtilities.isAddMethod(method)) {
             if (incidence.direction().equals(Direction.OUT))
                 return framedGraph.addEdge(null, element, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), incidence.label(), Direction.OUT, method.getReturnType());

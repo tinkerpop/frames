@@ -30,11 +30,11 @@ import java.util.Map;
  */
 public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 
-    private final T baseGraph;
+    protected final T baseGraph;
     private final Map<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>> annotationHandlers;
 
     /**
-     * Construct a FramedGraph that will frame elements of the underlying graph.
+     * Construct a FramedGraph that will frame the elements of the underlying graph.
      *
      * @param baseGraph the graph whose elements to frame
      */
@@ -195,7 +195,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by the vertices and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> getVertices(final String key, final Object value, final Class<F> kind) {
-        return new FramedVertexIterable(this, this.baseGraph.getVertices(key, value), kind);
+        return new FramedVertexIterable<F>(this, this.baseGraph.getVertices(key, value), kind);
     }
 
     public Iterable<Edge> getEdges() {
@@ -217,7 +217,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by the edges and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> getEdges(final String key, final Object value, final Direction direction, final Class<F> kind) {
-        return new FramedEdgeIterable(this, this.baseGraph.getEdges(key, value), direction, kind);
+        return new FramedEdgeIterable<F>(this, this.baseGraph.getEdges(key, value), direction, kind);
     }
 
     public Features getFeatures() {

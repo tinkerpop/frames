@@ -1,19 +1,17 @@
 Frames: An Object to Graph Framework
 "http://frames.tinkerpop.com":http://frames.tinkerpop.com
 
-==<hr/>==
-
-
-
 h2. Frames 2.y.z
 
-h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/frames/raw/master/doc/images/frames-2.png!
+
+h3. Version 2.0.0 (May 23, 2012)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>frames</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
@@ -23,6 +21,8 @@ h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 * Renamed @Relation@ to @Adjacency@ for vertex-vertex connections
 * @FramesManager@ is replaced by @FramedGraph implements WrapperGraph@
 * @Collection@ no longer supported, only @Iterable@ as this is the true underlying representation
+
+==<hr/>==
 
 h2. Frames 0.x
 

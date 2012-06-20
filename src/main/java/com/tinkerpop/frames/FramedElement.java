@@ -15,7 +15,7 @@ import java.lang.reflect.Proxy;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FramedElement implements InvocationHandler {
+public class FramedElement {
 
     private final Direction direction;
     protected final FramedGraph framedGraph;
@@ -105,5 +105,13 @@ public class FramedElement implements InvocationHandler {
 
     public Element getElement() {
         return this.element;
+    }
+
+    public FramedGraph getGraph() {
+        return this.framedGraph;
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 }

@@ -67,6 +67,16 @@ public class FramedElementTest extends TestCase {
         assertNull(marko.getAge());
     }
 
+    public void testSetPropertiesToNull() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+
+        Person marko = framedGraph.getVertex(1, Person.class);
+        assertEquals(marko.getAge(), new Integer(29));
+        marko.setAge(null);
+        assertNull(marko.getAge());
+    }
+
     public void testToString() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);

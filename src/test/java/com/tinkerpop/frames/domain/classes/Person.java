@@ -16,7 +16,7 @@ public interface Person extends NamedObject {
     public Integer getAge();
 
     @Property("age")
-    public void setAge(int age);
+    public void setAge(Integer age);
 
     @Property("age")
     public void removeAge();

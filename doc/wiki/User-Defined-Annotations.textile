@@ -1,0 +1,30 @@
+[[https://github.com/tinkerpop/frames/raw/master/doc/images/frames-character-3.png|width=135px]]
+
+It is possible to create new annotations, behaviors for those annotations, and then register them with a @FramedGraph@. In order to make use of this feature, two Java classes are required of the developer.
+
+# @Annotation@: An annotation object.
+# @AnnotationHandler@: A class defining the behavior to evaluate when the respective @Annotation@ is used.
+
+The @AnnotationHandler@ interface is provided below.
+
+```java
+public interface AnnotationHandler<T extends Annotation> {
+    public Class<T> getAnnotationType();
+    public Object processVertex(T annotation, Method method, Object[] arguments, FramesManager manager, Vertex vertex);
+    public Object processEdge(T annotation, Method method, Object[] arguments, FramesManager manager, Edge edge, Direction direction);
+}
+```
+
+Any implementation of an @AnnotationHandler@ must implement the respective methods where @getAnnotationType()@ returns the class of the respective @Annotation@ it represents. The two methods @processVertex()@ and @processEdge()@ have arguments that provide information to allow the developer to determine the requisite logic to execute. For example, here are some aspects to reason on:
+
+* Determine if the method is a _get_, _set_, or _remove_ by @method.getName().startsWith("get")@
+* Make use of @ClassUtilities@ for standard, static reasoning methods.
+* Analyze the types of method's provided arguments.
+* Analyze the type of the methods return object.
+
+All the @Annotation@ objects provided by Frames make use of handlers. Please feel free to inspect the source code to get ideas for how to implement your own handlers. Finally, once an @Annotation@ and @AnnotationHandler@ have been created, they can be registered with a @FramedGraph@. 
+
+```java
+FramedGraph<TinkerGraph> graph = new FramedGraph<TinkerGraph>(new TinkerGraph("/tmp/tg"));
+graph.registerAnnotation(new MyAnnotation());
+```

@@ -138,6 +138,10 @@ public class FramedGraphTest extends GraphTest {
         return new FramedGraph<TinkerGraph>(baseGraph);
     }
 
+    public Graph generateGraph(final String directory) {
+        return this.generateGraph();
+    }
+
     public void doTestSuite(final TestSuite testSuite) throws Exception {
         for (Method method : testSuite.getClass().getDeclaredMethods()) {
             if (method.getName().startsWith("test")) {

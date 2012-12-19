@@ -39,7 +39,7 @@ To frame vertex 1 (marko) in terms of the @Person@ interface defined previously,
 
 ```java
 Graph graph = TinkerGraphFactory.createTinkerGraph();
-FramesManager manager = new FramesManager(graph);
+FramedGraph manager = new FramedGraph(graph);
 Person marko = manager.frame(graph.getVertex(1), Person.class);
 ```
 

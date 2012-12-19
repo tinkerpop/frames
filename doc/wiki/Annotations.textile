@@ -43,5 +43,25 @@ The above interface uses both styles of getter and setter: an Iterable-valued st
 
 h2. Using Gremlin in a Frame
 
+It is possible to make use of a Gremlin path expression as a means of determining vertex adjacency.
+
 |_. annotation |_. method prefix |_. arguments |_. description |_. example |
 | @@GremlinGroovy@ | @get@ | @value@ | get the objects at then end of the expression | @@GremlinGroovy("out('knows')")@ |
+
+```java
+public interface Person {
+    @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}")
+    public Iterable<Person> getCoCreators();
+}
+```
+
+In the example above, the vertices at the end of the path expression are framed as @Person@ classes.
+
+```java
+Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+for (Person coCreator : marko.getCoCreators()) {
+  System.out.println(coCreator.getName())
+}
+// josh
+// peter
+```

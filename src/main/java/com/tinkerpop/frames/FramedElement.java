@@ -74,11 +74,7 @@ public class FramedElement implements InvocationHandler {
         final Annotation[] annotations = method.getAnnotations();
         for (final Annotation annotation : annotations) {
             if (this.framedGraph.hasAnnotationHandler(annotation.annotationType())) {
-                if (this.element instanceof Vertex) {
-                    return this.framedGraph.getAnnotationHandler(annotation.annotationType()).processVertex(annotation, method, arguments, this.framedGraph, (Vertex) this.element);
-                } else if (this.element instanceof Edge) {
-                    return this.framedGraph.getAnnotationHandler(annotation.annotationType()).processEdge(annotation, method, arguments, this.framedGraph, (Edge) this.element, this.direction);
-                }
+                return this.framedGraph.getAnnotationHandler(annotation.annotationType()).processElement(annotation, method, arguments, this.framedGraph, this.element, this.direction);
             }
         }
 

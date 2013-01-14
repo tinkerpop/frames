@@ -18,16 +18,7 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
     }
 
     @Override
-    public Object processVertex(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Vertex vertex) {
-        return process(annotation, method, arguments, vertex);
-    }
-
-    @Override
-    public Object processEdge(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge, final Direction direction) {
-        return process(annotation, method, arguments, edge);
-    }
-
-    private Object process(final Property annotation, final Method method, final Object[] arguments, final Element element) {
+    public Object processElement(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
         if (ClassUtilities.isGetMethod(method)) {
             return element.getProperty(annotation.value());
         } else if (ClassUtilities.isSetMethod(method)) {

@@ -25,6 +25,14 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
     }
 
     @Override
+    public Object processElement(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
+        if (element instanceof Vertex) {
+            return processVertex(annotation, method, arguments, framedGraph, (Vertex) element);
+        } else {
+            throw new UnsupportedOperationException("This method only works for vertices");
+        }
+    }
+
     public Object processVertex(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Vertex vertex) {
         if (ClassUtilities.isGetMethod(method)) {
             final Pipe pipe = Gremlin.compile(annotation.value());
@@ -35,8 +43,4 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
         }
     }
 
-    @Override
-    public Object processEdge(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge, final Direction direction) {
-        throw new UnsupportedOperationException("This method only works for vertices");
-    }
 }

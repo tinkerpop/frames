@@ -1,9 +1,6 @@
 package com.tinkerpop.frames.annotations;
 
-import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.*;
 import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedElement;
@@ -21,6 +18,14 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
     }
 
     @Override
+    public Object processElement(final Adjacency annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
+        if (element instanceof Vertex) {
+            return processVertex(annotation, method, arguments, framedGraph, (Vertex) element);
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
     public Object processVertex(final Adjacency adjacency, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Vertex vertex) {
         if (ClassUtilities.isGetMethod(method)) {
             final FramedVertexIterable r = new FramedVertexIterable(framedGraph, vertex.getVertices(adjacency.direction(), adjacency.label()), ClassUtilities.getGenericClass(method));
@@ -63,11 +68,6 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
         }
 
         return null;
-    }
-
-    @Override
-    public Object processEdge(final Adjacency annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge element, final Direction direction) {
-        throw new UnsupportedOperationException();
     }
 
     private void removeEdges(final Direction direction, final String label, final Vertex element, final Vertex otherVertex, final FramedGraph framedGraph) {

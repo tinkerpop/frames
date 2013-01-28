@@ -63,4 +63,7 @@ public interface Person extends NamedObject {
     @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}")
     public Iterable<Person> getCoCreators();
 
+    @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}.shuffle")
+    public Person getRandomCoCreators();
+
 }

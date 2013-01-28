@@ -282,4 +282,10 @@ public class FramedVertexTest extends TestCase {
         }
         assertEquals(counter, 2);
     }
+
+    public void testGetGremlinGroovySingleItem() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person coCreator = marko.getRandomCoCreators();
+        assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
+    }
 }

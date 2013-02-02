@@ -12,12 +12,10 @@ import java.lang.reflect.Method;
 
 public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
 
-    @Override
     public Class<Property> getAnnotationType() {
         return Property.class;
     }
 
-    @Override
     public Object processElement(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
         if (ClassUtilities.isGetMethod(method)) {
             return element.getProperty(annotation.value());

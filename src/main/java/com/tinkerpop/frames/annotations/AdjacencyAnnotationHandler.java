@@ -12,12 +12,10 @@ import java.lang.reflect.Proxy;
 
 public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> {
 
-    @Override
     public Class<Adjacency> getAnnotationType() {
         return Adjacency.class;
     }
 
-    @Override
     public Object processElement(final Adjacency annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
         if (element instanceof Vertex) {
             return processVertex(annotation, method, arguments, framedGraph, (Vertex) element);

@@ -11,12 +11,10 @@ import java.lang.reflect.Method;
 
 public class DomainAnnotationHandler implements AnnotationHandler<Domain> {
 
-    @Override
     public Class<Domain> getAnnotationType() {
         return Domain.class;
     }
 
-    @Override
     public Object processElement(final Domain annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
         if (element instanceof Edge) {
             return processEdge(annotation, method, arguments, framedGraph, (Edge) element, direction);

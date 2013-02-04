@@ -37,7 +37,12 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
         if (ClassUtilities.isGetMethod(method)) {
             final Pipe pipe = Gremlin.compile(annotation.value());
             pipe.setStarts(new SingleIterator<Element>(vertex));
-            return new FramedVertexIterable(framedGraph, pipe, ClassUtilities.getGenericClass(method));
+            FramedVertexIterable r = new FramedVertexIterable(framedGraph, pipe, ClassUtilities.getGenericClass(method));
+            if (ClassUtilities.returnsIterable(method)) {
+                return r;
+            } else {
+                return r.iterator().hasNext() ? r.iterator().next() : null;
+            }
         } else {
             throw new UnsupportedOperationException("Gremlin only works with getters");
         }

@@ -15,12 +15,10 @@ import java.lang.reflect.Proxy;
 
 public class IncidenceAnnotationHandler implements AnnotationHandler<Incidence> {
 
-    @Override
     public Class<Incidence> getAnnotationType() {
         return Incidence.class;
     }
 
-    @Override
     public Object processElement(final Incidence annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
         if (element instanceof Vertex) {
             return processVertex(annotation, method, arguments, framedGraph, (Vertex) element);

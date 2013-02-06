@@ -1,14 +1,12 @@
 package com.tinkerpop.frames.annotations;
 
+import java.lang.reflect.Method;
+
 import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.Property;
-
-import java.lang.reflect.Method;
 
 public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
 
@@ -20,14 +18,22 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
     @Override
     public Object processElement(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
         if (ClassUtilities.isGetMethod(method)) {
-            return element.getProperty(annotation.value());
+			Object value = element.getProperty(annotation.value());
+			if (method.getReturnType().isEnum())
+				return getValueAsEnum(method, value);
+			else
+				return value;
         } else if (ClassUtilities.isSetMethod(method)) {
             Object value = arguments[0];
             if (null == value) {
                 element.removeProperty(annotation.value());
             } else {
-                element.setProperty(annotation.value(), value);
-            }
+				if (value.getClass().isEnum()) {
+					element.setProperty(annotation.value(), ((Enum<?>) value).name());
+				} else {
+					element.setProperty(annotation.value(), value);
+				}
+			}
             return null;
         } else if (ClassUtilities.isRemoveMethod(method)) {
             element.removeProperty(annotation.value());
@@ -37,4 +43,8 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
         return null;
     }
 
+	private Enum getValueAsEnum(final Method method, final Object value) {
+		Class<Enum> en = (Class<Enum>) method.getReturnType();
+		return Enum.valueOf(en, value.toString());
+	}
 }

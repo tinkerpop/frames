@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Features;
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.GraphQuery;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.StringFactory;
 import com.tinkerpop.blueprints.util.wrappers.WrapperGraph;
@@ -236,6 +237,10 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 
     public String toString() {
         return StringFactory.graphString(this, this.baseGraph.toString());
+    }
+
+    public GraphQuery query() {
+        return this.baseGraph.query();
     }
 
     /**

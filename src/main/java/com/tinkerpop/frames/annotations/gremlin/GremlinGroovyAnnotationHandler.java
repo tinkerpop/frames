@@ -48,14 +48,11 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
 		try {
 			if (ClassUtilities.isGetMethod(method)) {
 
-				CompiledScript script = cache.get(annotation);
-				if (script == null) {
-					script = engine.compile(annotation.value());
-					cache.put(annotation, script);
-				}
-
+				CompiledScript script = getScript(annotation);
 				Bindings bindings = getBindings(method, arguments);
+				
 				final Pipe pipe = (Pipe) script.eval(bindings);
+				
 				pipe.setStarts(new SingleIterator<Element>(vertex));
 				FramedVertexIterable r = new FramedVertexIterable(framedGraph, pipe, ClassUtilities.getGenericClass(method));
 				if (ClassUtilities.returnsIterable(method)) {
@@ -72,6 +69,15 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
 		}
 	}
 
+	private CompiledScript getScript(final GremlinGroovy annotation) throws ScriptException {
+		CompiledScript script = cache.get(annotation);
+		if (script == null) {
+			script = engine.compile(annotation.value());
+			cache.put(annotation, script);
+		}
+		return script;
+	}
+
 	private Bindings getBindings(final Method method, final Object[] arguments) {
 		Bindings bindings = engine.createBindings();
 		Annotation[][] allParameterAnnotations = method.getParameterAnnotations();
@@ -79,8 +85,8 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
 			Annotation parameterAnnotations[] = allParameterAnnotations[pCount];
 			for(int aCount = 0; aCount < parameterAnnotations.length; aCount++) {
 				Annotation paramAnnotation = parameterAnnotations[aCount];
-				if(paramAnnotation instanceof Param) {
-					bindings.put(((Param) paramAnnotation).value(), arguments[pCount]);
+				if(paramAnnotation instanceof GremlinParam) {
+					bindings.put(((GremlinParam) paramAnnotation).value(), arguments[pCount]);
 					break;
 				}
 			}

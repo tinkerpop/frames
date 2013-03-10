@@ -16,7 +16,6 @@ import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.FramedVertexIterable;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
-import com.tinkerpop.gremlin.groovy.Gremlin;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;

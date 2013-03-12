@@ -288,4 +288,12 @@ public class FramedVertexTest extends TestCase {
         Person coCreator = marko.getRandomCoCreators();
         assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
     }
+
+    public void testGetGremlinGroovyParameters() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person coCreator = marko.getCoCreatorOfAge(32);
+        assertTrue(coCreator.getName().equals("josh"));
+        coCreator = marko.getCoCreatorOfAge(35);
+        assertTrue(coCreator.getName().equals("peter"));       
+    }
 }

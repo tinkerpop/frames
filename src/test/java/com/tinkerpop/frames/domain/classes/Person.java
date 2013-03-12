@@ -4,6 +4,7 @@ import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovy;
+import com.tinkerpop.frames.annotations.gremlin.GremlinParam;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
@@ -65,5 +66,10 @@ public interface Person extends NamedObject {
 
     @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}.shuffle")
     public Person getRandomCoCreators();
+    
+    @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it['age'] == age}")
+    public Person getCoCreatorOfAge(@GremlinParam("age") int age);
+
+    
 
 }

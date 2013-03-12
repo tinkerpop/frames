@@ -12,6 +12,7 @@ import com.tinkerpop.frames.domain.incidences.Knows;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -283,6 +284,10 @@ public class FramedVertexTest extends TestCase {
         assertEquals(counter, 2);
 
         assertEquals(marko.getAStringProperty(), "aStringProperty");
+        Iterator<String> itty = marko.getListOfStrings().iterator();
+        assertEquals(itty.next(), "a");
+        assertEquals(itty.next(), "b");
+        assertEquals(itty.next(), "c");
     }
 
     public void testGetGremlinGroovySingleItem() {

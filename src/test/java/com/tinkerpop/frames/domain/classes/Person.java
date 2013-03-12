@@ -73,4 +73,7 @@ public interface Person extends NamedObject {
     @GremlinGroovy("'aStringProperty'")
     public String getAStringProperty();
 
+    @GremlinGroovy("['a','b','c']")
+    public Iterable<String> getListOfStrings();
+
 }

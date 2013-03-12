@@ -61,13 +61,13 @@ public interface Person extends NamedObject {
     @Adjacency(label = "latestProject")
     public void setLatestProject(final Project latestProject);
 
-    @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}")
+    @GremlinGroovy("_().as('x').out('created').in('created').except('x')")
     public Iterable<Person> getCoCreators();
 
-    @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it!=x}.shuffle")
+    @GremlinGroovy("_().as('x').out('created').in('created').except('x').shuffle")
     public Person getRandomCoCreators();
     
-    @GremlinGroovy("_().sideEffect{x=it}.out('created').in('created').filter{it['age'] == age}")
+    @GremlinGroovy("_().as('x').out('created').in('created').except('x').has('age',age)")
     public Person getCoCreatorOfAge(@GremlinParam("age") int age);
 
     

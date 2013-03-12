@@ -15,8 +15,9 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Allow the @GremlinGroovyAnnotationHandler@ to deal with non-iterable return types.
-* Support enum based properties type.
+* Added support for @GremlinParam@ so method parameters can be passed to Gremlin scripts
+* Allow the @GremlinGroovyAnnotationHandler@ to deal with non-iterable return types
+* Support enum based properties type
 
 ==<hr/>==
 

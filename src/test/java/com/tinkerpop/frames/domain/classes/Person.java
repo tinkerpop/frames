@@ -66,10 +66,11 @@ public interface Person extends NamedObject {
 
     @GremlinGroovy("_().as('x').out('created').in('created').except('x').shuffle")
     public Person getRandomCoCreators();
-    
+
     @GremlinGroovy("_().as('x').out('created').in('created').except('x').has('age',age)")
     public Person getCoCreatorOfAge(@GremlinParam("age") int age);
 
-    
+    @GremlinGroovy("'aStringProperty'")
+    public String getAStringProperty();
 
 }

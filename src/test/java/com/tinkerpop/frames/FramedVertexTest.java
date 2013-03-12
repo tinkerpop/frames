@@ -281,6 +281,8 @@ public class FramedVertexTest extends TestCase {
             assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
         }
         assertEquals(counter, 2);
+
+        assertEquals(marko.getAStringProperty(), "aStringProperty");
     }
 
     public void testGetGremlinGroovySingleItem() {
@@ -294,6 +296,8 @@ public class FramedVertexTest extends TestCase {
         Person coCreator = marko.getCoCreatorOfAge(32);
         assertTrue(coCreator.getName().equals("josh"));
         coCreator = marko.getCoCreatorOfAge(35);
-        assertTrue(coCreator.getName().equals("peter"));       
+        assertTrue(coCreator.getName().equals("peter"));
     }
+
+
 }

@@ -15,9 +15,10 @@ import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
+import com.tinkerpop.frames.proxy.JavaProxyGenerator;
+import com.tinkerpop.frames.proxy.ProxyGenerator;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,13 +34,19 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 
     protected final T baseGraph;
     private final Map<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>> annotationHandlers;
+    private final ProxyGenerator proxyGenerator;
+
+    public FramedGraph(final T baseGraph) {
+        this(baseGraph, new JavaProxyGenerator());
+    }
 
     /**
      * Construct a FramedGraph that will frame the elements of the underlying graph.
      *
      * @param baseGraph the graph whose elements to frame
      */
-    public FramedGraph(final T baseGraph) {
+    public FramedGraph(final T baseGraph, final ProxyGenerator proxyGenerator) {
+        this.proxyGenerator = proxyGenerator;
         this.baseGraph = baseGraph;
         this.annotationHandlers = new HashMap<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>>();
 
@@ -60,7 +67,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return a proxy objects backed by a vertex and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Vertex vertex, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedElement(this, vertex));
+        return this.proxyGenerator.generate(kind, new FramedElement(this, vertex), this.annotationHandlers);
     }
 
     /**
@@ -73,7 +80,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Edge edge, final Direction direction, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedElement(this, edge, direction));
+        return this.proxyGenerator.generate(kind, new FramedElement(this, edge, direction), this.annotationHandlers);
     }
 
     /**

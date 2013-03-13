@@ -25,6 +25,8 @@ public class FramedElement implements InvocationHandler {
     private static Method toStringMethod;
     private static Method asVertexMethod;
     private static Method asEdgeMethod;
+    private static Method equalsVertexMethod;
+    private static Method equalsEdgeMethod;
 
     protected static Object NO_INVOCATION_PATH = new Object();
 
@@ -35,6 +37,8 @@ public class FramedElement implements InvocationHandler {
             toStringMethod = Object.class.getMethod("toString");
             asVertexMethod = VertexFrame.class.getMethod("asVertex");
             asEdgeMethod = EdgeFrame.class.getMethod("asEdge");
+            equalsVertexMethod = VertexFrame.class.getMethod("equalsVertex", new Class[]{Object.class});
+            equalsEdgeMethod = EdgeFrame.class.getMethod("equalsEdge", new Class[]{Object.class});
         } catch (NoSuchMethodException e) {
             throw new NoSuchMethodError(e.getMessage());
         }
@@ -69,6 +73,10 @@ public class FramedElement implements InvocationHandler {
             return this.proxyToString(proxy);
         } else if (method.equals(asVertexMethod) || method.equals(asEdgeMethod)) {
             return this.element;
+        } else if (method.equals(equalsVertexMethod)) {
+            return this.proxyEqualsVertex(proxy, arguments[0]);
+        } else if (method.equals(equalsEdgeMethod)) {
+            return this.proxyEqualsEdge(proxy, arguments[0]);
         }
 
         final Annotation[] annotations = method.getAnnotations();
@@ -101,5 +109,25 @@ public class FramedElement implements InvocationHandler {
 
     public Element getElement() {
         return this.element;
+    }
+
+    private Boolean proxyEqualsVertex(final Object proxy, final Object other) {
+        if (other instanceof Vertex) {
+            return this.element.equals(other);
+        } else if (other instanceof VertexFrame) {
+            return this.element.equals(((VertexFrame) (other)).asVertex());
+        } else {
+            return proxyEquals(proxy, other);
+        }
+    }
+
+    private Boolean proxyEqualsEdge(final Object proxy, final Object other) {
+        if (other instanceof Edge) {
+            return this.element.equals(other);
+        } else if (other instanceof EdgeFrame) {
+            return this.element.equals(((EdgeFrame) (other)).asEdge());
+        } else {
+            return proxyEquals(proxy, other);
+        }
     }
 }

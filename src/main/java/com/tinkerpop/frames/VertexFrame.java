@@ -9,4 +9,5 @@ import com.tinkerpop.blueprints.Vertex;
  */
 public interface VertexFrame {
     Vertex asVertex();
+    Boolean equalsVertex(final Object other);
 }

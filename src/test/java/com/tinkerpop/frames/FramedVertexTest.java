@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.frames.domain.classes.NamedObject;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
@@ -272,6 +273,27 @@ public class FramedVertexTest extends TestCase {
         }
         assertEquals(counter, 2);
 
+    }
+
+    public void testVertexEquality() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person vadas = framedGraph.frame(graph.getVertex(2), Person.class);
+        NamedObject namedMarko = framedGraph.frame(graph.getVertex(1), NamedObject.class);
+        NamedObject namedVadas = framedGraph.frame(graph.getVertex(2), NamedObject.class);
+        assertTrue(marko.equals(marko));
+        assertFalse(marko.equals(vadas));
+        // The standard equals method will not consider different
+        // framed interfaces with the same underlying vertex as equal
+        assertEquals(marko.asVertex(), namedMarko.asVertex());
+        assertFalse(marko.equals(namedMarko));
+        assertTrue(marko.asVertex().equals(namedMarko.asVertex()));
+        assertFalse(marko.asVertex().equals(vadas.asVertex()));
+        // The equalsVertex method should...
+        assertTrue(marko.equalsVertex(namedMarko));
+        assertFalse(marko.equalsVertex(namedVadas));
+        // Passing a raw vertex should work as well
+        assertTrue(marko.equalsVertex(namedMarko.asVertex()));
+        assertFalse(marko.equalsVertex(namedVadas.asVertex()));
     }
 
     public void testGetGremlinGroovy() {

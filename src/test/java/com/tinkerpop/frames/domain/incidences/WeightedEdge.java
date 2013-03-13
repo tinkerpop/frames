@@ -8,16 +8,12 @@ import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 
 /**
- * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Mike Bryant (https://github.com/mikesname)
  */
-public interface CreatedBy extends EdgeFrame {
-
-    @Domain
-    public Project getDomain();
-
-    @Range
-    public Person getRange();
-
+public interface WeightedEdge extends EdgeFrame {
     @Property("weight")
     public Float getWeight();
+
+    @Property("weight")
+    public void setWeight(float weight);
 }

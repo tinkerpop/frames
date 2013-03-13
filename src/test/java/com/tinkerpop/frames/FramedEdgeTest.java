@@ -9,6 +9,7 @@ import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
 import com.tinkerpop.frames.domain.incidences.Knows;
+import com.tinkerpop.frames.domain.incidences.WeightedEdge;
 import junit.framework.TestCase;
 
 import java.util.Iterator;
@@ -68,5 +69,18 @@ public class FramedEdgeTest extends TestCase {
         assertFalse(createds1.hasNext());
         assertFalse(createds2.hasNext());
 
+    }
+
+    public void testEquality() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+
+        Person marko = framedGraph.getVertex(1, Person.class);
+        Person vadas = framedGraph.getVertex(2, Person.class);
+        Created created = marko.getCreated().iterator().next();
+        WeightedEdge weightedEdge = framedGraph.frame(created.asEdge(), Direction.OUT, WeightedEdge.class);
+
+        assertFalse(created.equals(weightedEdge));
+        assertTrue(created.equalsEdge(weightedEdge));
     }
 }

@@ -42,16 +42,15 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
     public Object processVertex(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph,
                                 final Vertex vertex) {
         try {
-            if (ClassUtilities.isGetMethod(method)) {
-
-                final CompiledScript script = this.engine.compile(annotation.value());
-                final Bindings bindings = getBindings(method, arguments);
-
-                final Object result = script.eval(bindings);
-                if (result instanceof Pipe) {
-                    final Pipe pipe = (Pipe) result;
-                    pipe.setStarts(new SingleIterator<Element>(vertex));
-                    final FramedVertexIterable r = new FramedVertexIterable(framedGraph, pipe, ClassUtilities.getGenericClass(method));
+            final CompiledScript script = this.engine.compile(annotation.value());
+            final Bindings bindings = getBindings(method, arguments);
+            bindings.put("it", vertex);
+            final Object result = script.eval(bindings);
+            if (result instanceof Pipe) {
+                final Pipe pipe = (Pipe) result;
+                pipe.setStarts(new SingleIterator<Element>(vertex));
+                final FramedVertexIterable r = new FramedVertexIterable(framedGraph, pipe, ClassUtilities.getGenericClass(method));
+                if (ClassUtilities.isGetMethod(method)) {
                     if (ClassUtilities.returnsIterable(method)) {
                         return r;
                     } else {
@@ -61,7 +60,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
                     return result;
                 }
             } else {
-                throw new UnsupportedOperationException("Gremlin only works with getters");
+                return result;
             }
         } catch (ScriptException e) {
             rethrow(e); //Preserve original exception functionality.

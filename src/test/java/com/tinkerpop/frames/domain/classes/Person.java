@@ -75,5 +75,4 @@ public interface Person extends NamedObject {
 
     @GremlinGroovy("['a','b','c']")
     public Iterable<String> getListOfStrings();
-
 }

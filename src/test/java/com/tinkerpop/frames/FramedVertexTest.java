@@ -340,5 +340,14 @@ public class FramedVertexTest extends TestCase {
         assertEquals(coauthors.size(), 2);
     }
 
-
+    
+    public void testBooleanGetMethods() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        marko.setBoolean(true);
+        assertTrue(marko.isBoolean());
+        assertTrue(marko.isBooleanPrimitive());
+        assertTrue(marko.canBoolean());
+        assertTrue(marko.canBooleanPrimitive());
+    }
+    
 }

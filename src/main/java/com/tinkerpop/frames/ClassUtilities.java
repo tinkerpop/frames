@@ -1,19 +1,22 @@
 package com.tinkerpop.frames;
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Map;
+
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 public class ClassUtilities {
     private static final String SET = "set";
     private static final String GET = "get";
     private static final String REMOVE = "remove";
     private static final String ADD = "add";
+    private static final String IS = "is";
+    private static final String CAN = "can";
 
     public static boolean isGetMethod(final Method method) {
-        return method.getName().startsWith(GET);
+    	Class<?> returnType = method.getReturnType();
+    	return (method.getName().startsWith(GET) || (returnType == Boolean.class || returnType == Boolean.TYPE) && (method.getName().startsWith(IS) || method.getName().startsWith(CAN)));
     }
 
     public static boolean isSetMethod(final Method method) {

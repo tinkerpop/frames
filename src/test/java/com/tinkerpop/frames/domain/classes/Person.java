@@ -63,7 +63,7 @@ public interface Person extends NamedObject {
     @Adjacency(label = "latestProject")
     public void setLatestProject(final Project latestProject);
 
-    @GremlinGroovy("_().as('x').out('created').in('created').except('x')")
+    @GremlinGroovy("it.as('x').out('created').in('created').except('x')")
     public Iterable<Person> getCoCreators();
 
     @GremlinGroovy("_().as('x').out('created').in('created').except('x').shuffle")

@@ -32,6 +32,11 @@ public class ClassUtilities {
         return Iterable.class.isAssignableFrom(method.getReturnType());
     }
 
+    public static boolean returnsFramedType(final Method method) {
+        final Class type = getGenericClass(method);
+        return VertexFrame.class.isAssignableFrom(type) || EdgeFrame.class.isAssignableFrom(type);
+    }
+
     public static boolean returnsMap(final Method method) {
         return Map.class.isAssignableFrom(method.getReturnType());
     }

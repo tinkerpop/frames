@@ -49,26 +49,23 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
             final Bindings bindings = getBindings(method, arguments);
             bindings.put(IT, vertex);
             final Object result = script.eval(bindings);
-            if (result instanceof Pipe) {
-                final Pipe pipe = (Pipe) result;
-                pipe.setStarts(new SingleIterator<Element>(vertex));
-                final FramedVertexIterable r = new FramedVertexIterable(framedGraph, pipe, ClassUtilities.getGenericClass(method));
-                if (ClassUtilities.isGetMethod(method)) {
-                    if (ClassUtilities.returnsIterable(method)) {
-                        return r;
-                    } else {
-                        return r.iterator().hasNext() ? r.iterator().next() : null;
-                    }
-                } else {
-                    return result;
-                }
-            } else {
-                if (ClassUtilities.returnsMap(method) & ClassUtilities.isGetMethod(method)) {
-                    return new FramedVertexMap(framedGraph, (Map) result, ClassUtilities.getGenericClass(method));
-                } else {
-                    return result;
-                }
+
+            // TODO: Deprecate the use of _() and replace with it
+            if (result instanceof Pipe & !annotation.value().startsWith(IT)) {
+                ((Pipe) result).setStarts(new SingleIterator<Element>(vertex));
             }
+
+            if (result instanceof Iterable && ClassUtilities.returnsFramedType(method)) {
+                final FramedVertexIterable r = new FramedVertexIterable(framedGraph, (Iterable) result, ClassUtilities.getGenericClass(method));
+                return (ClassUtilities.returnsIterable(method)) ? r : r.iterator().hasNext() ? r.iterator().next() : null;
+            } else if (ClassUtilities.returnsMap(method) & ClassUtilities.returnsFramedType(method)) {
+                return new FramedVertexMap(framedGraph, (Map) result, ClassUtilities.getGenericClass(method));
+            } else if (result instanceof Vertex) {
+                return ClassUtilities.returnsFramedType(method) ? framedGraph.frame((Vertex) result, ClassUtilities.getGenericClass(method)) : result;
+            } else {
+                return result;
+            }
+
         } catch (ScriptException e) {
             rethrow(e); //Preserve original exception functionality.
             return null;

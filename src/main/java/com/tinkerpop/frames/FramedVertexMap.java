@@ -39,12 +39,14 @@ public class FramedVertexMap<T extends VertexFrame> implements Map<T, Object> {
         return this.map.isEmpty();
     }
 
-    public Object put(T key, Object value) {
+    public Object put(final T key, final Object value) {
         return this.map.put(key.asVertex(), value);
     }
 
-    public void putAll(Map otherMap) {
-        throw new UnsupportedOperationException();
+    public void putAll(final Map otherMap) {
+        for (final Entry<T, Object> entry : (Set<Entry<T, Object>>) otherMap.entrySet()) {
+            this.put(entry.getKey(), entry.getValue());
+        }
     }
 
     public boolean containsValue(final Object value) {
@@ -56,7 +58,7 @@ public class FramedVertexMap<T extends VertexFrame> implements Map<T, Object> {
     }
 
     public Set<T> keySet() {
-        Set<T> keys = new HashSet<T>();
+        final Set<T> keys = new HashSet<T>();
         for (final Vertex v : this.map.keySet()) {
             keys.add(this.framedGraph.frame(v, this.kind));
         }
@@ -87,12 +89,8 @@ public class FramedVertexMap<T extends VertexFrame> implements Map<T, Object> {
             this.entry = entry;
         }
 
-        public void setEntry(T t) {
-            throw new UnsupportedOperationException();
-        }
-
-        public Object setValue(Object object) {
-            throw new UnsupportedOperationException();
+        public Object setValue(final Object object) {
+            return this.entry.setValue(object);
         }
 
         public Object getValue() {

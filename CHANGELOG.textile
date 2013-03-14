@@ -15,6 +15,8 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Removed reference to sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl in @ClassUtilities@.
+* Added 'is' and 'can' prefixes for boolean methods that are marked as a 'get' method in @ClassUtilities@. 
 * Added @FramedVertexMap@ to support the return of @Map@ objects that have framed vertices as keys
 * Fixed a Frame equality bug
 * @GremlinGroovy@ annotation now supports an arbitrary return type, not just a @Pipe@

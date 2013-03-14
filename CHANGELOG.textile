@@ -15,6 +15,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Added @FramedVertexMap@ to support the return of @Map@ objects that have framed vertices as keys
 * Fixed a Frame equality bug
 * @GremlinGroovy@ annotation now supports an arbitrary return type, not just a @Pipe@
 * Added support for @GremlinParam@ so method parameters can be passed to Gremlin scripts

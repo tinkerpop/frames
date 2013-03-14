@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -324,6 +325,19 @@ public class FramedVertexTest extends TestCase {
         assertTrue(coCreator.getName().equals("josh"));
         coCreator = marko.getCoCreatorOfAge(35);
         assertTrue(coCreator.getName().equals("peter"));
+    }
+
+    public void testMapReturnType() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Map<Person, Long> coauthors = marko.getRankedCoauthors();
+
+        Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
+        assertEquals(coauthors.get(peter), new Long(1));
+
+        Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
+        assertEquals(coauthors.get(josh), new Long(1));
+
+        assertEquals(coauthors.size(), 2);
     }
 
 

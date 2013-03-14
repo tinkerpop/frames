@@ -8,6 +8,8 @@ import com.tinkerpop.frames.annotations.gremlin.GremlinParam;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
+import java.util.Map;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -75,4 +77,7 @@ public interface Person extends NamedObject {
 
     @GremlinGroovy("['a','b','c']")
     public Iterable<String> getListOfStrings();
+
+    @GremlinGroovy("it.as('x').out('created').in('created').except('x').groupCount.cap.next()")
+    public Map<Person,Long> getRankedCoauthors();
 }

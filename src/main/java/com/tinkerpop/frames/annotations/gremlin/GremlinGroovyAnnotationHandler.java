@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.FramedVertexIterable;
+import com.tinkerpop.frames.FramedVertexMap;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 import com.tinkerpop.pipes.Pipe;
@@ -16,6 +17,7 @@ import javax.script.CompiledScript;
 import javax.script.ScriptException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -23,6 +25,7 @@ import java.lang.reflect.Method;
  */
 public class GremlinGroovyAnnotationHandler implements AnnotationHandler<GremlinGroovy> {
     private final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
+    private static final String IT = "it";
 
     @Override
     public Class<GremlinGroovy> getAnnotationType() {
@@ -44,7 +47,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
         try {
             final CompiledScript script = this.engine.compile(annotation.value());
             final Bindings bindings = getBindings(method, arguments);
-            bindings.put("it", vertex);
+            bindings.put(IT, vertex);
             final Object result = script.eval(bindings);
             if (result instanceof Pipe) {
                 final Pipe pipe = (Pipe) result;
@@ -60,7 +63,11 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
                     return result;
                 }
             } else {
-                return result;
+                if (ClassUtilities.returnsMap(method) & ClassUtilities.isGetMethod(method)) {
+                    return new FramedVertexMap(framedGraph, (Map) result, ClassUtilities.getGenericClass(method));
+                } else {
+                    return result;
+                }
             }
         } catch (ScriptException e) {
             rethrow(e); //Preserve original exception functionality.

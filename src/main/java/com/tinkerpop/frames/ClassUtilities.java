@@ -4,6 +4,7 @@ import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Map;
 
 public class ClassUtilities {
     private static final String SET = "set";
@@ -29,6 +30,10 @@ public class ClassUtilities {
 
     public static boolean returnsIterable(final Method method) {
         return Iterable.class.isAssignableFrom(method.getReturnType());
+    }
+
+    public static boolean returnsMap(final Method method) {
+        return Map.class.isAssignableFrom(method.getReturnType());
     }
 
     public static boolean isAddMethod(final Method method) {

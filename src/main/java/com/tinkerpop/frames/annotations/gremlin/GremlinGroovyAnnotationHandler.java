@@ -26,6 +26,7 @@ import java.util.Map;
 public class GremlinGroovyAnnotationHandler implements AnnotationHandler<GremlinGroovy> {
     private final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
     private static final String IT = "it";
+    private static final String G = "g";
 
     @Override
     public Class<GremlinGroovy> getAnnotationType() {
@@ -48,6 +49,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
             final CompiledScript script = this.engine.compile(annotation.value());
             final Bindings bindings = getBindings(method, arguments);
             bindings.put(IT, vertex);
+            bindings.put(G, framedGraph);
             final Object result = script.eval(bindings);
 
             // TODO: Deprecate the use of _() and replace with it

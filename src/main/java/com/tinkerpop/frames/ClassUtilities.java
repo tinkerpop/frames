@@ -1,10 +1,11 @@
 package com.tinkerpop.frames;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
+
 
 public class ClassUtilities {
     private static final String SET = "set";
@@ -51,8 +52,8 @@ public class ClassUtilities {
     @SuppressWarnings("rawtypes")
     public static Class getGenericClass(final Method method) {
         final Type returnType = method.getGenericReturnType();
-        if (returnType instanceof ParameterizedTypeImpl)
-            return (Class) ((ParameterizedTypeImpl) returnType).getActualTypeArguments()[0];
+        if (returnType instanceof ParameterizedType)
+            return (Class) ((ParameterizedType) returnType).getActualTypeArguments()[0];
         else
             return method.getReturnType();
     }

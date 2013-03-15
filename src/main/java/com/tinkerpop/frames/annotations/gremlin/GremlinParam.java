@@ -7,11 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * Use to name parameters for that get bound when executing a script defined by @GremlinGroovy.
- *  
+ *
  * @author Bryn Cooke
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface GremlinParam {
-	String value();
+    String value();
 }

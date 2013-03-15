@@ -80,7 +80,6 @@ public class FramedEdgeTest extends TestCase {
         Created created = marko.getCreated().iterator().next();
         WeightedEdge weightedEdge = framedGraph.frame(created.asEdge(), Direction.OUT, WeightedEdge.class);
 
-        assertFalse(created.equals(weightedEdge));
-        assertTrue(created.equalsEdge(weightedEdge));
+        assertEquals(created, weightedEdge);
     }
 }

@@ -1,9 +1,8 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.util.ElementHelper;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -73,10 +72,6 @@ public class FramedElement implements InvocationHandler {
             return this.proxyToString(proxy);
         } else if (method.equals(asVertexMethod) || method.equals(asEdgeMethod)) {
             return this.element;
-        } else if (method.equals(equalsVertexMethod)) {
-            return this.proxyEqualsVertex(proxy, arguments[0]);
-        } else if (method.equals(equalsEdgeMethod)) {
-            return this.proxyEqualsEdge(proxy, arguments[0]);
         }
 
         final Annotation[] annotations = method.getAnnotations();
@@ -87,17 +82,18 @@ public class FramedElement implements InvocationHandler {
         }
 
         return NO_INVOCATION_PATH;
-
     }
 
 
     private Integer proxyHashCode(final Object proxy) {
-        return System.identityHashCode(proxy) + this.element.hashCode();
+        return this.element.hashCode();
     }
 
     private Boolean proxyEquals(final Object proxy, final Object other) {
-        if (proxy.getClass().equals(other.getClass())) {
+        if (Proxy.isProxyClass(other.getClass())) {
             return ((FramedElement) (Proxy.getInvocationHandler(proxy))).getElement().equals(((FramedElement) (Proxy.getInvocationHandler(other))).getElement());
+        } else if (other instanceof Element) {
+            return ElementHelper.areEqual(((FramedElement) (Proxy.getInvocationHandler(proxy))).getElement(), other);
         } else {
             return Boolean.FALSE;
         }
@@ -109,25 +105,5 @@ public class FramedElement implements InvocationHandler {
 
     public Element getElement() {
         return this.element;
-    }
-
-    private Boolean proxyEqualsVertex(final Object proxy, final Object other) {
-        if (other instanceof Vertex) {
-            return this.element.equals(other);
-        } else if (other instanceof VertexFrame) {
-            return this.element.equals(((VertexFrame) (other)).asVertex());
-        } else {
-            return proxyEquals(proxy, other);
-        }
-    }
-
-    private Boolean proxyEqualsEdge(final Object proxy, final Object other) {
-        if (other instanceof Edge) {
-            return this.element.equals(other);
-        } else if (other instanceof EdgeFrame) {
-            return this.element.equals(((EdgeFrame) (other)).asEdge());
-        } else {
-            return proxyEquals(proxy, other);
-        }
     }
 }

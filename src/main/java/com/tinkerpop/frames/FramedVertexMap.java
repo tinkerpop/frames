@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FramedVertexMap<T extends VertexFrame> implements Map<T, Object> {
+public class FramedVertexMap<T> implements Map<T, Object> {
 
     private final Map<Vertex, Object> map;
     protected final Class<T> kind;
@@ -24,11 +24,11 @@ public class FramedVertexMap<T extends VertexFrame> implements Map<T, Object> {
     }
 
     public Object get(final Object key) {
-        return this.map.get(((T) key).asVertex());
+        return this.map.get(key);
     }
 
     public Object remove(final Object key) {
-        return this.map.remove(((T) key).asVertex());
+        return this.map.remove(key);
     }
 
     public int size() {
@@ -40,13 +40,11 @@ public class FramedVertexMap<T extends VertexFrame> implements Map<T, Object> {
     }
 
     public Object put(final T key, final Object value) {
-        return this.map.put(key.asVertex(), value);
+        throw new UnsupportedOperationException();
     }
 
     public void putAll(final Map otherMap) {
-        for (final Entry<T, Object> entry : (Set<Entry<T, Object>>) otherMap.entrySet()) {
-            this.put(entry.getKey(), entry.getValue());
-        }
+        throw new UnsupportedOperationException();
     }
 
     public boolean containsValue(final Object value) {
@@ -54,7 +52,7 @@ public class FramedVertexMap<T extends VertexFrame> implements Map<T, Object> {
     }
 
     public boolean containsKey(final Object key) {
-        return this.map.containsKey(((T) key).asVertex());
+        return this.map.containsKey(key);
     }
 
     public Set<T> keySet() {

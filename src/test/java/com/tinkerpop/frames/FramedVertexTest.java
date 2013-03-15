@@ -286,15 +286,9 @@ public class FramedVertexTest extends TestCase {
         // The standard equals method will not consider different
         // framed interfaces with the same underlying vertex as equal
         assertEquals(marko.asVertex(), namedMarko.asVertex());
-        assertFalse(marko.equals(namedMarko));
-        assertTrue(marko.asVertex().equals(namedMarko.asVertex()));
-        assertFalse(marko.asVertex().equals(vadas.asVertex()));
-        // The equalsVertex method should...
-        assertTrue(marko.equalsVertex(namedMarko));
-        assertFalse(marko.equalsVertex(namedVadas));
-        // Passing a raw vertex should work as well
-        assertTrue(marko.equalsVertex(namedMarko.asVertex()));
-        assertFalse(marko.equalsVertex(namedVadas.asVertex()));
+        assertEquals(marko, namedMarko);
+        assertEquals(marko.asVertex(), namedMarko.asVertex());
+        assertNotSame(marko.asVertex(), vadas.asVertex());
     }
 
     public void testGetGremlinGroovy() {
@@ -340,7 +334,7 @@ public class FramedVertexTest extends TestCase {
         assertEquals(coauthors.size(), 2);
     }
 
-    
+
     public void testBooleanGetMethods() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         marko.setBoolean(true);
@@ -349,5 +343,5 @@ public class FramedVertexTest extends TestCase {
         assertTrue(marko.canBoolean());
         assertTrue(marko.canBooleanPrimitive());
     }
-    
+
 }

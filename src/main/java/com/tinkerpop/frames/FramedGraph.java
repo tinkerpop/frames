@@ -1,13 +1,5 @@
 package com.tinkerpop.frames;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Features;
@@ -24,6 +16,14 @@ import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * The primary class for interpreting/framing elements of a graph in terms of particulate annotated interfaces.
  * This is a wrapper graph in that it requires an underlying graph from which to add functionality.
@@ -35,7 +35,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 
     protected final T baseGraph;
     private final Map<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>> annotationHandlers;
-	private List<FrameInitializer> frameInitializers = new ArrayList<FrameInitializer>();
+    private List<FrameInitializer> frameInitializers = new ArrayList<FrameInitializer>();
 
     /**
      * Construct a FramedGraph that will frame the elements of the underlying graph.
@@ -134,10 +134,10 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      */
     public <F> F addVertex(final Object id, final Class<F> kind) {
         Vertex vertex = this.baseGraph.addVertex(id);
-        for(FrameInitializer initializer : frameInitializers) {
-        	initializer.initElement(kind, this, vertex);
+        for (FrameInitializer initializer : frameInitializers) {
+            initializer.initElement(kind, this, vertex);
         }
-		return this.frame(vertex, kind);
+        return this.frame(vertex, kind);
     }
 
     public Edge getEdge(final Object id) {
@@ -174,12 +174,12 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return a proxy object backed by the edge and interpreted from the perspective of the annotate interface
      */
     public <F> F addEdge(final Object id, final Vertex outVertex, final Vertex inVertex, final String label, final Direction direction, final Class<F> kind) {
-    	Edge edge = this.baseGraph.addEdge(id, outVertex, inVertex, label);
-        for(FrameInitializer initializer : frameInitializers) {
-        	initializer.initElement(kind, this, edge);
+        Edge edge = this.baseGraph.addEdge(id, outVertex, inVertex, label);
+        for (FrameInitializer initializer : frameInitializers) {
+            initializer.initElement(kind, this, edge);
         }
-        
-		return this.frame(edge, direction, kind);
+
+        return this.frame(edge, direction, kind);
     }
 
     public void removeVertex(final Vertex vertex) {
@@ -292,14 +292,15 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
         return this.annotationHandlers.values();
     }
 
-    
+
     /**
      * Register a <code>FrameInitializer</code> that will be called whenever a new vertex or edge is added to the graph.
-     * The initializer may mutate the vertex (or graph) before returning the framed element to the user. 
+     * The initializer may mutate the vertex (or graph) before returning the framed element to the user.
+     *
      * @param frameInitializer the frame initializer
      */
     public void registerFrameInitializer(FrameInitializer frameInitializer) {
-    	frameInitializers.add(frameInitializer);
+        frameInitializers.add(frameInitializer);
     }
 
 }

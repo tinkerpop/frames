@@ -9,5 +9,6 @@ import com.tinkerpop.blueprints.Edge;
  */
 public interface EdgeFrame {
     Edge asEdge();
+
     Boolean equalsEdge(final Object other);
 }

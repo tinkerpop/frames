@@ -24,8 +24,6 @@ public class FramedElement implements InvocationHandler {
     private static Method toStringMethod;
     private static Method asVertexMethod;
     private static Method asEdgeMethod;
-    private static Method equalsVertexMethod;
-    private static Method equalsEdgeMethod;
 
     protected static Object NO_INVOCATION_PATH = new Object();
 
@@ -36,8 +34,6 @@ public class FramedElement implements InvocationHandler {
             toStringMethod = Object.class.getMethod("toString");
             asVertexMethod = VertexFrame.class.getMethod("asVertex");
             asEdgeMethod = EdgeFrame.class.getMethod("asEdge");
-            equalsVertexMethod = VertexFrame.class.getMethod("equalsVertex", new Class[]{Object.class});
-            equalsEdgeMethod = EdgeFrame.class.getMethod("equalsEdge", new Class[]{Object.class});
         } catch (NoSuchMethodException e) {
             throw new NoSuchMethodError(e.getMessage());
         }
@@ -61,15 +57,14 @@ public class FramedElement implements InvocationHandler {
         this(framedGraph, element, null);
     }
 
-
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
 
         if (method.equals(hashCodeMethod)) {
-            return this.proxyHashCode(proxy);
+            return this.element.hashCode();
         } else if (method.equals(equalsMethod)) {
-            return this.proxyEquals(proxy, arguments[0]);
+            return this.proxyEquals(arguments[0]);
         } else if (method.equals(toStringMethod)) {
-            return this.proxyToString(proxy);
+            return this.element.toString();
         } else if (method.equals(asVertexMethod) || method.equals(asEdgeMethod)) {
             return this.element;
         }
@@ -84,23 +79,14 @@ public class FramedElement implements InvocationHandler {
         return NO_INVOCATION_PATH;
     }
 
-
-    private Integer proxyHashCode(final Object proxy) {
-        return this.element.hashCode();
-    }
-
-    private Boolean proxyEquals(final Object proxy, final Object other) {
+    private Boolean proxyEquals(final Object other) {
         if (Proxy.isProxyClass(other.getClass())) {
-            return ((FramedElement) (Proxy.getInvocationHandler(proxy))).getElement().equals(((FramedElement) (Proxy.getInvocationHandler(other))).getElement());
+            return this.element.equals(((FramedElement) (Proxy.getInvocationHandler(other))).getElement());
         } else if (other instanceof Element) {
-            return ElementHelper.areEqual(((FramedElement) (Proxy.getInvocationHandler(proxy))).getElement(), other);
+            return ElementHelper.areEqual(this.element, other);
         } else {
             return Boolean.FALSE;
         }
-    }
-
-    private String proxyToString(final Object proxy) {
-        return ((FramedElement) Proxy.getInvocationHandler(proxy)).getElement().toString();
     }
 
     public Element getElement() {

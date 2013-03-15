@@ -1,7 +1,8 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.structures;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.FramedGraph;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -56,11 +57,7 @@ public class FramedVertexMap<T> implements Map<T, Object> {
     }
 
     public Set<T> keySet() {
-        final Set<T> keys = new HashSet<T>();
-        for (final Vertex v : this.map.keySet()) {
-            keys.add(this.framedGraph.frame(v, this.kind));
-        }
-        return keys;
+        return new FramedVertexSet<T>(framedGraph, this.map.keySet(), kind);
     }
 
     public Collection<Object> values() {

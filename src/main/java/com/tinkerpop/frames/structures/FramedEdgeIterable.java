@@ -1,27 +1,32 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.structures;
 
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.FramedGraph;
 
 import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FramedVertexIterable<T> implements Iterable<T> {
+public class FramedEdgeIterable<T> implements Iterable<T> {
     protected final Class<T> kind;
-    protected final Iterable<Vertex> iterable;
+    protected final Direction direction;
+    protected final Iterable<Edge> iterable;
     protected final FramedGraph<? extends Graph> framedGraph;
 
-    public FramedVertexIterable(final FramedGraph<? extends Graph> framedGraph, final Iterable<Vertex> iterable, final Class<T> kind) {
+    public FramedEdgeIterable(final FramedGraph<? extends Graph> framedGraph, final Iterable<Edge> iterable, final Direction direction, final Class<T> kind) {
         this.framedGraph = framedGraph;
         this.iterable = iterable;
         this.kind = kind;
+        this.direction = direction;
     }
 
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            private Iterator<Vertex> iterator = iterable.iterator();
+
+            private final Iterator<Edge> iterator = iterable.iterator();
 
             public void remove() {
                 throw new UnsupportedOperationException();
@@ -32,7 +37,7 @@ public class FramedVertexIterable<T> implements Iterable<T> {
             }
 
             public T next() {
-                return framedGraph.frame(this.iterator.next(), kind);
+                return framedGraph.frame(this.iterator.next(), direction, kind);
             }
         };
     }

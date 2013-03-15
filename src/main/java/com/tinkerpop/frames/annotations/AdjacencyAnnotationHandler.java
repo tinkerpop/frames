@@ -9,7 +9,7 @@ import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramedGraph;
-import com.tinkerpop.frames.FramedVertexIterable;
+import com.tinkerpop.frames.structures.FramedVertexIterable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

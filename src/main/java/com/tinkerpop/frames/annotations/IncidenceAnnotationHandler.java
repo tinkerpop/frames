@@ -5,7 +5,7 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
-import com.tinkerpop.frames.FramedEdgeIterable;
+import com.tinkerpop.frames.structures.FramedEdgeIterable;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.Incidence;

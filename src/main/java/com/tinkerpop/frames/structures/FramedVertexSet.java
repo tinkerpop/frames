@@ -1,7 +1,8 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.structures;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.FramedGraph;
 
 import java.util.Collection;
 import java.util.Iterator;

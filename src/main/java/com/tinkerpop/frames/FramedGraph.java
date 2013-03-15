@@ -15,6 +15,8 @@ import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
+import com.tinkerpop.frames.structures.FramedEdgeIterable;
+import com.tinkerpop.frames.structures.FramedVertexIterable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;

@@ -57,13 +57,13 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
                 ((Pipe) result).setStarts(new SingleIterator<Element>(vertex));
             }
 
-            if (result instanceof Iterable && ClassUtilities.returnsFramedType(method)) {
+            if (result instanceof Iterable && ClassUtilities.returnsFramedType(method, framedGraph)) {
                 final FramedVertexIterable r = new FramedVertexIterable(framedGraph, (Iterable) result, ClassUtilities.getGenericClass(method));
                 return (ClassUtilities.returnsIterable(method)) ? r : r.iterator().hasNext() ? r.iterator().next() : null;
-            } else if (ClassUtilities.returnsMap(method) & ClassUtilities.returnsFramedType(method)) {
+            } else if (ClassUtilities.returnsMap(method) & ClassUtilities.returnsFramedType(method, framedGraph)) {
                 return new FramedVertexMap(framedGraph, (Map) result, ClassUtilities.getGenericClass(method));
             } else if (result instanceof Vertex) {
-                return ClassUtilities.returnsFramedType(method) ? framedGraph.frame((Vertex) result, ClassUtilities.getGenericClass(method)) : result;
+                return ClassUtilities.returnsFramedType(method, framedGraph) ? framedGraph.frame((Vertex) result, ClassUtilities.getGenericClass(method)) : result;
             } else {
                 return result;
             }

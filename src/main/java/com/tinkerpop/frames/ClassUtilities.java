@@ -1,10 +1,11 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Vertex;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
-
 
 
 public class ClassUtilities {
@@ -16,8 +17,8 @@ public class ClassUtilities {
     private static final String CAN = "can";
 
     public static boolean isGetMethod(final Method method) {
-    	Class<?> returnType = method.getReturnType();
-    	return (method.getName().startsWith(GET) || (returnType == Boolean.class || returnType == Boolean.TYPE) && (method.getName().startsWith(IS) || method.getName().startsWith(CAN)));
+        Class<?> returnType = method.getReturnType();
+        return (method.getName().startsWith(GET) || (returnType == Boolean.class || returnType == Boolean.TYPE) && (method.getName().startsWith(IS) || method.getName().startsWith(CAN)));
     }
 
     public static boolean isSetMethod(final Method method) {
@@ -36,9 +37,8 @@ public class ClassUtilities {
         return Iterable.class.isAssignableFrom(method.getReturnType());
     }
 
-    public static boolean returnsFramedType(final Method method) {
-        final Class type = getGenericClass(method);
-        return VertexFrame.class.isAssignableFrom(type) || EdgeFrame.class.isAssignableFrom(type);
+    public static boolean returnsVertex(final Method method) {
+        return Vertex.class.isAssignableFrom(method.getReturnType());
     }
 
     public static boolean returnsMap(final Method method) {

@@ -1,7 +1,5 @@
 package com.tinkerpop.frames.domain.classes;
 
-import java.util.Map;
-
 import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
@@ -9,6 +7,8 @@ import com.tinkerpop.frames.annotations.gremlin.GremlinGroovy;
 import com.tinkerpop.frames.annotations.gremlin.GremlinParam;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.Knows;
+
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -72,28 +72,27 @@ public interface Person extends NamedObject {
     @GremlinGroovy("_().as('x').out('created').in('created').except('x').has('age',age)")
     public Person getCoCreatorOfAge(@GremlinParam("age") int age);
 
-    @GremlinGroovy("'aStringProperty'")
+    @GremlinGroovy(value = "'aStringProperty'", frame = false)
     public String getAStringProperty();
 
-    @GremlinGroovy("['a','b','c']")
+    @GremlinGroovy(value = "['a','b','c']", frame = false)
     public Iterable<String> getListOfStrings();
 
     @GremlinGroovy("it.as('x').out('created').in('created').except('x').groupCount.cap.next()")
-    public Map<Person,Long> getRankedCoauthors();
-    
-    
+    public Map<Person, Long> getRankedCoauthors();
+
     @Property("boolean")
     public void setBoolean(boolean b);
-    
+
     @Property("boolean")
     public boolean isBooleanPrimitive();
-    
+
     @Property("boolean")
     public Boolean isBoolean();
-    
+
     @Property("boolean")
     public boolean canBooleanPrimitive();
-    
+
     @Property("boolean")
     public Boolean canBoolean();
 }

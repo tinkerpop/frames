@@ -15,4 +15,6 @@ import java.lang.annotation.Target;
 public @interface GremlinGroovy {
 
     public String value();
+
+    public boolean frame() default true;
 }

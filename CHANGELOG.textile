@@ -21,7 +21,6 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 * Fixed a Frame equality bug
 * @GremlinGroovy@ annotation now supports an arbitrary return type, not just a @Pipe@
 * Added support for @GremlinParam@ so method parameters can be passed to Gremlin scripts
-* Allow the @GremlinGroovyAnnotationHandler@ to deal with non-iterable return types
 * Support enum based properties type
 
 ==<hr/>==

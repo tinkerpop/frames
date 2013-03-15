@@ -57,13 +57,17 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
                 ((Pipe) result).setStarts(new SingleIterator<Element>(vertex));
             }
 
-            if (result instanceof Iterable && ClassUtilities.returnsFramedType(method)) {
-                final FramedVertexIterable r = new FramedVertexIterable(framedGraph, (Iterable) result, ClassUtilities.getGenericClass(method));
-                return (ClassUtilities.returnsIterable(method)) ? r : r.iterator().hasNext() ? r.iterator().next() : null;
-            } else if (ClassUtilities.returnsMap(method) & ClassUtilities.returnsFramedType(method)) {
-                return new FramedVertexMap(framedGraph, (Map) result, ClassUtilities.getGenericClass(method));
-            } else if (result instanceof Vertex) {
-                return ClassUtilities.returnsFramedType(method) ? framedGraph.frame((Vertex) result, ClassUtilities.getGenericClass(method)) : result;
+            if (annotation.frame()) {
+                if (result instanceof Iterable) {
+                    final FramedVertexIterable r = new FramedVertexIterable(framedGraph, (Iterable) result, ClassUtilities.getGenericClass(method));
+                    return (ClassUtilities.returnsIterable(method)) ? r : r.iterator().hasNext() ? r.iterator().next() : null;
+                } else if (ClassUtilities.returnsMap(method)) {
+                    return new FramedVertexMap(framedGraph, (Map) result, ClassUtilities.getGenericClass(method));
+                } else if (ClassUtilities.returnsVertex(method)) {
+                    return framedGraph.frame((Vertex) result, ClassUtilities.getGenericClass(method));
+                } else {
+                    throw new IllegalStateException("The returned object can not be framed: " + result.getClass());
+                }
             } else {
                 return result;
             }

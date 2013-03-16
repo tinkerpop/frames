@@ -41,6 +41,9 @@ public interface Person extends NamedObject {
 
     @Adjacency(label = "knows")
     public void addKnowsPerson(final Person person);
+    
+    @Adjacency(label = "knows")
+    public Person addKnowsNewPerson();
 
     @Incidence(label = "knows")
     public Knows addKnows(final Person person);

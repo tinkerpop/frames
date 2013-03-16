@@ -42,7 +42,7 @@ public class ClassUtilities {
 			return true;
 		}
 		for (Method m : type.getMethods()) {
-			for (Annotation a : method.getAnnotations()) {
+			for (Annotation a : m.getAnnotations()) {
 				if (framedGraph.hasAnnotationHandler(a.annotationType())) {
 					return true;
 				}

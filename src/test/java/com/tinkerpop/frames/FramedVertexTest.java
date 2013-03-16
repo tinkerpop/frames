@@ -1,5 +1,12 @@
 package com.tinkerpop.frames;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import junit.framework.TestCase;
+
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
@@ -10,12 +17,6 @@ import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
 import com.tinkerpop.frames.domain.incidences.Knows;
-import junit.framework.TestCase;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -217,7 +218,6 @@ public class FramedVertexTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-
         Project lop = framedGraph.frame(graph.getVertex(3), Project.class);
         counter = 0;
         List<CreatedBy> toRemove2 = new ArrayList<CreatedBy>();
@@ -263,7 +263,8 @@ public class FramedVertexTest extends TestCase {
         for (Edge edge : graph.getVertex(3).getEdges(Direction.IN, "created")) {
             if (edge.getLabel().equals("created")) {
                 counter++;
-                assertTrue(edge.getVertex(Direction.OUT).getProperty("name").equals("josh") || edge.getVertex(Direction.OUT).getProperty("name").equals("peter"));
+                assertTrue(edge.getVertex(Direction.OUT).getProperty("name").equals("josh")
+                        || edge.getVertex(Direction.OUT).getProperty("name").equals("peter"));
             }
         }
         assertEquals(counter, 2);
@@ -334,7 +335,6 @@ public class FramedVertexTest extends TestCase {
         assertEquals(coauthors.size(), 2);
     }
 
-
     public void testBooleanGetMethods() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         marko.setBoolean(true);
@@ -342,6 +342,20 @@ public class FramedVertexTest extends TestCase {
         assertTrue(marko.isBooleanPrimitive());
         assertTrue(marko.canBoolean());
         assertTrue(marko.canBooleanPrimitive());
+    }
+
+    public void testFramingInterfaces() {
+        StanalonePerson marko = framedGraph.frame(graph.getVertex(1), StanalonePerson.class);
+        assertTrue(marko instanceof VertexFrame);
+        for (Knows knows : marko.getKnows()) {
+            assertTrue(knows instanceof EdgeFrame);
+        }
+    }
+
+    public static interface StanalonePerson {
+
+        @Incidence(label = "knows")
+        public Iterable<Knows> getKnows();
     }
 
 }

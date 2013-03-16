@@ -1,5 +1,13 @@
 package com.tinkerpop.frames;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Features;
@@ -17,14 +25,6 @@ import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
 import com.tinkerpop.frames.structures.FramedEdgeIterable;
 import com.tinkerpop.frames.structures.FramedVertexIterable;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The primary class for interpreting/framing elements of a graph in terms of particulate annotated interfaces.
@@ -65,7 +65,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return a proxy objects backed by a vertex and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Vertex vertex, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedElement(this, vertex));
+        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind, VertexFrame.class}, new FramedElement(this, vertex));
     }
 
     /**
@@ -78,7 +78,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Edge edge, final Direction direction, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind}, new FramedElement(this, edge, direction));
+        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind, EdgeFrame.class}, new FramedElement(this, edge, direction));
     }
 
     /**

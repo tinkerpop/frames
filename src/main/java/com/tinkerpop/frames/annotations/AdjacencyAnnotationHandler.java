@@ -9,6 +9,7 @@ import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramedGraph;
+import com.tinkerpop.frames.VertexFrame;
 import com.tinkerpop.frames.structures.FramedVertexIterable;
 
 import java.lang.reflect.Method;
@@ -40,18 +41,18 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             }
         } else if (ClassUtilities.isAddMethod(method)) {
             if (adjacency.direction().equals(Direction.OUT))
-                framedGraph.getBaseGraph().addEdge(null, vertex, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), adjacency.label());
+                framedGraph.getBaseGraph().addEdge(null, vertex, ((VertexFrame) arguments[0]).asVertex(), adjacency.label());
             else
-                framedGraph.getBaseGraph().addEdge(null, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), vertex, adjacency.label());
+                framedGraph.getBaseGraph().addEdge(null, ((VertexFrame) arguments[0]).asVertex(), vertex, adjacency.label());
             return null;
         } else if (ClassUtilities.isRemoveMethod(method)) {
-            removeEdges(adjacency.direction(), adjacency.label(), vertex, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), framedGraph);
+            removeEdges(adjacency.direction(), adjacency.label(), vertex, ((VertexFrame) arguments[0]).asVertex(), framedGraph);
             return null;
         } else if (ClassUtilities.isSetMethod(method)) {
             removeEdges(adjacency.direction(), adjacency.label(), vertex, null, framedGraph);
             if (ClassUtilities.acceptsIterable(method)) {
                 for (Object o : (Iterable) arguments[0]) {
-                    Vertex v = (Vertex) ((FramedElement) Proxy.getInvocationHandler(o)).getElement();
+                    Vertex v = ((VertexFrame) o).asVertex();
                     if (adjacency.direction().equals(Direction.OUT)) {
                         framedGraph.getBaseGraph().addEdge(null, vertex, v, adjacency.label());
                     } else {
@@ -62,9 +63,9 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             } else {
                 if (null != arguments[0]) {
                     if (adjacency.direction().equals(Direction.OUT)) {
-                        framedGraph.getBaseGraph().addEdge(null, vertex, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), adjacency.label());
+                        framedGraph.getBaseGraph().addEdge(null, vertex, ((VertexFrame) arguments[0]).asVertex(), adjacency.label());
                     } else {
-                        framedGraph.getBaseGraph().addEdge(null, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), vertex, adjacency.label());
+                        framedGraph.getBaseGraph().addEdge(null, ((VertexFrame) arguments[0]).asVertex(), vertex, adjacency.label());
                     }
                 }
                 return null;

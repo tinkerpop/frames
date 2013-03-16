@@ -80,8 +80,10 @@ public class FramedElement implements InvocationHandler {
     }
 
     private Boolean proxyEquals(final Object other) {
-        if (Proxy.isProxyClass(other.getClass())) {
-            return this.element.equals(((FramedElement) (Proxy.getInvocationHandler(other))).getElement());
+        if (other instanceof VertexFrame) {
+            return this.element.equals(((VertexFrame) other).asVertex());
+        } if (other instanceof EdgeFrame) {
+            return this.element.equals(((EdgeFrame) other).asEdge());
         } else if (other instanceof Element) {
             return ElementHelper.areEqual(this.element, other);
         } else {

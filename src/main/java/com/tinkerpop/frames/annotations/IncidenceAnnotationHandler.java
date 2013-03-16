@@ -1,17 +1,16 @@
 package com.tinkerpop.frames.annotations;
 
+import java.lang.reflect.Method;
+
 import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
-import com.tinkerpop.frames.structures.FramedEdgeIterable;
-import com.tinkerpop.frames.FramedElement;
+import com.tinkerpop.frames.EdgeFrame;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.Incidence;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import com.tinkerpop.frames.VertexFrame;
+import com.tinkerpop.frames.structures.FramedEdgeIterable;
 
 public class IncidenceAnnotationHandler implements AnnotationHandler<Incidence> {
 
@@ -34,11 +33,11 @@ public class IncidenceAnnotationHandler implements AnnotationHandler<Incidence> 
             return new FramedEdgeIterable(framedGraph, element.getEdges(incidence.direction(), incidence.label()), incidence.direction(), ClassUtilities.getGenericClass(method));
         } else if (ClassUtilities.isAddMethod(method)) {
             if (incidence.direction().equals(Direction.OUT))
-                return framedGraph.addEdge(null, element, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), incidence.label(), Direction.OUT, method.getReturnType());
+                return framedGraph.addEdge(null, element, ((VertexFrame) arguments[0]).asVertex(), incidence.label(), Direction.OUT, method.getReturnType());
             else
-                return framedGraph.addEdge(null, (Vertex) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement(), element, incidence.label(), Direction.IN, method.getReturnType());
+                return framedGraph.addEdge(null, ((VertexFrame) arguments[0]).asVertex(), element, incidence.label(), Direction.IN, method.getReturnType());
         } else if (ClassUtilities.isRemoveMethod(method)) {
-            framedGraph.getBaseGraph().removeEdge((Edge) ((FramedElement) Proxy.getInvocationHandler(arguments[0])).getElement());
+            framedGraph.getBaseGraph().removeEdge(((EdgeFrame) arguments[0]).asEdge());
             return null;
         }
 

@@ -5,9 +5,9 @@ import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedGraph;
+import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.structures.FramedVertexIterable;
 import com.tinkerpop.frames.structures.FramedVertexMap;
-import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
@@ -63,7 +63,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
                     return (ClassUtilities.returnsIterable(method)) ? r : r.iterator().hasNext() ? r.iterator().next() : null;
                 } else if (ClassUtilities.returnsMap(method)) {
                     return new FramedVertexMap(framedGraph, (Map) result, ClassUtilities.getGenericClass(method));
-                } else if (ClassUtilities.returnsVertex(method)) {
+                } else if (result instanceof Vertex) {
                     return framedGraph.frame((Vertex) result, ClassUtilities.getGenericClass(method));
                 } else {
                     throw new IllegalStateException("The returned object can not be framed: " + result.getClass());

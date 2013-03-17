@@ -15,6 +15,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* @Adjacency@ add methods with no parameter will return a new framed vertex using the return type of the method.
 * All framed vertices now implement VertexFrame and all framed edges implement EdgeFrame. 
 * Internal package refactoring for organizational purposes (@annotations@ and @structures@)
 * Removed reference to sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl in @ClassUtilities@.

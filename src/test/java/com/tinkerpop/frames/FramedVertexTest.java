@@ -1,11 +1,17 @@
 package com.tinkerpop.frames;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
@@ -22,36 +28,38 @@ import com.tinkerpop.frames.domain.incidences.Knows;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @author Joshua Shinavier (http://fortytwo.net)
  */
-public class FramedVertexTest extends TestCase {
+public class FramedVertexTest {
     private Graph graph = TinkerGraphFactory.createTinkerGraph();
     private FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
+    @Test
     public void testGettingAdjacencies() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Project project : marko.getCreatedProjects()) {
             counter++;
-            assertEquals(project.getName(), "lop");
+            assertEquals("lop", project.getName());
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
 
         counter = 0;
         for (Person person : marko.getKnowsPeople()) {
             counter++;
             assertTrue(person.getName().equals("josh") || person.getName().equals("vadas"));
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
 
         counter = 0;
         Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
         for (Person person : ripple.getCreatedByPeople()) {
             counter++;
-            assertEquals(person.getName(), "josh");
+            assertEquals("josh", person.getName());
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
 
     }
 
+    @Test
     public void testSettingAdjacencies() {
 
         Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
@@ -62,7 +70,7 @@ public class FramedVertexTest extends TestCase {
         for (Person p : josh.getKnowsPeople()) {
             counter++;
         }
-        assertEquals(counter, 0);
+        assertEquals(0, counter);
 
         List<Person> knows = new ArrayList<Person>();
         knows.add(peter);
@@ -74,7 +82,7 @@ public class FramedVertexTest extends TestCase {
             counter++;
             assertTrue(person.getName().equals("marko") || person.getName().equals("peter"));
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
 
         knows.clear();
         knows.add(josh);
@@ -84,9 +92,10 @@ public class FramedVertexTest extends TestCase {
             counter++;
             assertTrue(person.getName().equals("josh"));
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
     }
 
+    @Test
     public void testGettingAndSettingFunctionalAdjacencies() {
         Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
 
@@ -109,6 +118,7 @@ public class FramedVertexTest extends TestCase {
         assertNull(josh.getLatestProject());
     }
 
+    @Test
     public void testImproperSettingAdjacencies() {
         Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
         boolean good = false;
@@ -120,33 +130,35 @@ public class FramedVertexTest extends TestCase {
         assertTrue(good);
     }
 
+    @Test
     public void testGettingIncidences() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
         for (Created created : marko.getCreated()) {
             counter++;
-            assertEquals(created.getRange().getName(), "lop");
-            assertEquals(created.getWeight(), 0.4f);
+            assertEquals("lop", created.getRange().getName());
+            assertEquals(0.4f, created.getWeight(), 0.01f);
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
 
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
             assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas"));
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
 
         counter = 0;
         Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
         for (CreatedBy createdBy : ripple.getCreatedBy()) {
             counter++;
-            assertEquals(createdBy.getRange().getName(), "josh");
-            assertEquals(createdBy.getWeight(), 1.0f);
+            assertEquals("josh", createdBy.getRange().getName());
+            assertEquals(1.0f, createdBy.getWeight(), 0.01f);
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
     }
 
+    @Test
     public void testAddingIncidences() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
@@ -158,10 +170,10 @@ public class FramedVertexTest extends TestCase {
             counter++;
             assertTrue(created.getRange().getName().equals("lop") || created.getRange().getName().equals("ripple"));
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
         assertNull(markoCreatedRipple.getWeight());
         markoCreatedRipple.setWeight(0.0f);
-        assertEquals(markoCreatedRipple.getWeight(), 0.0f);
+        assertEquals(0.0f, markoCreatedRipple.getWeight(), 0.01f);
 
         Knows markoKnowsPeter = marko.addKnows(peter);
         counter = 0;
@@ -169,24 +181,28 @@ public class FramedVertexTest extends TestCase {
             counter++;
             assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas") || knows.getRange().getName().equals("peter"));
         }
-        assertEquals(counter, 3);
+        assertEquals(3, counter);
         assertNull(markoKnowsPeter.getWeight());
         markoKnowsPeter.setWeight(1.0f);
-        assertEquals(markoKnowsPeter.getWeight(), 1.0f);
+        assertEquals(1.0f, markoKnowsPeter.getWeight(), 0.01f);
     }
 
+    @Test
     public void testAddingAdjacencies() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
         Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
 
         marko.addKnowsPerson(peter);
+        Person bryn = marko.addKnowsNewPerson();
+        bryn.setName("bryn");
+        
         int counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas") || knows.getRange().getName().equals("peter"));
+            assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas") || knows.getRange().getName().equals("peter") || knows.getRange().getName().equals("bryn"));
         }
-        assertEquals(counter, 3);
+        assertEquals(4, counter);
 
         marko.addCreatedProject(ripple);
         counter = 0;
@@ -194,9 +210,15 @@ public class FramedVertexTest extends TestCase {
             counter++;
             assertTrue(project.getName().equals("lop") || project.getName().equals("ripple"));
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
+        
+        
+        
+        
+        
     }
 
+    @Test
     public void testRemoveIncidences() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
@@ -207,16 +229,16 @@ public class FramedVertexTest extends TestCase {
                 toRemove.add(knows);
             }
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
         for (Knows knows : toRemove) {
             marko.removeKnows(knows);
         }
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertEquals(knows.getRange().getName(), "vadas");
+            assertEquals("vadas", knows.getRange().getName());
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
 
         Project lop = framedGraph.frame(graph.getVertex(3), Project.class);
         counter = 0;
@@ -225,7 +247,7 @@ public class FramedVertexTest extends TestCase {
             counter++;
             toRemove2.add(createdBy);
         }
-        assertEquals(counter, 3);
+        assertEquals(3, counter);
         for (CreatedBy createdBy : toRemove2) {
             lop.removeCreatedBy(createdBy);
         }
@@ -234,9 +256,10 @@ public class FramedVertexTest extends TestCase {
             counter++;
 
         }
-        assertEquals(counter, 0);
+        assertEquals(0, counter);
     }
 
+    @Test
     public void testRemovingAdjacencies() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Person vadas = framedGraph.frame(graph.getVertex(2), Person.class);
@@ -247,16 +270,16 @@ public class FramedVertexTest extends TestCase {
         for (Edge edge : graph.getVertex(1).getEdges(Direction.OUT, "knows")) {
             if (edge.getLabel().equals("knows")) {
                 counter++;
-                assertEquals(edge.getVertex(Direction.IN).getProperty("name"), "josh");
+                assertEquals("josh", edge.getVertex(Direction.IN).getProperty("name"));
             }
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
         counter = 0;
         for (Person person : marko.getKnowsPeople()) {
             counter++;
-            assertEquals(person.getName(), "josh");
+            assertEquals("josh", person.getName());
         }
-        assertEquals(counter, 1);
+        assertEquals(1, counter);
 
         lop.removeCreatedByPerson(marko);
         counter = 0;
@@ -267,16 +290,17 @@ public class FramedVertexTest extends TestCase {
                         || edge.getVertex(Direction.OUT).getProperty("name").equals("peter"));
             }
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
         counter = 0;
         for (Person person : lop.getCreatedByPeople()) {
             counter++;
             assertTrue(person.getName().equals("josh") || person.getName().equals("peter"));
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
 
     }
 
+    @Test
     public void testVertexEquality() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Person vadas = framedGraph.frame(graph.getVertex(2), Person.class);
@@ -292,6 +316,7 @@ public class FramedVertexTest extends TestCase {
         assertNotSame(marko.asVertex(), vadas.asVertex());
     }
 
+    @Test
     public void testGetGremlinGroovy() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
@@ -299,21 +324,23 @@ public class FramedVertexTest extends TestCase {
             counter++;
             assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
         }
-        assertEquals(counter, 2);
+        assertEquals(2, counter);
 
-        assertEquals(marko.getAStringProperty(), "aStringProperty");
+        assertEquals("aStringProperty", marko.getAStringProperty());
         Iterator<String> itty = marko.getListOfStrings().iterator();
-        assertEquals(itty.next(), "a");
-        assertEquals(itty.next(), "b");
-        assertEquals(itty.next(), "c");
+        assertEquals("a", itty.next());
+        assertEquals("b", itty.next());
+        assertEquals("c", itty.next());
     }
 
+    @Test
     public void testGetGremlinGroovySingleItem() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Person coCreator = marko.getRandomCoCreators();
         assertTrue(coCreator.getName().equals("josh") || coCreator.getName().equals("peter"));
     }
 
+    @Test
     public void testGetGremlinGroovyParameters() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Person coCreator = marko.getCoCreatorOfAge(32);
@@ -322,19 +349,21 @@ public class FramedVertexTest extends TestCase {
         assertTrue(coCreator.getName().equals("peter"));
     }
 
+    @Test
     public void testMapReturnType() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Map<Person, Long> coauthors = marko.getRankedCoauthors();
 
         Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
-        assertEquals(coauthors.get(peter), new Long(1));
+        assertEquals(1, coauthors.get(peter).longValue());
 
         Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
-        assertEquals(coauthors.get(josh), new Long(1));
+        assertEquals(1, coauthors.get(josh).longValue());
 
-        assertEquals(coauthors.size(), 2);
+        assertEquals(2, coauthors.size());
     }
 
+    @Test
     public void testBooleanGetMethods() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         marko.setBoolean(true);
@@ -344,15 +373,16 @@ public class FramedVertexTest extends TestCase {
         assertTrue(marko.canBooleanPrimitive());
     }
 
+    @Test
     public void testFramingInterfaces() {
-        StanalonePerson marko = framedGraph.frame(graph.getVertex(1), StanalonePerson.class);
+        StandalonePerson marko = framedGraph.frame(graph.getVertex(1), StandalonePerson.class);
         assertTrue(marko instanceof VertexFrame);
         for (Knows knows : marko.getKnows()) {
             assertTrue(knows instanceof EdgeFrame);
         }
     }
 
-    public static interface StanalonePerson {
+    public static interface StandalonePerson {
 
         @Incidence(label = "knows")
         public Iterable<Knows> getKnows();

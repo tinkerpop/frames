@@ -23,7 +23,8 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
     }
 
     @Override
-    public Object processElement(final Adjacency annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
+    public Object processElement(final Adjacency annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph,
+            final Element element, final Direction direction) {
         if (element instanceof Vertex) {
             return processVertex(annotation, method, arguments, framedGraph, (Vertex) element);
         } else {
@@ -33,18 +34,33 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
 
     public Object processVertex(final Adjacency adjacency, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Vertex vertex) {
         if (ClassUtilities.isGetMethod(method)) {
-            final FramedVertexIterable r = new FramedVertexIterable(framedGraph, vertex.getVertices(adjacency.direction(), adjacency.label()), ClassUtilities.getGenericClass(method));
+            final FramedVertexIterable r = new FramedVertexIterable(framedGraph, vertex.getVertices(adjacency.direction(), adjacency.label()),
+                    ClassUtilities.getGenericClass(method));
             if (ClassUtilities.returnsIterable(method)) {
                 return r;
             } else {
                 return r.iterator().hasNext() ? r.iterator().next() : null;
             }
         } else if (ClassUtilities.isAddMethod(method)) {
-            if (adjacency.direction().equals(Direction.OUT))
-                framedGraph.getBaseGraph().addEdge(null, vertex, ((VertexFrame) arguments[0]).asVertex(), adjacency.label());
-            else
-                framedGraph.getBaseGraph().addEdge(null, ((VertexFrame) arguments[0]).asVertex(), vertex, adjacency.label());
-            return null;
+            Class<?> returnType = method.getReturnType();
+            Vertex newVertex;
+            Object returnValue = null;
+            if (arguments == null) {
+                //Use this method to get the vertex so that the vertex initializer is called.
+                returnValue = framedGraph.addVertex(returnType, returnType);
+                newVertex = ((VertexFrame) returnValue).asVertex();
+            } else {
+                newVertex = ((VertexFrame) arguments[0]).asVertex();
+            }
+            
+            addEdges(adjacency, framedGraph, vertex, newVertex);
+            
+            if (returnType.isPrimitive()) {
+                return null;
+            } else {
+                return returnValue;
+            }
+
         } else if (ClassUtilities.isRemoveMethod(method)) {
             removeEdges(adjacency.direction(), adjacency.label(), vertex, ((VertexFrame) arguments[0]).asVertex(), framedGraph);
             return null;
@@ -53,26 +69,27 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             if (ClassUtilities.acceptsIterable(method)) {
                 for (Object o : (Iterable) arguments[0]) {
                     Vertex v = ((VertexFrame) o).asVertex();
-                    if (adjacency.direction().equals(Direction.OUT)) {
-                        framedGraph.getBaseGraph().addEdge(null, vertex, v, adjacency.label());
-                    } else {
-                        framedGraph.getBaseGraph().addEdge(null, v, vertex, adjacency.label());
-                    }
+                    addEdges(adjacency, framedGraph, vertex, v);
                 }
                 return null;
             } else {
                 if (null != arguments[0]) {
-                    if (adjacency.direction().equals(Direction.OUT)) {
-                        framedGraph.getBaseGraph().addEdge(null, vertex, ((VertexFrame) arguments[0]).asVertex(), adjacency.label());
-                    } else {
-                        framedGraph.getBaseGraph().addEdge(null, ((VertexFrame) arguments[0]).asVertex(), vertex, adjacency.label());
-                    }
+                    Vertex newVertex = ((VertexFrame) arguments[0]).asVertex();
+                    addEdges(adjacency, framedGraph, vertex, newVertex);
                 }
                 return null;
             }
         }
 
         return null;
+    }
+
+    private void addEdges(final Adjacency adjacency, final FramedGraph framedGraph, final Vertex vertex, Vertex newVertex) {
+        if (adjacency.direction().equals(Direction.OUT)) {
+            framedGraph.getBaseGraph().addEdge(null, vertex, newVertex, adjacency.label());
+        } else {
+            framedGraph.getBaseGraph().addEdge(null, newVertex, vertex, adjacency.label());
+        }
     }
 
     private void removeEdges(final Direction direction, final String label, final Vertex element, final Vertex otherVertex, final FramedGraph framedGraph) {

@@ -46,15 +46,16 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             Vertex newVertex;
             Object returnValue = null;
             if (arguments == null) {
-                //Use this method to get the vertex so that the vertex initializer is called.
+                // Use this method to get the vertex so that the vertex
+                // initializer is called.
                 returnValue = framedGraph.addVertex(returnType, returnType);
                 newVertex = ((VertexFrame) returnValue).asVertex();
             } else {
                 newVertex = ((VertexFrame) arguments[0]).asVertex();
             }
-            
+
             addEdges(adjacency, framedGraph, vertex, newVertex);
-            
+
             if (returnType.isPrimitive()) {
                 return null;
             } else {
@@ -85,10 +86,15 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
     }
 
     private void addEdges(final Adjacency adjacency, final FramedGraph framedGraph, final Vertex vertex, Vertex newVertex) {
-        if (adjacency.direction().equals(Direction.OUT)) {
+        switch(adjacency.direction()) {
+        case OUT:
             framedGraph.getBaseGraph().addEdge(null, vertex, newVertex, adjacency.label());
-        } else {
-            framedGraph.getBaseGraph().addEdge(null, newVertex, vertex, adjacency.label());
+            break;
+        case IN:
+            framedGraph.getBaseGraph().addEdge(null, vertex, newVertex, adjacency.label());
+            break;
+        case BOTH:
+            throw new UnsupportedOperationException("Direction.BOTH it not supported on 'add' or 'set' methods");
         }
     }
 

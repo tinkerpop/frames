@@ -15,6 +15,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Throw unsupported operation exception calling 'add' or 'set' methods using @Incidence@ or @Adjacency@ if direction is set to 'BOTH'.
 * @Adjacency@ add methods with no parameter will return a new framed vertex using the return type of the method.
 * All framed vertices now implement VertexFrame and all framed edges implement EdgeFrame. 
 * Internal package refactoring for organizational purposes (@annotations@ and @structures@)

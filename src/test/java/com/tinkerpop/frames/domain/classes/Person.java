@@ -84,6 +84,9 @@ public interface Person extends NamedObject {
 
     @GremlinGroovy("it.as('x').out('created').in('created').except('x').groupCount.cap.next()")
     public Map<Person, Long> getRankedCoauthors();
+    
+    @GremlinGroovy("person.asVertex().in('knows')")
+    public Iterable<Person> getKnownRootedFromParam(@GremlinParam("person") Person person);
 
     @Deprecated
     @GremlinGroovy("_().out('knows')")

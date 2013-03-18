@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  * @author Bryn Cooke
  */
 public class GremlinGroovyAnnotationHandler implements AnnotationHandler<GremlinGroovy> {
+    private static final String PIPE = "_()";
     private final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
     private static final String IT = "it";
     private static final String G = "g";
@@ -56,7 +57,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
             final Object result = script.eval(bindings);
 
             // TODO: Deprecate the use of _() and replace with it
-            if (result instanceof Pipe & !annotation.value().startsWith(IT)) {
+            if (result instanceof Pipe & annotation.value().startsWith(PIPE)) {
                 LOGGER.warning("_() is deprecated in favor of using 'it' to represent the framed vertex");
                 ((Pipe) result).setStarts(new SingleIterator<Element>(vertex));
             }

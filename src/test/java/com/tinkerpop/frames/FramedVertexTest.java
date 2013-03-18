@@ -334,11 +334,18 @@ public class FramedVertexTest {
 
     @Test
     public void testGetGremlinGroovyParameters() {
+        Person josh = framedGraph.frame(graph.getVertex(4), Person.class);
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
+        Project project = framedGraph.frame(graph.getVertex(6), Project.class);
+        
         Person coCreator = marko.getCoCreatorOfAge(32);
-        assertTrue(coCreator.getName().equals("josh"));
+        assertEquals(josh, coCreator);
         coCreator = marko.getCoCreatorOfAge(35);
-        assertTrue(coCreator.getName().equals("peter"));
+        assertEquals(peter, coCreator);
+        
+        Iterable<Person> known = marko.getKnownRootedFromParam(josh);
+        assertEquals(marko, known.iterator().next());
     }
 
     @Test
@@ -410,4 +417,6 @@ public class FramedVertexTest {
         Project rdfAgents = framedGraph.frame(graph.addVertex(null), Project.class);
         marko.addCreatedDirectionBothError(rdfAgents);
     }
+    
+    
 }

@@ -1,18 +1,5 @@
 package com.tinkerpop.frames;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
@@ -23,6 +10,14 @@ import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
 import com.tinkerpop.frames.domain.incidences.Knows;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -196,7 +191,7 @@ public class FramedVertexTest {
         marko.addKnowsPerson(peter);
         Person bryn = marko.addKnowsNewPerson();
         bryn.setName("bryn");
-        
+
         int counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
@@ -211,11 +206,8 @@ public class FramedVertexTest {
             assertTrue(project.getName().equals("lop") || project.getName().equals("ripple"));
         }
         assertEquals(2, counter);
-        
-        
-        
-        
-        
+
+
     }
 
     @Test
@@ -371,6 +363,14 @@ public class FramedVertexTest {
         assertTrue(marko.isBooleanPrimitive());
         assertTrue(marko.canBoolean());
         assertTrue(marko.canBooleanPrimitive());
+    }
+
+    @Test
+    public void testDeprecatedKnowsPeople() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        for (Person person : marko.getDeprecatedKnowsPeople()) {
+            assertTrue(person.getName().equals("vadas") || person.getName().equals("josh"));
+        }
     }
 
     @Test

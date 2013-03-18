@@ -41,7 +41,7 @@ public interface Person extends NamedObject {
 
     @Adjacency(label = "knows")
     public void addKnowsPerson(final Person person);
-    
+
     @Adjacency(label = "knows")
     public Person addKnowsNewPerson();
 
@@ -83,6 +83,10 @@ public interface Person extends NamedObject {
 
     @GremlinGroovy("it.as('x').out('created').in('created').except('x').groupCount.cap.next()")
     public Map<Person, Long> getRankedCoauthors();
+
+    @Deprecated
+    @GremlinGroovy("_().out('knows')")
+    public Iterable<Person> getDeprecatedKnowsPeople();
 
     @Property("boolean")
     public void setBoolean(boolean b);

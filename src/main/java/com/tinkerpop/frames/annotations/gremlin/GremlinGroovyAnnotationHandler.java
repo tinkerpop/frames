@@ -18,6 +18,7 @@ import javax.script.ScriptException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -27,6 +28,8 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
     private final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
     private static final String IT = "it";
     private static final String G = "g";
+
+    private static final Logger LOGGER = Logger.getLogger(GremlinGroovyAnnotationHandler.class.getName());
 
     @Override
     public Class<GremlinGroovy> getAnnotationType() {
@@ -54,6 +57,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
 
             // TODO: Deprecate the use of _() and replace with it
             if (result instanceof Pipe & !annotation.value().startsWith(IT)) {
+                LOGGER.warning("_() is deprecated in favor of using 'it' to represent the framed vertex");
                 ((Pipe) result).setStarts(new SingleIterator<Element>(vertex));
             }
 

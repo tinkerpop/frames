@@ -388,4 +388,26 @@ public class FramedVertexTest {
         public Iterable<Knows> getKnows();
     }
 
+    @Test(expected=UnsupportedOperationException.class)
+    public void testAddAdjacencyBothError() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
+        marko.addKnowsPersonDirectionBothError(peter);
+        
+    }
+    
+    
+    @Test(expected=UnsupportedOperationException.class)
+    public void testSetAdjacencyBothError() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
+        marko.setKnowsPersonDirectionBothError(peter);
+    }
+    
+    @Test(expected=UnsupportedOperationException.class)
+    public void testAddIncidenceBothError() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project rdfAgents = framedGraph.frame(graph.addVertex(null), Project.class);
+        marko.addCreatedDirectionBothError(rdfAgents);
+    }
 }

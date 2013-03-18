@@ -32,10 +32,16 @@ public class IncidenceAnnotationHandler implements AnnotationHandler<Incidence> 
         if (ClassUtilities.isGetMethod(method)) {
             return new FramedEdgeIterable(framedGraph, element.getEdges(incidence.direction(), incidence.label()), incidence.direction(), ClassUtilities.getGenericClass(method));
         } else if (ClassUtilities.isAddMethod(method)) {
-            if (incidence.direction().equals(Direction.OUT))
+            
+            switch(incidence.direction()) {
+            case OUT:
                 return framedGraph.addEdge(null, element, ((VertexFrame) arguments[0]).asVertex(), incidence.label(), Direction.OUT, method.getReturnType());
-            else
+            case IN:
                 return framedGraph.addEdge(null, ((VertexFrame) arguments[0]).asVertex(), element, incidence.label(), Direction.IN, method.getReturnType());
+            case BOTH:
+                throw new UnsupportedOperationException("Direction.BOTH it not supported on 'add' or 'set' methods");
+            }
+                
         } else if (ClassUtilities.isRemoveMethod(method)) {
             framedGraph.getBaseGraph().removeEdge(((EdgeFrame) arguments[0]).asEdge());
             return null;

@@ -32,6 +32,11 @@
             <email>josh@fortytwo.net</email>
             <url>http://fortytwo.net</url>
         </developer>
+        <developer>
+            <name>Bryn Cooke</name>
+            <email>bryn@jglue.org</email>
+            <url>http://jglue.org</url>
+        </developer>
     </developers>
     <inceptionYear>2011</inceptionYear>
     <licenses>

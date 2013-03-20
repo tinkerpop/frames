@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>User Defined Annotations</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>User Defined Annotations</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/User-Defined-Annotations"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/User-Defined-Annotations"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src=" images/frames-character-3.png" width="135px" /></p>
+<p>It is possible to create new annotations, behaviors for those annotations, and then register them with a <code>FramedGraph</code>. In order to make use of this feature, two Java classes are required of the developer.</p>
+<ol><li><code>Annotation</code>: An annotation object.</li>
+	<li><code>AnnotationHandler</code>: A class defining the behavior to evaluate when the respective <code>Annotation</code> is used.</li>
+</ol><p>The <code>AnnotationHandler</code> interface is provided below.</p>
+<pre><code>public interface AnnotationHandler&lt;T extends Annotation&gt; {
+    public Class&lt;T&gt; getAnnotationType();
+    public Object processVertex(T annotation, Method method, Object[] arguments, FramesManager manager, Vertex vertex);
+    public Object processEdge(T annotation, Method method, Object[] arguments, FramesManager manager, Edge edge, Direction direction);
+}</code></pre>
+<p>Any implementation of an <code>AnnotationHandler</code> must implement the respective methods where <code>getAnnotationType()</code> returns the class of the respective <code>Annotation</code> it represents. The two methods <code>processVertex()</code> and <code>processEdge()</code> have arguments that provide information to allow the developer to determine the requisite logic to execute. For example, here are some aspects to reason on:</p>
+<ul><li>Determine if the method is a <em>get</em>, <em>set</em>, or <em>remove</em> by <code>method.getName().startsWith("get")</code></li>
+	<li>Make use of <code>ClassUtilities</code> for standard, static reasoning methods.</li>
+	<li>Analyze the types of method&#x2019;s provided arguments.</li>
+	<li>Analyze the type of the methods return object.</li>
+	<li>All framed elements implement <code>VertexFrame</code> or <code>EdgeFrame</code> even if the framing interface doesn&#x2019;t extend these. Use these interfaces to get access to the underlying element.</li>
+</ul><p>All the <code>Annotation</code> objects provided by Frames make use of handlers. Please feel free to inspect the source code to get ideas for how to implement your own handlers. Finally, once an <code>Annotation</code> and <code>AnnotationHandler</code> have been created, they can be registered with a <code>FramedGraph</code>.</p>
+<pre><code>FramedGraph&lt;TinkerGraph&gt; graph = new FramedGraph&lt;TinkerGraph&gt;(new TinkerGraph("/tmp/tg"));
+graph.registerAnnotation(new MyAnnotation());</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:35:51</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

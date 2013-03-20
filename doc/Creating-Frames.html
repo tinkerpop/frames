@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Creating Frames</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Creating Frames</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Creating-Frames"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Creating-Frames"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>When you develop a Frames-annotation Java interface, you provide it &#x201C;life&#x201D; by binding it to the underlying <a href="../../blueprints/2.3.0/Home.html">Blueprints</a> graph. To make this binding, the <code>FramedGraph</code> is used. In <code>FramedGraph</code> there are a collection of helpful methods which are demonstrated using the toy graph diagrammed below and the example Java code.</p>
+<p><img src="https://github.com/tinkerpop/blueprints/raw/master/doc/images/graph-example-1.jpg" width="450px" /></p>
+<pre><code>Graph graph = ... // get a reference to the graph
+FramedGraph&lt;Graph&gt; framedGraph = new FramedGraph&lt;Graph&gt;(graph); // wrap the base graph
+
+Person marko = framedGraph.getVertex(1, Person.class);
+Person peter = framedGraph.getVertex(6, Person.class);
+Iterable&lt;Project&gt; javaProjects = framedGraph.getVertices("lang","java", Project.class);
+
+Knows markoKnowsVadas = framedGraph.getEdge(7, Direction.OUT, Knows.class);
+Knows markoKnowsJosh = framedGraph.getEdge(8, Direction.OUT, Knows.class);</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:35:51</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

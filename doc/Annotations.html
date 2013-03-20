@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Annotations</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Annotations</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Annotations"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Annotations"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="http://duke.kenai.com/models/Duke3DprogressionSmall.jpg" height="125px" /></p>
+<p>In Frames, a schema is defined by a collection of Java interfaces. The rules that bind the Java interfaces to the underlying graph representation are defined by the following:</p>
+<ul><li>Method name prefixes: get, is, can, set, add, remove</li>
+	<li>Annotations: method metadata.</li>
+</ul><p>Below specifies that annotations that can be used when defining a Frames interface. By specifying the method argument and return types, the underlying graph is constrained to the interface specification.</p>
+<table><tr><th>annotation </th>
+		<th>method prefix </th>
+		<th>arguments </th>
+		<th>description </th>
+		<th>example </th>
+	</tr><tr><td> <code>@Property</code> </td>
+		<td> <code>get</code>,<code>is</code>,<code>can</code> </td>
+		<td> <code>value</code> </td>
+		<td>get the property value of an element </td>
+		<td> <code>@Property("name")</code> </td>
+	</tr><tr><td> <code>@Property</code> </td>
+		<td> <code>set</code> </td>
+		<td> <code>value</code> </td>
+		<td> set the property value of an element </td>
+		<td> <code>@Property("name")</code> </td>
+	</tr><tr><td> <code>@Property</code> </td>
+		<td> <code>remove</code> </td>
+		<td> <code>value</code> </td>
+		<td> remove the property of an element </td>
+		<td> <code>@Property("name")</code> </td>
+	</tr><tr><td> <code>@Adjacency</code> </td>
+		<td> <code>get</code> </td>
+		<td> <code>label</code>, <code>direction</code> </td>
+		<td> get the vertex or vertices <code>X</code> related to the vertex </td>
+		<td> <code>@Adjacency(label="X", direction=Direction.OUT)</code> </td>
+	</tr><tr><td> <code>@Adjacency</code> </td>
+		<td> <code>set</code> </td>
+		<td> <code>label</code>, <code>direction</code> </td>
+		<td> set the vertex or vertices <code>X</code> related to the vertex </td>
+		<td> <code>@Adjacency(label="X", direction=Direction.OUT)</code> </td>
+	</tr><tr><td> <code>@Adjacency</code> </td>
+		<td> <code>add</code> </td>
+		<td> <code>label</code>, <code>direction</code> </td>
+		<td> add a vertex <code>X</code> related to the vertex and return the vertex <code>X</code></td>
+		<td> <code>@Adjacency(label="X", direction=Direction.OUT)</code> </td>
+	</tr><tr><td> <code>@Adjacency</code> </td>
+		<td> <code>remove</code> </td>
+		<td> <code>label</code>, <code>direction</code> </td>
+		<td> remove a vertex <code>X</code> related to the vertex</td>
+		<td> <code>@Adjacency(label="X", direction=Direction.OUT)</code> </td>
+	</tr><tr><td> <code>@Incidence</code> </td>
+		<td> <code>get</code> </td>
+		<td> <code>label</code>, <code>direction</code> </td>
+		<td> get the edges <code>X</code> related to the vertex </td>
+		<td> <code>@Incidence(label="X", direction=Direction.OUT)</code> </td>
+	</tr><tr><td> <code>@Incidence</code> </td>
+		<td> <code>add</code> </td>
+		<td> <code>label</code>, <code>direction</code> </td>
+		<td> add an edge <code>X</code> related to the vertex and return the edge <code>X</code></td>
+		<td> <code>@Incidence(label="X", direction=Direction.OUT)</code> </td>
+	</tr><tr><td> <code>@Incidence</code> </td>
+		<td> <code>remove</code> </td>
+		<td> <code>label</code>, <code>direction</code> </td>
+		<td> remove an edge <code>X</code> related to the vertex </td>
+		<td> <code>@Incidence(label="X", direction=Direction.OUT)</code> </td>
+	</tr><tr><td> <code>@Domain</code> </td>
+		<td> <code>get</code> </td>
+		<td> none </td>
+		<td> get the domain of the adjacency (i.e the source) </td>
+		<td> <code>@Domain</code> </td>
+	</tr><tr><td> <code>@Range</code> </td>
+		<td> <code>get</code> </td>
+		<td> none </td>
+		<td> get the range of the adjacency (i.e. the target) </td>
+		<td> <code>@Range</code> </td>
+	</tr></table><p>Note that &#x201C;get&#x201D; and &#x201C;set&#x201D; methods for <code>@Adjacency</code> can be either single-valued or Iterable-valued.  For example:</p>
+<pre><code>public interface Person {
+    @Adjacency(label = "spouse")
+    Person getSpouse();
+    
+    @Adjacency(label = "spouse")
+    void setSpouse(Person spouse);
+    
+    @Adjacency(label = "child")
+    Iterable&lt;Person&gt; getChildren();
+    
+    @Adjacency(label = "child")
+    void setChildren(Iterable&lt;Person&gt; children);
+}</code></pre>
+<p>The above interface uses both styles of getter and setter: an Iterable-valued style which allows you to set multiple values simultaneously, and gives you back all values at once, and a &#x201C;functional&#x201D; style which requires you to specify exactly one value (which can be null), and gives you back at most one value.  Each style has its advantages, depending on your application.</p>
+<p>&#x201C;add&#x201D; methods for <code>@Adjacency</code> can be either single-valued or no-valued For example:<br /></p><pre><code>public interface Person {
+    @Adjacency(label = "friend")
+    Person addFriend(); //Returns a new vertex of type friend
+
+    @Adjacency(label = "friend")
+    Person addFriend(Person friend); //Add an existing person as a friend
+}</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:35:51</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

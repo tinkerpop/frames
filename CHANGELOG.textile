@@ -5,7 +5,7 @@ h2. Frames 2.y.z
 
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-2.png!
 
-h3. Version 2.3.1 (NOT OFFICIALLY RELEASED YET)
+h3. Version 2.3.1 (March 22, 2013)
 
 ```xml
 <dependency>
@@ -15,7 +15,7 @@ h3. Version 2.3.1 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Fixed @Adjacency@ handler for adding relationships with Direction.IN
+* Fixed @Adjacency@ handler for adding relationships with @Direction.IN@
 
 ==<hr/>==
 

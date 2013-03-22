@@ -25,8 +25,11 @@ public interface Project extends NamedObject {
 
     @Incidence(label = "created", direction = Direction.IN)
     public void removeCreatedBy(CreatedBy createdBy);
+    
+    @Incidence(label = "created", direction = Direction.IN)
+    public CreatedBy addCreatedByPersonIncidence(Person person);
 
     @Adjacency(label = "created", direction = Direction.IN)
-    public void addCreatedByPeople(final Person person);
+    public void addCreatedByPersonAdjacency(Person person);
 }
 

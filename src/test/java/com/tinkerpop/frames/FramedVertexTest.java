@@ -419,11 +419,24 @@ public class FramedVertexTest {
     }
 
     @Test
+    public void testAddAdjacencyIn() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project rdfAgents = framedGraph.addVertex(null, Project.class);
+        rdfAgents.addCreatedByPersonAdjacency(marko);
+        assertTrue(rdfAgents.getCreatedByPeople().iterator().hasNext());
+        assertEquals(marko, rdfAgents.getCreatedByPeople().iterator().next());
+    }
+    
+    @Test
     public void testAddIncidenceIn() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
-        Project rdfAgents = framedGraph.frame(graph.addVertex(null), Project.class);
-        rdfAgents.addCreatedByPeople(marko);
+        Project rdfAgents = framedGraph.addVertex(null, Project.class);
+        CreatedBy createdBy = rdfAgents.addCreatedByPersonIncidence(marko);
+           
+        assertEquals(marko, createdBy.getRange());
+        assertEquals(rdfAgents, createdBy.getDomain());
         assertTrue(rdfAgents.getCreatedByPeople().iterator().hasNext());
         assertEquals(marko, rdfAgents.getCreatedByPeople().iterator().next());
     }
 }
+

@@ -53,7 +53,6 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             } else {
                 newVertex = ((VertexFrame) arguments[0]).asVertex();
             }
-
             addEdges(adjacency, framedGraph, vertex, newVertex);
 
             if (returnType.isPrimitive()) {
@@ -91,7 +90,7 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             framedGraph.getBaseGraph().addEdge(null, vertex, newVertex, adjacency.label());
             break;
         case IN:
-            framedGraph.getBaseGraph().addEdge(null, vertex, newVertex, adjacency.label());
+            framedGraph.getBaseGraph().addEdge(null, newVertex, vertex, adjacency.label());
             break;
         case BOTH:
             throw new UnsupportedOperationException("Direction.BOTH it not supported on 'add' or 'set' methods");

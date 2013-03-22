@@ -417,6 +417,13 @@ public class FramedVertexTest {
         Project rdfAgents = framedGraph.frame(graph.addVertex(null), Project.class);
         marko.addCreatedDirectionBothError(rdfAgents);
     }
-    
-    
+
+    @Test
+    public void testAddIncidenceIn() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project rdfAgents = framedGraph.frame(graph.addVertex(null), Project.class);
+        rdfAgents.addCreatedByPeople(marko);
+        assertTrue(rdfAgents.getCreatedByPeople().iterator().hasNext());
+        assertEquals(marko, rdfAgents.getCreatedByPeople().iterator().next());
+    }
 }

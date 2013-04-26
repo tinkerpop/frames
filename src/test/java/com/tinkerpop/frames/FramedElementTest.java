@@ -77,6 +77,22 @@ public class FramedElementTest extends TestCase {
         assertNull(marko.getAge());
     }
 
+    public void testEnumProperty() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+
+        Person marko = framedGraph.getVertex(1, Person.class);
+        assertEquals(marko.getGender(), null);
+        marko.setGender(Person.Gender.MALE);
+        assertEquals(Person.Gender.MALE, marko.getGender());
+        marko.setGender(null);
+        assertEquals(null, marko.getGender());
+        marko.setGender(Person.Gender.MALE);
+        marko.removeGender();
+        assertEquals(marko.getGender(), null);
+    }
+
+
     public void testToString() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);

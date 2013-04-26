@@ -15,6 +15,7 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public interface Person extends NamedObject {
+    enum Gender {FEMALE, MALE};
 
     @Property("age")
     public Integer getAge();
@@ -24,6 +25,15 @@ public interface Person extends NamedObject {
 
     @Property("age")
     public void removeAge();
+
+    @Property("gender")
+    public void setGender(Gender gender);
+
+    @Property("gender")
+    public Gender getGender();
+
+    @Property("gender")
+    public void removeGender();
 
     @Incidence(label = "knows")
     public Iterable<Knows> getKnows();

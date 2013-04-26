@@ -45,6 +45,9 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
 
     private Enum getValueAsEnum(final Method method, final Object value) {
         Class<Enum> en = (Class<Enum>) method.getReturnType();
-        return Enum.valueOf(en, value.toString());
+        if (value != null)
+            return Enum.valueOf(en, value.toString());
+
+        return null;
     }
 }

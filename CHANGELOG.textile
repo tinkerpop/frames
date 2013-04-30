@@ -15,6 +15,7 @@ h3. Version 2.3.2 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Fixed NPE when enum property type set to null
 * Fixed a sort order bug in @FrameVertexMap@ (using @LinkedHashSet@ now)
 
 ==<hr/>==
@@ -28,7 +29,6 @@ h3. Version 2.3.1 (March 22, 2013)
   <version>2.3.1</version>
 </dependency>
 ```
-* Fixed NPE when enum property type set to null
 * Fixed @Adjacency@ handler for adding relationships with @Direction.IN@
 
 ==<hr/>==

@@ -6,6 +6,7 @@ import com.tinkerpop.frames.FramedGraph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -65,7 +66,7 @@ public class FramedVertexMap<T> implements Map<T, Object> {
     }
 
     public Set<Entry<T, Object>> entrySet() {
-        final Set<Entry<T, Object>> entries = new HashSet<Entry<T, Object>>();
+        final Set<Entry<T, Object>> entries = new LinkedHashSet<Entry<T, Object>>();
         for (final Entry<Vertex, Object> entry : this.map.entrySet()) {
             entries.add(new FramedEntry<T>(entry));
         }

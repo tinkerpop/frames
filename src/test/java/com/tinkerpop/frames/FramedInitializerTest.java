@@ -1,7 +1,9 @@
 package com.tinkerpop.frames;
 
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.incidences.Knows;
@@ -22,8 +24,8 @@ public class FramedInitializerTest {
     public void setup() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         framedGraph = new FramedGraph<Graph>(graph);
-        framedGraph.registerFrameInitializer(nameDefaulter);
-        framedGraph.registerFrameInitializer(weightDefaulter);
+        framedGraph.registerFrameIntercept(nameDefaulter);
+        framedGraph.registerFrameIntercept(weightDefaulter);
     }
 
     @Test
@@ -40,10 +42,9 @@ public class FramedInitializerTest {
         assertEquals(Float.valueOf(1.0f), person1.getKnows().iterator().next().getWeight());
     }
 
-    public static FrameInitializer nameDefaulter = new FrameInitializer() {
-
+    public static FrameEventListener nameDefaulter = new AbstractEventListener() {
         @Override
-        public void initElement(Class<?> kind, FramedGraph<?> framedGraph, Element element) {
+        public void postCreateVertex(Class<?> kind, FramedGraph<?> framedGraph, Vertex element) {
             if (kind == Person.class) {
                 assertNotNull(framedGraph);
                 element.setProperty("name", "Defaulted");
@@ -51,10 +52,10 @@ public class FramedInitializerTest {
         }
     };
 
-    public static FrameInitializer weightDefaulter = new FrameInitializer() {
+    public static FrameEventListener weightDefaulter = new AbstractEventListener() {
 
         @Override
-        public void initElement(Class<?> kind, FramedGraph<?> framedGraph, Element element) {
+        public void postCreateEdge(Class<?> kind, FramedGraph<?> framedGraph, Edge element) {
             assertNotNull(framedGraph);
             if (kind == Knows.class) {
                 element.setProperty("weight", 1.0f);

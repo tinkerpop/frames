@@ -3,6 +3,7 @@ package com.tinkerpop.frames.annotations;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.frames.ClassUtilities;
+import com.tinkerpop.frames.FrameEventListener;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.Property;
 
@@ -26,8 +27,10 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
         } else if (ClassUtilities.isSetMethod(method)) {
             Object value = arguments[0];
             if (null == value) {
+                callDeleteIntercept(framedGraph,element,method,annotation.value());
                 element.removeProperty(annotation.value());
             } else {
+                callUpdateIntercept(framedGraph,element,method,annotation.value(),value);
                 if (value.getClass().isEnum()) {
                     element.setProperty(annotation.value(), ((Enum<?>) value).name());
                 } else {
@@ -36,6 +39,7 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
             }
             return null;
         } else if (ClassUtilities.isRemoveMethod(method)) {
+            callDeleteIntercept(framedGraph,element,method,annotation.value());
             element.removeProperty(annotation.value());
             return null;
         }
@@ -49,5 +53,17 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
             return Enum.valueOf(en, value.toString());
 
         return null;
+    }
+
+    private void callUpdateIntercept(FramedGraph<?> framedGraph,Element element, Method method, Object fieldName,Object value){
+        for (FrameEventListener intercept : framedGraph.getFrameEventListeners()){
+            intercept.preUpdateProperty(framedGraph,element,method,fieldName,value);
+        }
+    }
+
+    private void callDeleteIntercept(FramedGraph<?> framedGraph,Element element, Method method, Object fieldName){
+        for (FrameEventListener intercept : framedGraph.getFrameEventListeners()){
+            intercept.preDeleteProperty(framedGraph,element,method,fieldName);
+        }
     }
 }

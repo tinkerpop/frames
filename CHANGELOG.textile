@@ -15,6 +15,7 @@ h3. Version 2.3.2 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* @GremlinGroovyAnnotationHandler@ provides access to the underlying @GremlinGroovyScriptEngine@
 * Fixed a sort order bug in @FrameVertexMap@ (using @LinkedHashSet@ now)
 
 ==<hr/>==

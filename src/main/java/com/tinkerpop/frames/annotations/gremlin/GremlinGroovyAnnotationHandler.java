@@ -32,6 +32,10 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
 
     private static final Logger LOGGER = Logger.getLogger(GremlinGroovyAnnotationHandler.class.getName());
 
+    public GremlinGroovyScriptEngine getGremlinScriptEngine() {
+        return this.engine;
+    }
+
     @Override
     public Class<GremlinGroovy> getAnnotationType() {
         return GremlinGroovy.class;

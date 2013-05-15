@@ -18,6 +18,10 @@ import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Knows;
+import com.tinkerpop.frames.typeregistry.TypeRegistryBuilder;
+import com.tinkerpop.frames.typeregistry.TypeRegistryBuilderTest.A;
+import com.tinkerpop.frames.typeregistry.TypeRegistryBuilderTest.Abstract;
+import com.tinkerpop.frames.typeregistry.TypeRegistryBuilderTest.B;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -94,6 +98,60 @@ public class FramedGraphTest extends GraphTest {
         assertEquals(counter, 2);
 
 
+    }
+    
+    public static @TypeField("type") interface Base {
+    	@Property("label") String getLabel();
+    };
+	public static @TypeValue("A") interface A extends Base {};
+	public static @TypeValue("B") interface B extends Base {};
+	public static @TypeValue("C") interface C extends B {
+    	@Property("label") void setLabel(String label);
+	};
+    
+    public void testSerializeVertexType() {
+        Graph graph = new TinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class).add(C.class).build());
+        A a = framedGraph.addVertex(null, A.class);
+        C c = framedGraph.addVertex(null, C.class);
+        assertEquals("A", ((VertexFrame)a).asVertex().getProperty("type"));
+        assertEquals("C", ((VertexFrame)c).asVertex().getProperty("type"));
+    }
+    
+    public void testDeserializeVertexType() {
+        Graph graph = new TinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class).add(C.class).build());
+        Vertex cV = graph.addVertex(null);
+        cV.setProperty("type", "C");
+        cV.setProperty("label", "C Label");
+        
+        Base c = framedGraph.getVertex(cV.getId(), Base.class);
+        assertTrue(c instanceof C);
+        assertEquals("C Label", c.getLabel());
+        ((C)c).setLabel("new label");
+        assertEquals("new label", cV.getProperty("label"));
+    }
+    
+    public void testSerializeEdgeType() {
+        Graph graph = new TinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class).add(C.class).build());
+        Vertex v1 = graph.addVertex(null);
+        Vertex v2 = graph.addVertex(null);
+        A a = framedGraph.addEdge(null, v1, v2, "label", Direction.OUT, A.class);
+        C c = framedGraph.addEdge(null, v1, v2, "label", Direction.OUT, C.class);
+        assertEquals("A", ((EdgeFrame)a).asEdge().getProperty("type"));
+        assertEquals("C", ((EdgeFrame)c).asEdge().getProperty("type"));
+    }
+    
+    public void testDeserializeEdgeType() {
+        Graph graph = new TinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class).add(C.class).build());
+        Vertex v1 = graph.addVertex(null);
+        Vertex v2 = graph.addVertex(null);
+        Edge cE = graph.addEdge(null, v1,  v2, "label");    
+        cE.setProperty("type", "C");
+        Base c = framedGraph.getEdge(cE.getId(), Direction.OUT, Base.class);
+        assertTrue(c instanceof C);
     }
 
     public void testVertexTestSuite() throws Exception {

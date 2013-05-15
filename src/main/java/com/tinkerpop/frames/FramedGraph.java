@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 
     protected final T baseGraph;
     private final Map<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>> annotationHandlers;
-    private List<FrameInitializer> frameInitializers = new ArrayList<FrameInitializer>();
+    private List<FrameEventListener> frameEventListeners = new ArrayList<FrameEventListener>();
 
     /**
      * Construct a FramedGraph that will frame the elements of the underlying graph.
@@ -136,8 +137,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      */
     public <F> F addVertex(final Object id, final Class<F> kind) {
         Vertex vertex = this.baseGraph.addVertex(id);
-        for (FrameInitializer initializer : frameInitializers) {
-            initializer.initElement(kind, this, vertex);
+        for (FrameEventListener intercept : frameEventListeners) {
+            intercept.postCreateVertex(kind, this, vertex);
         }
         return this.frame(vertex, kind);
     }
@@ -176,19 +177,41 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return a proxy object backed by the edge and interpreted from the perspective of the annotate interface
      */
     public <F> F addEdge(final Object id, final Vertex outVertex, final Vertex inVertex, final String label, final Direction direction, final Class<F> kind) {
-        Edge edge = this.baseGraph.addEdge(id, outVertex, inVertex, label);
-        for (FrameInitializer initializer : frameInitializers) {
-            initializer.initElement(kind, this, edge);
+        for (FrameEventListener initializer : frameEventListeners) {
+            initializer.preCreateEdge(kind, this, label, outVertex, inVertex);
         }
-
+        Edge edge = this.baseGraph.addEdge(id, outVertex, inVertex, label);
+        for (FrameEventListener intercept : frameEventListeners) {
+            intercept.postCreateEdge(kind, this, edge);
+        }
         return this.frame(edge, direction, kind);
     }
 
-    public void removeVertex(final Vertex vertex) {
+    public void removeVertex(final Class<?> kind, final Vertex vertex){
+        for (FrameEventListener intercept : frameEventListeners){
+            intercept.preDeleteVertex(kind,this,vertex);
+        }
         this.baseGraph.removeVertex(vertex);
     }
 
+    public void removeVertex(final Vertex vertex) {
+        for (FrameEventListener intercept : frameEventListeners){
+            intercept.preDeleteVertex(null, this, vertex);
+        }
+        this.baseGraph.removeVertex(vertex);
+    }
+
+    public void removeEdge(final Class<?> kind,final Edge edge){
+        for (FrameEventListener intercept : frameEventListeners){
+            intercept.preDeleteEdge(kind,this,edge);
+        }
+        this.baseGraph.removeEdge(edge);
+    }
+
     public void removeEdge(final Edge edge) {
+        for (FrameEventListener intercept : frameEventListeners){
+            intercept.preDeleteEdge(null,this,edge);
+        }
         this.baseGraph.removeEdge(edge);
     }
 
@@ -296,13 +319,16 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 
 
     /**
-     * Register a <code>FrameInitializer</code> that will be called whenever a new vertex or edge is added to the graph.
+     * Register a <code>FrameEventListener</code> that will be called whenever a new vertex or edge is added to the graph.
      * The initializer may mutate the vertex (or graph) before returning the framed element to the user.
      *
-     * @param frameInitializer the frame initializer
+     * @param frameEventListener the frame initializer
      */
-    public void registerFrameInitializer(FrameInitializer frameInitializer) {
-        frameInitializers.add(frameInitializer);
+    public void registerFrameIntercept(FrameEventListener frameEventListener) {
+        frameEventListeners.add(frameEventListener);
     }
 
+    public List<FrameEventListener> getFrameEventListeners() {
+        return Collections.unmodifiableList(frameEventListeners);
+    }
 }

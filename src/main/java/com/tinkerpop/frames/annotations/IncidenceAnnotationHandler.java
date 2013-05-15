@@ -3,10 +3,12 @@ package com.tinkerpop.frames.annotations;
 import java.lang.reflect.Method;
 
 import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.EdgeFrame;
+import com.tinkerpop.frames.FrameEventListener;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.VertexFrame;
@@ -43,11 +45,18 @@ public class IncidenceAnnotationHandler implements AnnotationHandler<Incidence> 
             }
                 
         } else if (ClassUtilities.isRemoveMethod(method)) {
+            callPreRemoveIntercept(method.getParameterTypes()[0], framedGraph, ((EdgeFrame) arguments[0]).asEdge());
             framedGraph.getBaseGraph().removeEdge(((EdgeFrame) arguments[0]).asEdge());
             return null;
         }
 
         return null;
+    }
+
+    private void callPreRemoveIntercept(Class<?> kind, FramedGraph<?> framedGraph, Edge edge){
+        for (FrameEventListener intercept : framedGraph.getFrameEventListeners()){
+            intercept.preDeleteEdge(kind,framedGraph,edge);
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.typed;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Interface annotation for marking the Element property-key that may contain type information.
+ * Interface annotation for marking the Element property-value that may contain type information.
  * 
- * @see TypeValue
+ * @see TypeField
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface TypeField {
+public @interface TypeValue {
 	public String value();
 }

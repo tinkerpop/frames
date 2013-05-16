@@ -1,11 +1,10 @@
-package com.tinkerpop.frames.typeregistry;
+package com.tinkerpop.frames.typed;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.frames.FramedGraph;
-import com.tinkerpop.frames.TypeField;
 
 /**
  * @see TypeRegistryBuilder

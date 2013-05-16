@@ -1,12 +1,9 @@
-package com.tinkerpop.frames.typeregistry;
+package com.tinkerpop.frames.typed;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
-
-import com.tinkerpop.frames.TypeField;
-import com.tinkerpop.frames.TypeValue;
 
 public class TypeRegistryBuilderTest {
 	@Test(expected = IllegalArgumentException.class) public void noAnotations() {

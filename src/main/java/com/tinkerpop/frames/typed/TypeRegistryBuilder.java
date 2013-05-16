@@ -1,11 +1,9 @@
-package com.tinkerpop.frames.typeregistry;
+package com.tinkerpop.frames.typed;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.tinkerpop.frames.FramedGraph;
-import com.tinkerpop.frames.TypeField;
-import com.tinkerpop.frames.TypeValue;
 
 /**
  * Build a TypeRegistry for a {@link FramedGraph}. With a {@link TypeRegistry} the {@link FramedGraph} is able to store type-information on edges,

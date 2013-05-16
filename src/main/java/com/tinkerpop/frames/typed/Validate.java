@@ -1,4 +1,4 @@
-package com.tinkerpop.frames.typeregistry;
+package com.tinkerpop.frames.typed;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

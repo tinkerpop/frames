@@ -71,7 +71,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return a proxy objects backed by a vertex and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Vertex vertex, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{typeResolver.resolveType(vertex, kind), VertexFrame.class}, new FramedElement(this, vertex));
+        return (F) Proxy.newProxyInstance(kind.getClassLoader(), typeResolver.resolveType(vertex, kind), new FramedElement(this, vertex));
     }
 
     /**
@@ -84,7 +84,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Edge edge, final Direction direction, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{typeResolver.resolveType(edge, kind), EdgeFrame.class}, new FramedElement(this, edge, direction));
+        return (F) Proxy.newProxyInstance(kind.getClassLoader(), typeResolver.resolveType(edge, kind), new FramedElement(this, edge, direction));
     }
     
 	

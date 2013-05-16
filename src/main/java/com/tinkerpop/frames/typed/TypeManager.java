@@ -1,9 +1,13 @@
 package com.tinkerpop.frames.typed;
 
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.EdgeFrame;
 import com.tinkerpop.frames.FrameInitializer;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.TypeResolver;
+import com.tinkerpop.frames.VertexFrame;
 
 public class TypeManager implements TypeResolver, FrameInitializer {
 
@@ -11,9 +15,16 @@ public class TypeManager implements TypeResolver, FrameInitializer {
     public TypeManager(TypeRegistry typeRegistry) {
     	this.typeRegistry = typeRegistry;
     }
+    
+	@Override public Class<?>[] resolveType(Vertex v, Class<?> defaultType) {
+		return new Class<?>[] {resolve(v, defaultType), VertexFrame.class };
+	}
+
+	@Override public Class<?>[] resolveType(Edge e, Class<?> defaultType) {
+		return new Class<?>[] {resolve(e, defaultType), EdgeFrame.class };
+	}
 	
-	@Override
-	public Class<?> resolveType(Element e, Class<?> defaultType) {
+	private Class<?> resolve(Element e, Class<?> defaultType) {
 		Class<?> typeHoldingTypeField = typeRegistry.getTypeHoldingTypeField(defaultType);
 		if (typeHoldingTypeField != null) {
 			String value = e.getProperty(typeHoldingTypeField.getAnnotation(TypeField.class).value());
@@ -24,9 +35,6 @@ public class TypeManager implements TypeResolver, FrameInitializer {
 		}
 		return defaultType;
 	}
-	
-	
-
 
 	@Override
 	public void initElement(Class<?> kind, FramedGraph<?> framedGraph, Element element) {

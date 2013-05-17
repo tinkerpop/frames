@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Bryn Cooke
  */
-public class FramedInitializerTest {
+public class FrameInitializerTest {
 
     private FramedGraph<Graph> framedGraph;
 

@@ -10,7 +10,7 @@ public class TypedFramedGraph<T extends Graph> extends FramedGraph<T> {
 	public TypedFramedGraph(T baseGraph, TypeRegistry registry) {
 		super(baseGraph);
 		TypeManager manager = new TypeManager(registry);
-		setTypeResolver(manager);
+		registerTypeResolver(manager);
 		registerFrameInitializer(manager);
 	}
 	

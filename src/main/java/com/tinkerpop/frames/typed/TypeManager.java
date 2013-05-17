@@ -16,11 +16,11 @@ public class TypeManager implements TypeResolver, FrameInitializer {
     	this.typeRegistry = typeRegistry;
     }
     
-	@Override public Class<?>[] resolveType(Vertex v, Class<?> defaultType) {
+	@Override public Class<?>[] resolveTypes(Vertex v, Class<?> defaultType) {
 		return new Class<?>[] {resolve(v, defaultType), VertexFrame.class };
 	}
 
-	@Override public Class<?>[] resolveType(Edge e, Class<?> defaultType) {
+	@Override public Class<?>[] resolveTypes(Edge e, Class<?> defaultType) {
 		return new Class<?>[] {resolve(e, defaultType), EdgeFrame.class };
 	}
 	

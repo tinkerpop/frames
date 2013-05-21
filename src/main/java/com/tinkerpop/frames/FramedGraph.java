@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +79,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return a proxy objects backed by a vertex and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Vertex vertex, final Class<F> kind) {
-    	List<Class<?>> resolvedTypes = new ArrayList<Class<?>>();
+    	Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
     	resolvedTypes.add(VertexFrame.class);
     	resolvedTypes.add(kind);
     	for(TypeResolver typeResolver : typeResolvers) {
@@ -98,7 +99,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Edge edge, final Direction direction, final Class<F> kind) {
-    	List<Class<?>> resolvedTypes = new ArrayList<Class<?>>();
+    	Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
     	resolvedTypes.add(EdgeFrame.class);
     	resolvedTypes.add(kind);
     	for(TypeResolver typeResolver : typeResolvers) {

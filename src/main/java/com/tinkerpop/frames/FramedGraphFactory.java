@@ -53,7 +53,7 @@ public class FramedGraphFactory {
 	 * @param modules The modules used to configure each {@link FramedGraph} created by the factory.
 	 * @return The {@link FramedGraphFactory}.
 	 */
-	public static FramedGraphFactory create(Module... modules) {
+	public static FramedGraphFactory createFactory(Module... modules) {
 		return new FramedGraphFactory(modules);
 	}
 	

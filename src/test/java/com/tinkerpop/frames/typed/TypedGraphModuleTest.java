@@ -37,7 +37,7 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testSerializeVertexType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.createFactory(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
 				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		A a = framedGraph.addVertex(null, A.class);
@@ -48,7 +48,7 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testDeserializeVertexType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.createFactory(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
 				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex cV = graph.addVertex(null);
@@ -64,7 +64,7 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testSerializeEdgeType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.createFactory(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
 				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex v1 = graph.addVertex(null);
@@ -77,7 +77,7 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testDeserializeEdgeType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.createFactory(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
 				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex v1 = graph.addVertex(null);

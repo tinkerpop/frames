@@ -34,20 +34,27 @@ public class TypeResolverTest {
 	@Test
 	public void testAdditionalTypes() {
 		Graph graph = TinkerGraphFactory.createTinkerGraph();
-		framedGraph = new FramedGraph<Graph>(graph);
-		framedGraph.registerTypeResolver(new TypeResolver() {
+		FramedGraphFactory factory = FramedGraphFactory.create(new Module() {
 			
 			@Override
-			public Class<?>[] resolveTypes(Edge e, Class<?> defaultType) {
+			public void configure(FramedGraphConfiguration config) {
+				config.addTypeResolver(new TypeResolver() {
+					
+					@Override
+					public Class<?>[] resolveTypes(Edge e, Class<?> defaultType) {
 
-				return new Class[]{AdditionalEdge.class};
-			}
-			
-			@Override
-			public Class<?>[] resolveTypes(Vertex v, Class<?> defaultType) {
-				return new Class[]{AdditionalVertex.class};
+						return new Class[]{AdditionalEdge.class};
+					}
+					
+					@Override
+					public Class<?>[] resolveTypes(Vertex v, Class<?> defaultType) {
+						return new Class[]{AdditionalVertex.class};
+					}
+				});
 			}
 		});
+		framedGraph = factory.create(graph);
+		
 		
 		Person marko = framedGraph.getVertex(1, Person.class);
 		Assert.assertTrue(marko instanceof AdditionalVertex);
@@ -63,20 +70,27 @@ public class TypeResolverTest {
 	@Test
 	public void testExtendedTypes() {
 		Graph graph = TinkerGraphFactory.createTinkerGraph();
-		framedGraph = new FramedGraph<Graph>(graph);
-		framedGraph.registerTypeResolver(new TypeResolver() {
+		FramedGraphFactory factory = FramedGraphFactory.create(new Module() {
 			
 			@Override
-			public Class<?>[] resolveTypes(Edge e, Class<?> defaultType) {
+			public void configure(FramedGraphConfiguration config) {
+				config.addTypeResolver(new TypeResolver() {
+					
+					@Override
+					public Class<?>[] resolveTypes(Edge e, Class<?> defaultType) {
 
-				return new Class[0];
-			}
-			
-			@Override
-			public Class<?>[] resolveTypes(Vertex v, Class<?> defaultType) {
-				return new Class[]{ExtendedPerson.class};
+						return new Class[0];
+					}
+					
+					@Override
+					public Class<?>[] resolveTypes(Vertex v, Class<?> defaultType) {
+						return new Class[]{ExtendedPerson.class};
+					}
+				});
 			}
 		});
+		framedGraph = factory.create(graph);
+	
 		
 		Person marko = framedGraph.getVertex(1, Person.class);
 		Assert.assertTrue(marko instanceof ExtendedPerson);		

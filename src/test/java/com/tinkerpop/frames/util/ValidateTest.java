@@ -1,4 +1,4 @@
-package com.tinkerpop.frames.typed;
+package com.tinkerpop.frames.util;
 
 import static org.junit.Assert.assertEquals;
 

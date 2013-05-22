@@ -9,11 +9,12 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.frames.EdgeFrame;
 import com.tinkerpop.frames.FramedGraph;
+import com.tinkerpop.frames.FramedGraphFactory;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.VertexFrame;
 
 
-public class TypedFramedGraphTest extends TestCase {
+public class TypedGraphModuleTest extends TestCase {
 	public static @TypeField("type")
 	interface Base {
 		@Property("label")
@@ -36,8 +37,9 @@ public class TypedFramedGraphTest extends TestCase {
 
 	public void testSerializeVertexType() {
 		Graph graph = new TinkerGraph();
-		FramedGraph<Graph> framedGraph = new TypedFramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
 				.add(C.class).build());
+		FramedGraph<Graph> framedGraph = factory.create(graph);
 		A a = framedGraph.addVertex(null, A.class);
 		C c = framedGraph.addVertex(null, C.class);
 		assertEquals("A", ((VertexFrame) a).asVertex().getProperty("type"));
@@ -46,8 +48,9 @@ public class TypedFramedGraphTest extends TestCase {
 
 	public void testDeserializeVertexType() {
 		Graph graph = new TinkerGraph();
-		FramedGraph<Graph> framedGraph = new TypedFramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
 				.add(C.class).build());
+		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex cV = graph.addVertex(null);
 		cV.setProperty("type", "C");
 		cV.setProperty("label", "C Label");
@@ -61,8 +64,9 @@ public class TypedFramedGraphTest extends TestCase {
 
 	public void testSerializeEdgeType() {
 		Graph graph = new TinkerGraph();
-		FramedGraph<Graph> framedGraph = new TypedFramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
 				.add(C.class).build());
+		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex v1 = graph.addVertex(null);
 		Vertex v2 = graph.addVertex(null);
 		A a = framedGraph.addEdge(null, v1, v2, "label", Direction.OUT, A.class);
@@ -73,8 +77,9 @@ public class TypedFramedGraphTest extends TestCase {
 
 	public void testDeserializeEdgeType() {
 		Graph graph = new TinkerGraph();
-		FramedGraph<Graph> framedGraph = new TypedFramedGraph<Graph>(graph, new TypeRegistryBuilder().add(A.class).add(B.class)
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
 				.add(C.class).build());
+		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex v1 = graph.addVertex(null);
 		Vertex v2 = graph.addVertex(null);
 		Edge cE = graph.addEdge(null, v1, v2, "label");

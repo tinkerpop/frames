@@ -37,8 +37,8 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testSerializeVertexType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
-				.add(C.class).build());
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		A a = framedGraph.addVertex(null, A.class);
 		C c = framedGraph.addVertex(null, C.class);
@@ -48,8 +48,8 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testDeserializeVertexType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
-				.add(C.class).build());
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex cV = graph.addVertex(null);
 		cV.setProperty("type", "C");
@@ -64,8 +64,8 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testSerializeEdgeType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
-				.add(C.class).build());
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex v1 = graph.addVertex(null);
 		Vertex v2 = graph.addVertex(null);
@@ -77,8 +77,8 @@ public class TypedGraphModuleTest extends TestCase {
 
 	public void testDeserializeEdgeType() {
 		Graph graph = new TinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().add(A.class).add(B.class)
-				.add(C.class).build());
+		FramedGraphFactory factory = FramedGraphFactory.create(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+				.withClass(C.class).build());
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex v1 = graph.addVertex(null);
 		Vertex v2 = graph.addVertex(null);

@@ -13,7 +13,7 @@ public class TypedGraphModuleBuilder {
 		
 	}
 	
-	public TypedGraphModuleBuilder add(Class<?> type) {
+	public TypedGraphModuleBuilder withClass(Class<?> type) {
 		typeRegistry.add(type);
 		return this;
 	}

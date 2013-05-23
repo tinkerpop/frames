@@ -37,7 +37,7 @@ public class TypeResolverTest {
 		FramedGraphFactory factory = FramedGraphFactory.createFactory(new Module() {
 			
 			@Override
-			public void configure(FramedGraphConfiguration config) {
+			public Graph configure(Graph baseGraph, FramedGraphConfiguration config) {
 				config.addTypeResolver(new TypeResolver() {
 					
 					@Override
@@ -51,6 +51,7 @@ public class TypeResolverTest {
 						return new Class[]{AdditionalVertex.class};
 					}
 				});
+				return baseGraph;
 			}
 		});
 		framedGraph = factory.create(graph);
@@ -73,7 +74,7 @@ public class TypeResolverTest {
 		FramedGraphFactory factory = FramedGraphFactory.createFactory(new Module() {
 			
 			@Override
-			public void configure(FramedGraphConfiguration config) {
+			public Graph configure(Graph baseGraph, FramedGraphConfiguration config) {
 				config.addTypeResolver(new TypeResolver() {
 					
 					@Override
@@ -87,6 +88,7 @@ public class TypeResolverTest {
 						return new Class[]{ExtendedPerson.class};
 					}
 				});
+				return baseGraph;
 			}
 		});
 		framedGraph = factory.create(graph);

@@ -1,5 +1,6 @@
 package com.tinkerpop.frames.typed;
 
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.frames.FramedGraphConfiguration;
 import com.tinkerpop.frames.Module;
 
@@ -23,11 +24,10 @@ public class TypedGraphModuleBuilder {
 		return new Module() {
 			
 			@Override
-			public void configure(FramedGraphConfiguration config) {
-				
-				
+			public Graph configure(Graph baseGraph, FramedGraphConfiguration config) {
 				config.addTypeResolver(manager);
 				config.addFrameInitializer(manager);
+				return baseGraph;
 			}
 
 			

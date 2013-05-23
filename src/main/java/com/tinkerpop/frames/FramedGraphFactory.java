@@ -40,11 +40,12 @@ public class FramedGraphFactory {
 		config.addAnnotationhandler(new IncidenceAnnotationHandler());
 		config.addAnnotationhandler(new DomainAnnotationHandler());
 		config.addAnnotationhandler(new RangeAnnotationHandler());
+		Graph graph = baseGraph;
 		for(Module module : modules) {
-			module.configure(config);
+			graph = module.configure(graph, config);
 		}
-		FramedGraph<T> graph = new FramedGraph<T>(config, baseGraph);
-		return graph;
+		FramedGraph<T> framedGraph = new FramedGraph<T>(baseGraph, config, graph);
+		return framedGraph;
 	}
 	
 	

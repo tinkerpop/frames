@@ -2,13 +2,9 @@ package com.tinkerpop.frames;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
@@ -42,10 +38,18 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 
 	private FramedGraphConfiguration config;
 	private boolean configViaFactory;
+	private Graph configuredBaseGraph;
 
-	FramedGraph(FramedGraphConfiguration config, T baseGraph) {
+	/**
+	 * @param baseGraph The original graph being framed.
+	 * @param config The configuration for the framed graph.
+	 * @param configuredBaseGraph The graph being framed after module configuration.
+	 */
+	FramedGraph(T baseGraph, FramedGraphConfiguration config, Graph configuredBaseGraph) {
 		this.config = config;
 		this.baseGraph = baseGraph;
+		this.configuredBaseGraph = configuredBaseGraph;
+		
 		configViaFactory = true;
 	}
 
@@ -59,6 +63,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 */
 	public FramedGraph(final T baseGraph) {
 		this.baseGraph = baseGraph;
+		configuredBaseGraph = baseGraph;
 		this.config = new FramedGraphConfiguration();
 		configViaFactory = false;
 		registerAnnotationHandler(new PropertyAnnotationHandler());
@@ -162,7 +167,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	}
 
 	public Vertex getVertex(final Object id) {
-		return this.baseGraph.getVertex(id);
+		return this.configuredBaseGraph.getVertex(id);
 	}
 
 	/**
@@ -178,11 +183,11 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface
 	 */
 	public <F> F getVertex(final Object id, final Class<F> kind) {
-		return this.frame(this.baseGraph.getVertex(id), kind);
+		return this.frame(this.configuredBaseGraph.getVertex(id), kind);
 	}
 
 	public Vertex addVertex(final Object id) {
-		return this.baseGraph.addVertex(id);
+		return this.configuredBaseGraph.addVertex(id);
 	}
 
 	/**
@@ -198,7 +203,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface
 	 */
 	public <F> F addVertex(final Object id, final Class<F> kind) {
-		Vertex vertex = this.baseGraph.addVertex(id);
+		Vertex vertex = this.configuredBaseGraph.addVertex(id);
 		for (FrameInitializer initializer : config.getFrameInitializers()) {
 			initializer.initElement(kind, this, vertex);
 		}
@@ -206,7 +211,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	}
 
 	public Edge getEdge(final Object id) {
-		return this.baseGraph.getEdge(id);
+		return this.configuredBaseGraph.getEdge(id);
 	}
 
 	/**
@@ -225,12 +230,12 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 */
 	public <F> F getEdge(final Object id, final Direction direction,
 			final Class<F> kind) {
-		return this.frame(this.baseGraph.getEdge(id), direction, kind);
+		return this.frame(this.configuredBaseGraph.getEdge(id), direction, kind);
 	}
 
 	public Edge addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label) {
-		return this.baseGraph.addEdge(id, outVertex, inVertex, label);
+		return this.configuredBaseGraph.addEdge(id, outVertex, inVertex, label);
 	}
 
 	/**
@@ -256,7 +261,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	public <F> F addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label,
 			final Direction direction, final Class<F> kind) {
-		Edge edge = this.baseGraph.addEdge(id, outVertex, inVertex, label);
+		Edge edge = this.configuredBaseGraph.addEdge(id, outVertex, inVertex, label);
 		for (FrameInitializer initializer : config.getFrameInitializers()) {
 			initializer.initElement(kind, this, edge);
 		}
@@ -264,19 +269,19 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	}
 
 	public void removeVertex(final Vertex vertex) {
-		this.baseGraph.removeVertex(vertex);
+		this.configuredBaseGraph.removeVertex(vertex);
 	}
 
 	public void removeEdge(final Edge edge) {
-		this.baseGraph.removeEdge(edge);
+		this.configuredBaseGraph.removeEdge(edge);
 	}
 
 	public Iterable<Vertex> getVertices() {
-		return this.baseGraph.getVertices();
+		return this.configuredBaseGraph.getVertices();
 	}
 
 	public Iterable<Vertex> getVertices(final String key, final Object value) {
-		return this.baseGraph.getVertices(key, value);
+		return this.configuredBaseGraph.getVertices(key, value);
 	}
 
 	/**
@@ -295,16 +300,16 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 */
 	public <F> Iterable<F> getVertices(final String key, final Object value,
 			final Class<F> kind) {
-		return new FramedVertexIterable<F>(this, this.baseGraph.getVertices(
+		return new FramedVertexIterable<F>(this, this.configuredBaseGraph.getVertices(
 				key, value), kind);
 	}
 
 	public Iterable<Edge> getEdges() {
-		return this.baseGraph.getEdges();
+		return this.configuredBaseGraph.getEdges();
 	}
 
 	public Iterable<Edge> getEdges(final String key, final Object value) {
-		return this.baseGraph.getEdges(key, value);
+		return this.configuredBaseGraph.getEdges(key, value);
 	}
 
 	/**
@@ -325,18 +330,18 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 */
 	public <F> Iterable<F> getEdges(final String key, final Object value,
 			final Direction direction, final Class<F> kind) {
-		return new FramedEdgeIterable<F>(this, this.baseGraph.getEdges(key,
+		return new FramedEdgeIterable<F>(this, this.configuredBaseGraph.getEdges(key,
 				value), direction, kind);
 	}
 
 	public Features getFeatures() {
-		Features features = this.baseGraph.getFeatures().copyFeatures();
+		Features features = this.configuredBaseGraph.getFeatures().copyFeatures();
 		features.isWrapper = true;
 		return features;
 	}
 
 	public void shutdown() {
-		this.baseGraph.shutdown();
+		this.configuredBaseGraph.shutdown();
 	}
 
 	public T getBaseGraph() {
@@ -348,7 +353,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	}
 
 	public GraphQuery query() {
-		return this.baseGraph.query();
+		return this.configuredBaseGraph.query();
 	}
 
 	/**

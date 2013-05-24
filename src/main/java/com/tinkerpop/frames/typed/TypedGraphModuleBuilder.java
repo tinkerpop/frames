@@ -1,6 +1,6 @@
 package com.tinkerpop.frames.typed;
 
-import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.frames.AbstractModule;
 import com.tinkerpop.frames.FramedGraphConfiguration;
 import com.tinkerpop.frames.Module;
 
@@ -21,16 +21,13 @@ public class TypedGraphModuleBuilder {
 	
 	public Module build() {
 		final TypeManager manager = new TypeManager(typeRegistry);
-		return new Module() {
+		return new AbstractModule() {
 			
 			@Override
-			public Graph configure(Graph baseGraph, FramedGraphConfiguration config) {
+			public void configure(FramedGraphConfiguration config) {
 				config.addTypeResolver(manager);
 				config.addFrameInitializer(manager);
-				return baseGraph;
-			}
-
-			
+			}			
 		};
 	}
 }

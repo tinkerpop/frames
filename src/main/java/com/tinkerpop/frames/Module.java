@@ -1,6 +1,7 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 
 /**
@@ -10,6 +11,8 @@ import com.tinkerpop.frames.annotations.AnnotationHandler;
  * 
  * Modules may add {@link FrameInitializer}s {@link TypeResolver}s and
  * {@link AnnotationHandler}s to the configuration.
+ * 
+ * Modules may wrap the graph being framed. For example to add an event graph.
  * 
  * Modules should be fast and light weight as configure will be called for each {@link FramedGraph} created. 
  * 
@@ -24,4 +27,12 @@ public interface Module {
 	 * @return The graph being framed.
 	 */
 	Graph configure(Graph baseGraph, FramedGraphConfiguration config);
+	
+	
+	/**
+	 * @param baseGraph The graph being framed.
+	 * @param config The configuration for the new FramedGraph.
+	 * @return The graph being framed.
+	 */
+	TransactionalGraph configure(TransactionalGraph baseGraph, FramedGraphConfiguration config);
 }

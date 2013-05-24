@@ -1,6 +1,7 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
 import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
@@ -34,12 +35,7 @@ public class FramedGraphFactory {
 	 * @return The {@link FramedGraph}
 	 */
 	public <T extends Graph> FramedGraph<T> create(T baseGraph) {
-		FramedGraphConfiguration config = new FramedGraphConfiguration();
-		config.addAnnotationhandler(new PropertyAnnotationHandler());
-		config.addAnnotationhandler(new AdjacencyAnnotationHandler());
-		config.addAnnotationhandler(new IncidenceAnnotationHandler());
-		config.addAnnotationhandler(new DomainAnnotationHandler());
-		config.addAnnotationhandler(new RangeAnnotationHandler());
+		FramedGraphConfiguration config = getBaseConfig();
 		Graph graph = baseGraph;
 		for(Module module : modules) {
 			graph = module.configure(graph, config);
@@ -48,6 +44,32 @@ public class FramedGraphFactory {
 		return framedGraph;
 	}
 	
+	
+	/**
+	 * Create a new {@link FramedGraph}.
+	 * @param baseGraph The graph whose elements to frame.
+	 * @return The {@link FramedGraph}
+	 */
+	public <T extends TransactionalGraph> TransactionalFramedGraph<T> create(T baseGraph) {
+		FramedGraphConfiguration config = getBaseConfig();
+		TransactionalGraph graph = baseGraph;
+		for(Module module : modules) {
+			graph = module.configure(graph, config);
+		}
+		TransactionalFramedGraph<T> framedGraph = new TransactionalFramedGraph<T>(baseGraph, config, graph);
+		return framedGraph;
+	}
+
+
+	private FramedGraphConfiguration getBaseConfig() {
+		FramedGraphConfiguration config = new FramedGraphConfiguration();
+		config.addAnnotationhandler(new PropertyAnnotationHandler());
+		config.addAnnotationhandler(new AdjacencyAnnotationHandler());
+		config.addAnnotationhandler(new IncidenceAnnotationHandler());
+		config.addAnnotationhandler(new DomainAnnotationHandler());
+		config.addAnnotationhandler(new RangeAnnotationHandler());
+		return config;
+	}
 	
 	/**
 	 * Create a {@link FramedGraphFactory} with a set of modules.

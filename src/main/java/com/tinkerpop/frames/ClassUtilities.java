@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.Vertex;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.Map;
 
 
@@ -52,9 +53,13 @@ public class ClassUtilities {
     @SuppressWarnings("rawtypes")
     public static Class getGenericClass(final Method method) {
         final Type returnType = method.getGenericReturnType();
-        if (returnType instanceof ParameterizedType)
-            return (Class) ((ParameterizedType) returnType).getActualTypeArguments()[0];
-        else
+        if (returnType instanceof ParameterizedType) {
+        	Type type = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+        	if (type instanceof TypeVariable) {
+        		return (Class)((TypeVariable)type).getBounds()[0];
+        	} else
+        		return (Class)type;
+        } else
             return method.getReturnType();
     }
 }

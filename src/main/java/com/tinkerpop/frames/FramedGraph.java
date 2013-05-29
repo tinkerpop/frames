@@ -2,9 +2,12 @@ package com.tinkerpop.frames;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
+import java.nio.file.WatchEvent.Kind;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +41,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
     protected final T baseGraph;
     private final Map<Class<? extends Annotation>, AnnotationHandler<? extends Annotation>> annotationHandlers;
     private List<FrameInitializer> frameInitializers = new ArrayList<FrameInitializer>();
+    private List<TypeResolver> typeResolvers = new ArrayList<TypeResolver>();
+    
 
     /**
      * Construct a FramedGraph that will frame the elements of the underlying graph.
@@ -55,38 +60,62 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
         registerAnnotationHandler(new RangeAnnotationHandler());
         registerAnnotationHandler(new GremlinGroovyAnnotationHandler());
     }
+    
+    /**
+     * Register a resolver that is used to locate additional interfaces to use when framing an element.
+     * @param typeResolver the resolver.
+     */
+    public void registerTypeResolver(TypeResolver typeResolver) {
+		typeResolvers.add(typeResolver);
+	}
 
     /**
      * A helper method for framing a vertex.
+     * Note that all framed vertices implement {@link VertexFrame} to allow access to the underlying element
      *
      * @param vertex the vertex to frame
-     * @param kind   the annotated interface to frame the vertex as
-     * @param <F>    the type of the annotated interface
+     * @param kind   the default annotated interface to frame the vertex as
+     * @param <F>    the default type of the annotated interface
      * @return a proxy objects backed by a vertex and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Vertex vertex, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind, VertexFrame.class}, new FramedElement(this, vertex));
+    	Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
+    	resolvedTypes.add(VertexFrame.class);
+    	resolvedTypes.add(kind);
+    	for(TypeResolver typeResolver : typeResolvers) {
+    		resolvedTypes.addAll(Arrays.asList(typeResolver.resolveTypes(vertex, kind)));
+    	}
+		return (F) Proxy.newProxyInstance(kind.getClassLoader(), resolvedTypes.toArray(new Class[resolvedTypes.size()]), new FramedElement(this, vertex));
     }
 
     /**
      * A helper method for framing an edge.
+     * Note that all framed edges implement {@link EdgeFrame} to allow access to the underlying element 
      *
      * @param edge      the edge to frame
      * @param direction the direction of the edges
-     * @param kind      the annotated interface to frame the edges as
-     * @param <F>       the type of the annotated interface
+     * @param kind      the default annotated interface to frame the edges as
+     * @param <F>       the default type of the annotated interface
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
     public <F> F frame(final Edge edge, final Direction direction, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind, EdgeFrame.class}, new FramedElement(this, edge, direction));
+    	Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
+    	resolvedTypes.add(EdgeFrame.class);
+    	resolvedTypes.add(kind);
+    	for(TypeResolver typeResolver : typeResolvers) {
+    		resolvedTypes.addAll(Arrays.asList(typeResolver.resolveTypes(edge, kind)));
+    	}
+        return (F) Proxy.newProxyInstance(kind.getClassLoader(), resolvedTypes.toArray(new Class[resolvedTypes.size()]), new FramedElement(this, edge, direction));
     }
+    
+	
 
     /**
      * A helper method for framing an iterable of vertices.
      *
      * @param vertices the vertices to frame
-     * @param kind     the annotated interface to frame the vertices as
-     * @param <F>      the type of the annotated interface
+     * @param kind     the default annotated interface to frame the vertices as
+     * @param <F>      the default type of the annotated interface
      * @return an iterable of proxy objects backed by a vertex and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> frameVertices(final Iterable<Vertex> vertices, final Class<F> kind) {
@@ -98,8 +127,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      *
      * @param edges     the edges to frame
      * @param direction the direction of the edges
-     * @param kind      the annotated interface to frame the edges as
-     * @param <F>       the type of the annotated interface
+     * @param kind      the default annotated interface to frame the edges as
+     * @param <F>       the default type of the annotated interface
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> frameEdges(final Iterable<Edge> edges, final Direction direction, final Class<F> kind) {
@@ -114,8 +143,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * Frame a vertex according to a particular kind of annotated interface.
      *
      * @param id   the id of the vertex
-     * @param kind the annotated interface to frame the vertex as
-     * @param <F>  the type of the annotated interface
+     * @param kind the default annotated interface to frame the vertex as
+     * @param <F>  the default type of the annotated interface
      * @return a proxy object backed by the vertex and interpreted from the perspective of the annotate interface
      */
     public <F> F getVertex(final Object id, final Class<F> kind) {
@@ -130,8 +159,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * Add a vertex to the underlying graph and return it as a framed vertex.
      *
      * @param id   the id of the newly created vertex
-     * @param kind the annotated interface to frame the vertex as
-     * @param <F>  the type of the annotated interface
+     * @param kind the default annotated interface to frame the vertex as
+     * @param <F>  the default type of the annotated interface
      * @return a proxy object backed by the vertex and interpreted from the perspective of the annotate interface
      */
     public <F> F addVertex(final Object id, final Class<F> kind) {
@@ -151,8 +180,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      *
      * @param id        the id of the edge
      * @param direction the direction of the edge
-     * @param kind      the annotated interface to frame the edge as
-     * @param <F>       the type of the annotated interface
+     * @param kind      the default annotated interface to frame the edge as
+     * @param <F>       the default type of the annotated interface
      * @return a proxy object backed by the edge and interpreted from the perspective of the annotate interface
      */
     public <F> F getEdge(final Object id, final Direction direction, final Class<F> kind) {
@@ -171,8 +200,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @param inVertex  the incoming vertex
      * @param label     the label of the edge
      * @param direction the direction of the edge
-     * @param kind      the annotated interface to frame the edge as
-     * @param <F>       the type of the annotated interface
+     * @param kind      the default annotated interface to frame the edge as
+     * @param <F>       the default type of the annotated interface
      * @return a proxy object backed by the edge and interpreted from the perspective of the annotate interface
      */
     public <F> F addEdge(final Object id, final Vertex outVertex, final Vertex inVertex, final String label, final Direction direction, final Class<F> kind) {
@@ -180,7 +209,6 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
         for (FrameInitializer initializer : frameInitializers) {
             initializer.initElement(kind, this, edge);
         }
-
         return this.frame(edge, direction, kind);
     }
 
@@ -205,8 +233,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      *
      * @param key   the key of the vertices to get
      * @param value the value of the vertices to get
-     * @param kind  the annotated interface to frame the vertices as
-     * @param <F>   the type of the annotated interface
+     * @param kind  the default annotated interface to frame the vertices as
+     * @param <F>   the default type of the annotated interface
      * @return an iterable of proxy objects backed by the vertices and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> getVertices(final String key, final Object value, final Class<F> kind) {
@@ -227,8 +255,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @param key       the key of the edges to get
      * @param value     the value of the edges to get
      * @param direction the direction of the edges
-     * @param kind      the annotated interface to frame the edges as
-     * @param <F>       the type of the annotated interface
+     * @param kind      the default annotated interface to frame the edges as
+     * @param <F>       the default type of the annotated interface
      * @return an iterable of proxy objects backed by the edges and interpreted from the perspective of the annotate interface
      */
     public <F> Iterable<F> getEdges(final String key, final Object value, final Direction direction, final Class<F> kind) {

@@ -1,5 +1,8 @@
 package com.tinkerpop.frames;
 
+import java.lang.reflect.Method;
+import java.util.HashSet;
+
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.EdgeTestSuite;
@@ -19,8 +22,6 @@ import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -95,6 +96,7 @@ public class FramedGraphTest extends GraphTest {
 
 
     }
+
 
     public void testVertexTestSuite() throws Exception {
         this.stopWatch();

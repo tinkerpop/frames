@@ -3,17 +3,14 @@ package com.tinkerpop.frames.annotations;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.ClassUtilities;
-import com.tinkerpop.frames.FramedElement;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.VertexFrame;
 import com.tinkerpop.frames.structures.FramedVertexIterable;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> {
 
@@ -87,10 +84,10 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
     private void addEdges(final Adjacency adjacency, final FramedGraph framedGraph, final Vertex vertex, Vertex newVertex) {
         switch(adjacency.direction()) {
         case OUT:
-            framedGraph.getBaseGraph().addEdge(null, vertex, newVertex, adjacency.label());
+            framedGraph.addEdge(null, vertex, newVertex, adjacency.label());
             break;
         case IN:
-            framedGraph.getBaseGraph().addEdge(null, newVertex, vertex, adjacency.label());
+            framedGraph.addEdge(null, newVertex, vertex, adjacency.label());
             break;
         case BOTH:
             throw new UnsupportedOperationException("Direction.BOTH it not supported on 'add' or 'set' methods");
@@ -98,10 +95,9 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
     }
 
     private void removeEdges(final Direction direction, final String label, final Vertex element, final Vertex otherVertex, final FramedGraph framedGraph) {
-        final Graph graph = framedGraph.getBaseGraph();
         for (final Edge edge : element.getEdges(direction, label)) {
             if (null == otherVertex || edge.getVertex(direction.opposite()).equals(otherVertex)) {
-                graph.removeEdge(edge);
+                framedGraph.removeEdge(edge);
             }
         }
     }

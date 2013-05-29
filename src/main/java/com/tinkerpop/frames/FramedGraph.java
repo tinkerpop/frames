@@ -76,19 +76,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
      * @param <F>       the type of the annotated interface
      * @return an iterable of proxy objects backed by an edge and interpreted from the perspective of the annotate interface
      */
-<<<<<<< edgedir
-    public <F> F frame(final Edge edge, final Direction direction, final Class<F> kind) {
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind, EdgeFrame.class}, new FramedElement(this, edge, direction));
-=======
     public <F> F frame(final Edge edge, final Class<F> kind) {
-    	Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
-    	resolvedTypes.add(EdgeFrame.class);
-    	resolvedTypes.add(kind);
-    	for(TypeResolver typeResolver : typeResolvers) {
-    		resolvedTypes.addAll(Arrays.asList(typeResolver.resolveTypes(edge, kind)));
-    	}
-        return (F) Proxy.newProxyInstance(kind.getClassLoader(), resolvedTypes.toArray(new Class[resolvedTypes.size()]), new FramedElement(this, edge));
->>>>>>> 8568b49 Drop direction from the FramedGraph.frameEdge methods
+        return (F) Proxy.newProxyInstance(kind.getClassLoader(), new Class[]{kind, EdgeFrame.class}, new FramedElement(this, edge));
     }
 
     /**
@@ -190,12 +179,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
         for (FrameInitializer initializer : frameInitializers) {
             initializer.initElement(kind, this, edge);
         }
-<<<<<<< edgedir
-
-        return this.frame(edge, direction, kind);
-=======
         return this.frame(edge, kind);
->>>>>>> 8568b49 Drop direction from the FramedGraph.frameEdge methods
     }
 
     public void removeVertex(final Vertex vertex) {

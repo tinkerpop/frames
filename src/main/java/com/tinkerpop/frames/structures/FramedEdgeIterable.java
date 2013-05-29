@@ -1,6 +1,5 @@
 package com.tinkerpop.frames.structures;
 
-import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.frames.FramedGraph;
@@ -12,15 +11,13 @@ import java.util.Iterator;
  */
 public class FramedEdgeIterable<T> implements Iterable<T> {
     protected final Class<T> kind;
-    protected final Direction direction;
     protected final Iterable<Edge> iterable;
     protected final FramedGraph<? extends Graph> framedGraph;
 
-    public FramedEdgeIterable(final FramedGraph<? extends Graph> framedGraph, final Iterable<Edge> iterable, final Direction direction, final Class<T> kind) {
+    public FramedEdgeIterable(final FramedGraph<? extends Graph> framedGraph, final Iterable<Edge> iterable, final Class<T> kind) {
         this.framedGraph = framedGraph;
         this.iterable = iterable;
         this.kind = kind;
-        this.direction = direction;
     }
 
     public Iterator<T> iterator() {
@@ -37,7 +34,7 @@ public class FramedEdgeIterable<T> implements Iterable<T> {
             }
 
             public T next() {
-                return framedGraph.frame(this.iterator.next(), direction, kind);
+                return framedGraph.frame(this.iterator.next(), kind);
             }
         };
     }

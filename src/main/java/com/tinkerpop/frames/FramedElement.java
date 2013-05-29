@@ -1,6 +1,5 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.util.ElementHelper;
 
@@ -16,7 +15,6 @@ import java.lang.reflect.Proxy;
  */
 public class FramedElement implements InvocationHandler {
 
-    private final Direction direction;
     protected final FramedGraph framedGraph;
     protected final Element element;
     private static Method hashCodeMethod;
@@ -39,7 +37,7 @@ public class FramedElement implements InvocationHandler {
         }
     }
 
-    public FramedElement(final FramedGraph framedGraph, final Element element, final Direction direction) {
+    public FramedElement(final FramedGraph framedGraph, final Element element) {
         if (null == framedGraph) {
             throw new IllegalArgumentException("FramedGraph can not be null");
         }
@@ -50,11 +48,6 @@ public class FramedElement implements InvocationHandler {
 
         this.element = element;
         this.framedGraph = framedGraph;
-        this.direction = direction;
-    }
-
-    public FramedElement(final FramedGraph framedGraph, final Element element) {
-        this(framedGraph, element, null);
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
@@ -72,7 +65,7 @@ public class FramedElement implements InvocationHandler {
         final Annotation[] annotations = method.getAnnotations();
         for (final Annotation annotation : annotations) {
             if (this.framedGraph.hasAnnotationHandler(annotation.annotationType())) {
-                return this.framedGraph.getAnnotationHandler(annotation.annotationType()).processElement(annotation, method, arguments, this.framedGraph, this.element, this.direction);
+                return this.framedGraph.getAnnotationHandler(annotation.annotationType()).processElement(annotation, method, arguments, this.framedGraph, this.element);
             }
         }
 

@@ -43,7 +43,7 @@ public class IncidenceAnnotationHandler implements AnnotationHandler<Incidence> 
             }
                 
         } else if (ClassUtilities.isRemoveMethod(method)) {
-            framedGraph.getBaseGraph().removeEdge(((EdgeFrame) arguments[0]).asEdge());
+            framedGraph.removeEdge(((EdgeFrame) arguments[0]).asEdge());
             return null;
         }
 

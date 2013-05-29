@@ -48,7 +48,7 @@ public class FramedGraphTest extends GraphTest {
         FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
         assertEquals(framedGraph.frame(graph.getVertex(1), Person.class), framedGraph.getVertex(1, Person.class));
-        assertEquals(framedGraph.frame(graph.getEdge(7), Direction.OUT, Knows.class), framedGraph.getEdge(7, Direction.OUT, Knows.class));
+        assertEquals(framedGraph.frame(graph.getEdge(7), Knows.class), framedGraph.getEdge(7, Knows.class));
     }
 
     public void testFrameVertices() {

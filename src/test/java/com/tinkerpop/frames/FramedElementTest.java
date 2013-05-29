@@ -27,11 +27,15 @@ public class FramedElementTest extends TestCase {
         assertEquals(lop.getName(), "lop");
         assertEquals(lop.getLanguage(), "java");
 
-        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
+        Created markoCreatedLop = framedGraph.getEdge(9, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
+        assertEquals(marko, markoCreatedLop.getDomain());
+        assertEquals(lop, markoCreatedLop.getRange());
 
-        CreatedBy lopCreatedByMarko = framedGraph.getEdge(9, Direction.IN, CreatedBy.class);
+        CreatedBy lopCreatedByMarko = framedGraph.getEdge(9, CreatedBy.class);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
+        assertEquals(lop, lopCreatedByMarko.getDomain());
+        assertEquals(marko, lopCreatedByMarko.getRange());
 
         Person temp = framedGraph.frame(graph.addVertex(null), Person.class);
         assertNull(temp.getName());
@@ -51,7 +55,7 @@ public class FramedElementTest extends TestCase {
         marko.setAge(31);
         assertEquals(marko.getAge(), new Integer(31));
 
-        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
+        Created markoCreatedLop = framedGraph.getEdge(9, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
         markoCreatedLop.setWeight(99.0f);
         assertEquals(markoCreatedLop.getWeight(), 99.0f);
@@ -100,7 +104,7 @@ public class FramedElementTest extends TestCase {
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals("v[1]", marko.toString());
 
-        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
+        Created markoCreatedLop = framedGraph.getEdge(9, Created.class);
         assertEquals("e[9][1-created->3]", markoCreatedLop.toString());
     }
 

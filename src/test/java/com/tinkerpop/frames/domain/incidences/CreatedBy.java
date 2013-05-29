@@ -10,11 +10,12 @@ import com.tinkerpop.frames.domain.classes.Project;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public interface CreatedBy {
-
-    @Domain
+    // Domain and Range are the inverse of the direction of the Edge. Typically you would call these methods getPerson and getProject to avoid confusion...
+	
+    @Range
     public Project getDomain();
 
-    @Range
+    @Domain // inverse direction of the edge
     public Person getRange();
 
     @Property("weight")

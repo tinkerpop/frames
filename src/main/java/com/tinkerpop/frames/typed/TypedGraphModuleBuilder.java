@@ -24,7 +24,7 @@ public class TypedGraphModuleBuilder {
 		return new AbstractModule() {
 			
 			@Override
-			public void configure(FramedGraphConfiguration config) {
+			public void doConfigure(FramedGraphConfiguration config) {
 				config.addTypeResolver(manager);
 				config.addFrameInitializer(manager);
 			}			

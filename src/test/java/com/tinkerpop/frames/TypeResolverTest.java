@@ -36,7 +36,7 @@ public class TypeResolverTest {
 		FramedGraphFactory factory = FramedGraphFactory.createFactory(new AbstractModule() {
 
 			@Override
-			public void configure(FramedGraphConfiguration config) {
+			public void doConfigure(FramedGraphConfiguration config) {
 				config.addTypeResolver(new TypeResolver() {
 
 					@Override
@@ -70,7 +70,7 @@ public class TypeResolverTest {
 		FramedGraphFactory factory = FramedGraphFactory.createFactory(new AbstractModule() {
 
 			@Override
-			public void configure(FramedGraphConfiguration config) {
+			public void doConfigure(FramedGraphConfiguration config) {
 				config.addTypeResolver(new TypeResolver() {
 
 					@Override

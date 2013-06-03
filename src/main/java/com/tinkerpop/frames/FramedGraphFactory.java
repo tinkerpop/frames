@@ -9,57 +9,61 @@ import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 
 /**
- * Creates a factory for creating {@link FramedGraph}s using a set of modules to configure each graph.
- * Note that by default all Framed graphs have the following handlers registered:
- * {@link PropertyAnnotationHandler}
- * {@link AdjacencyAnnotationHandler}
- * {@link IncidenceAnnotationHandler}
- * {@link DomainAnnotationHandler}
- * {@link RangeAnnotationHandler}
+ * Creates a factory for creating {@link FramedGraph}s using a set of modules to
+ * configure each graph. Note that by default all Framed graphs have the
+ * following handlers registered: {@link PropertyAnnotationHandler}
+ * {@link AdjacencyAnnotationHandler} {@link IncidenceAnnotationHandler}
+ * {@link DomainAnnotationHandler} {@link RangeAnnotationHandler}
  * 
  * @author Bryn Cooke
- *
+ * 
  */
 public class FramedGraphFactory {
-	
+
 	private Module[] modules;
+
 	private FramedGraphFactory(Module... modules) {
 		this.modules = modules;
-		
+
 	}
 
-	
 	/**
 	 * Create a new {@link FramedGraph}.
-	 * @param baseGraph The graph whose elements to frame.
+	 * 
+	 * @param baseGraph
+	 *            The graph whose elements to frame.
 	 * @return The {@link FramedGraph}
 	 */
 	public <T extends Graph> FramedGraph<T> create(T baseGraph) {
 		FramedGraphConfiguration config = getBaseConfig();
 		Graph graph = baseGraph;
-		for(Module module : modules) {
+		for (Module module : modules) {
 			graph = module.configure(graph, config);
 		}
 		FramedGraph<T> framedGraph = new FramedGraph<T>(baseGraph, config, graph);
 		return framedGraph;
 	}
-	
-	
+
 	/**
 	 * Create a new {@link FramedGraph}.
-	 * @param baseGraph The graph whose elements to frame.
+	 * 
+	 * @param baseGraph
+	 *            The graph whose elements to frame.
 	 * @return The {@link FramedGraph}
 	 */
 	public <T extends TransactionalGraph> FramedTransactionalGraph<T> create(T baseGraph) {
 		FramedGraphConfiguration config = getBaseConfig();
 		TransactionalGraph graph = baseGraph;
-		for(Module module : modules) {
-			graph = module.configure(graph, config);
+		for (Module module : modules) {
+			Graph newGraph = module.configure(graph, config);
+			if(!(newGraph instanceof TransactionalGraph)) {
+				throw new UnsupportedOperationException("Module " + module.getClass() + " tried to wrap a TransactionalGraph with a non transactional graph.");
+			}
+			graph = (TransactionalGraph) newGraph;
 		}
 		FramedTransactionalGraph<T> framedGraph = new FramedTransactionalGraph<T>(baseGraph, config, graph);
 		return framedGraph;
 	}
-
 
 	private FramedGraphConfiguration getBaseConfig() {
 		FramedGraphConfiguration config = new FramedGraphConfiguration();
@@ -70,14 +74,17 @@ public class FramedGraphFactory {
 		config.addAnnotationhandler(new RangeAnnotationHandler());
 		return config;
 	}
-	
+
 	/**
 	 * Create a {@link FramedGraphFactory} with a set of modules.
-	 * @param modules The modules used to configure each {@link FramedGraph} created by the factory.
+	 * 
+	 * @param modules
+	 *            The modules used to configure each {@link FramedGraph} created
+	 *            by the factory.
 	 * @return The {@link FramedGraphFactory}.
 	 */
 	public static FramedGraphFactory createFactory(Module... modules) {
 		return new FramedGraphFactory(modules);
 	}
-	
+
 }

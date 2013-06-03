@@ -29,10 +29,5 @@ public interface Module {
 	Graph configure(Graph baseGraph, FramedGraphConfiguration config);
 	
 	
-	/**
-	 * @param baseGraph The graph being framed.
-	 * @param config The configuration for the new FramedGraph.
-	 * @return The graph being framed.
-	 */
-	TransactionalGraph configure(TransactionalGraph baseGraph, FramedGraphConfiguration config);
+
 }

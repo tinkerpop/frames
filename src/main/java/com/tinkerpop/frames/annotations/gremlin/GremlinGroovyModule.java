@@ -12,7 +12,7 @@ public class GremlinGroovyModule extends AbstractModule {
 	private GremlinGroovyAnnotationHandler handler = new GremlinGroovyAnnotationHandler(); //Factory will share handler.
 
 	@Override
-	public void configure(FramedGraphConfiguration config) {
+	public void doConfigure(FramedGraphConfiguration config) {
 		config.addAnnotationhandler(handler);
 		
 	}

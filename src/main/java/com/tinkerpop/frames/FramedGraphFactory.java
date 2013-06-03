@@ -50,13 +50,13 @@ public class FramedGraphFactory {
 	 * @param baseGraph The graph whose elements to frame.
 	 * @return The {@link FramedGraph}
 	 */
-	public <T extends TransactionalGraph> TransactionalFramedGraph<T> create(T baseGraph) {
+	public <T extends TransactionalGraph> FramedTransactionalGraph<T> create(T baseGraph) {
 		FramedGraphConfiguration config = getBaseConfig();
 		TransactionalGraph graph = baseGraph;
 		for(Module module : modules) {
 			graph = module.configure(graph, config);
 		}
-		TransactionalFramedGraph<T> framedGraph = new TransactionalFramedGraph<T>(baseGraph, config, graph);
+		FramedTransactionalGraph<T> framedGraph = new FramedTransactionalGraph<T>(baseGraph, config, graph);
 		return framedGraph;
 	}
 

@@ -5,12 +5,12 @@ import org.mockito.Mockito;
 
 import com.tinkerpop.blueprints.TransactionalGraph;
 
-public class TransactionalFramedGraphTest {
+public class FramedTransactionalGraphTest {
 	@Test
 	public void testTransactions() {
 
 		TransactionalGraph t = Mockito.mock(TransactionalGraph.class);
-		TransactionalFramedGraph<TransactionalGraph> g = new TransactionalFramedGraph<TransactionalGraph>(t, new FramedGraphConfiguration(), t);
+		FramedTransactionalGraph<TransactionalGraph> g = new FramedTransactionalGraph<TransactionalGraph>(t, new FramedGraphConfiguration(), t);
 		g.commit();
 		Mockito.verify(t).commit();
 		Mockito.reset(t);

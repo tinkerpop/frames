@@ -34,7 +34,7 @@ public class FramedGraphFactoryTest {
 		Mockito.verify(mockModule, Mockito.times(1)).configure(Mockito.any(Graph.class), Mockito.any(FramedGraphConfiguration.class));
 		
 		TransactionalTinkerGraph baseTransactional = new TransactionalTinkerGraph();
-		TransactionalFramedGraph<TransactionalTinkerGraph> framedTransactional = graphFactory.create(baseTransactional);
+		FramedTransactionalGraph<TransactionalTinkerGraph> framedTransactional = graphFactory.create(baseTransactional);
 		Assert.assertEquals(baseTransactional, framedTransactional.getBaseGraph());
 
 		Mockito.verify(mockModule, Mockito.times(1)).configure(Mockito.any(TransactionalGraph.class), Mockito.any(FramedGraphConfiguration.class));

@@ -16,16 +16,16 @@ public class RangeAnnotationHandler implements AnnotationHandler<Range> {
     }
 
     @Override
-    public Object processElement(final Range annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
+    public Object processElement(final Range annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element) {
         if (element instanceof Edge) {
-            return processEdge(annotation, method, arguments, framedGraph, (Edge) element, direction);
+            return processEdge(annotation, method, arguments, framedGraph, (Edge) element);
         } else {
             throw new UnsupportedOperationException();
         }
     }
 
-    public Object processEdge(final Range annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge, final Direction direction) {
-        return framedGraph.frame(edge.getVertex(direction.opposite()), method.getReturnType());
+    public Object processEdge(final Range annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge) {
+        return framedGraph.frame(edge.getVertex(Direction.IN), method.getReturnType());
     }
 
 }

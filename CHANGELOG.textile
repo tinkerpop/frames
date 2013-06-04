@@ -15,6 +15,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* The direction parameter is dropped for framing Edges from FramedGraph.frame
 * Fixed NPE when enum property type set to null
 * Inheritance/Poymorphism support
 * Factory/Module support

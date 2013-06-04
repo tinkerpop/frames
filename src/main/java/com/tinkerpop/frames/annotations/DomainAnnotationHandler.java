@@ -16,16 +16,16 @@ public class DomainAnnotationHandler implements AnnotationHandler<Domain> {
     }
 
     @Override
-    public Object processElement(final Domain annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
+    public Object processElement(final Domain annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element) {
         if (element instanceof Edge) {
-            return processEdge(annotation, method, arguments, framedGraph, (Edge) element, direction);
+            return processEdge(annotation, method, arguments, framedGraph, (Edge) element);
         } else {
             throw new UnsupportedOperationException();
         }
     }
 
-    public Object processEdge(final Domain annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge, final Direction direction) {
-        return framedGraph.frame(edge.getVertex(direction), method.getReturnType());
+    public Object processEdge(final Domain annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge) {
+        return framedGraph.frame(edge.getVertex(Direction.OUT), method.getReturnType());
     }
 
 }

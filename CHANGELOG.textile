@@ -21,7 +21,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 * Fix detection of parameterized return types
 * AdjacencyAnnotationHandler operates against the graph being framed rather than the base graph
 * FramedTransactionalGraph support
-
+* Support subclassing in FramedGraphFactory
 ==<hr/>==
 
 h3. Version 2.3.2 (NOT OFFICIALLY RELEASED YET)

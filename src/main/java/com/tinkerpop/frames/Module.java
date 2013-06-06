@@ -26,7 +26,7 @@ public interface Module {
 	 * @param config The configuration for the new FramedGraph.
 	 * @return The graph being framed.
 	 */
-	Graph configure(Graph baseGraph, FramedGraphConfiguration config);
+	<T extends Graph> T configure(Graph baseGraph, FramedGraphConfiguration config);
 	
 	
 

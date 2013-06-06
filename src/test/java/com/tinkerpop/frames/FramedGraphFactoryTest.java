@@ -14,19 +14,21 @@ import com.tinkerpop.blueprints.Vertex;
 public class FramedGraphFactoryTest {
 
 	private Module mockModule;
+	private Graph base;
 
 
 	@Before
 	public void setup() {
 		mockModule = Mockito.mock(Module.class);
+		base = Mockito.mock(Graph.class);
 	}
 	
 	@Test
 	public void testFactory() {
 		
 		Mockito.when(mockModule.configure(Mockito.any(Graph.class), Mockito.any(FramedGraphConfiguration.class))).then(new ReturnsArgumentAt(0));
-		FramedGraphFactory graphFactory = FramedGraphFactory.createFactory(mockModule);
-		Graph base = Mockito.mock(Graph.class);
+		FramedGraphFactory graphFactory = new FramedGraphFactory(mockModule);
+		
 		FramedGraph<Graph> framed = graphFactory.create(base);
 		Assert.assertEquals(base, framed.getBaseGraph());
 		
@@ -43,8 +45,7 @@ public class FramedGraphFactoryTest {
 	public void testWrapping() {
 		Graph wrapper = Mockito.mock(Graph.class);
 		Mockito.when(mockModule.configure(Mockito.any(Graph.class), Mockito.any(FramedGraphConfiguration.class))).thenReturn(wrapper);
-		FramedGraphFactory graphFactory = FramedGraphFactory.createFactory(mockModule);
-		Graph base = Mockito.mock(Graph.class);
+		FramedGraphFactory graphFactory = new FramedGraphFactory(mockModule);
 		FramedGraph<Graph> framed = graphFactory.create(base);
 		
 		Mockito.verify(mockModule).configure(Mockito.any(Graph.class), Mockito.any(FramedGraphConfiguration.class));
@@ -62,10 +63,40 @@ public class FramedGraphFactoryTest {
 	public void testWrappingError() {
 		Graph wrapper = Mockito.mock(Graph.class);
 		Mockito.when(mockModule.configure(Mockito.any(Graph.class), Mockito.any(FramedGraphConfiguration.class))).thenReturn(wrapper);
-		FramedGraphFactory graphFactory = FramedGraphFactory.createFactory(mockModule);
+		FramedGraphFactory graphFactory = new FramedGraphFactory(mockModule);
 		TransactionalGraph baseTransactional = Mockito.mock(TransactionalGraph.class);
 		graphFactory.create(baseTransactional);
 	}
 	
+	@Test
+	public void testSubclassing() {
+		MyFramedGraphFactory myFramedGraphFactory = new MyFramedGraphFactory(mockModule);
+		Mockito.when(mockModule.configure(Mockito.any(Graph.class), Mockito.any(FramedGraphConfiguration.class))).then(new ReturnsArgumentAt(0));
+		MyFramedGraph<Graph> create = myFramedGraphFactory.create(base);
+		Assert.assertEquals(base, create.getBaseGraph());
+	}
+	
+	static class MyFramedGraph<T extends Graph> extends FramedGraph<T> {
 
+		protected MyFramedGraph(T baseGraph, FramedGraphConfiguration config) {
+			super(baseGraph, config);
+		}
+		
+	}
+
+	
+	static class MyFramedGraphFactory extends FramedGraphFactory {
+
+		public MyFramedGraphFactory(Module... modules) {
+			super(modules);
+		}
+
+		@Override
+		public <T extends Graph> MyFramedGraph<T> create(T baseGraph) {
+			return new MyFramedGraph<T>(baseGraph, getConfiguration(Graph.class, baseGraph));
+		}
+		
+	}
+	
+	
 }

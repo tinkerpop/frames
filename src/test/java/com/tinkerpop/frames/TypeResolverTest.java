@@ -33,7 +33,7 @@ public class TypeResolverTest {
 	@Test
 	public void testAdditionalTypes() {
 		Graph graph = TinkerGraphFactory.createTinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.createFactory(new AbstractModule() {
+		FramedGraphFactory factory = new FramedGraphFactory(new AbstractModule() {
 
 			@Override
 			public void doConfigure(FramedGraphConfiguration config) {
@@ -67,7 +67,7 @@ public class TypeResolverTest {
 	@Test
 	public void testExtendedTypes() {
 		Graph graph = TinkerGraphFactory.createTinkerGraph();
-		FramedGraphFactory factory = FramedGraphFactory.createFactory(new AbstractModule() {
+		FramedGraphFactory factory = new FramedGraphFactory(new AbstractModule() {
 
 			@Override
 			public void doConfigure(FramedGraphConfiguration config) {

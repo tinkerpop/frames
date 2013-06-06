@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 
 /**
@@ -23,28 +24,31 @@ public class FramedGraphConfiguration {
 	private Map<Class<? extends Annotation>, AnnotationHandler<?>> annotationHandlers = new HashMap<Class<? extends Annotation>, AnnotationHandler<?>>();
 	private List<FrameInitializer> frameInitializers = new ArrayList<FrameInitializer>();
 	private List<TypeResolver> typeResolvers = new ArrayList<TypeResolver>();
+	private Graph configuredGraph;
 
-	FramedGraphConfiguration() {
-
-	}
-
+	
+	
 	/**
-	 * @param annotationHandler The {@link AnnotationHandler} to add to the {@link FramedGraph}.
+	 * @param annotationHandler
+	 *            The {@link AnnotationHandler} to add to the
+	 *            {@link FramedGraph}.
 	 */
 	public void addAnnotationhandler(AnnotationHandler<?> annotationHandler) {
-		annotationHandlers.put(annotationHandler.getAnnotationType(),
-				annotationHandler);
+		annotationHandlers.put(annotationHandler.getAnnotationType(), annotationHandler);
 	}
 
 	/**
-	 * @param frameInitializer The {@link FrameInitializer} to add to the {@link FramedGraph}.
+	 * @param frameInitializer
+	 *            The {@link FrameInitializer} to add to the {@link FramedGraph}
+	 *            .
 	 */
 	public void addFrameInitializer(FrameInitializer frameInitializer) {
 		frameInitializers.add(frameInitializer);
 	}
 
 	/**
-	 * @param typeResolver The {@link TypeResolver} to add to the {@link FramedGraph}.
+	 * @param typeResolver
+	 *            The {@link TypeResolver} to add to the {@link FramedGraph}.
 	 */
 	public void addTypeResolver(TypeResolver typeResolver) {
 		typeResolvers.add(typeResolver);
@@ -61,5 +65,12 @@ public class FramedGraphConfiguration {
 	List<TypeResolver> getTypeResolvers() {
 		return typeResolvers;
 	}
+	
+	public void setConfiguredGraph(Graph configuredGraph) {
+		this.configuredGraph = configuredGraph;
+	}
 
+	Graph getConfiguredGraph() {
+		return configuredGraph;
+	}
 }

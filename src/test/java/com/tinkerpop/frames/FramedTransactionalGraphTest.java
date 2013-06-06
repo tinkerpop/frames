@@ -10,7 +10,7 @@ public class FramedTransactionalGraphTest {
 	public void testTransactions() {
 
 		TransactionalGraph t = Mockito.mock(TransactionalGraph.class);
-		FramedTransactionalGraph<TransactionalGraph> g = new FramedTransactionalGraph<TransactionalGraph>(t, new FramedGraphConfiguration(), t);
+		FramedTransactionalGraph<TransactionalGraph> g = new FramedTransactionalGraph<TransactionalGraph>(t, new FramedGraphConfiguration());
 		g.commit();
 		Mockito.verify(t).commit();
 		Mockito.reset(t);

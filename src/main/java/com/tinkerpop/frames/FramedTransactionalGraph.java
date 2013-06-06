@@ -12,9 +12,8 @@ import com.tinkerpop.blueprints.TransactionalGraph;
 public class FramedTransactionalGraph<T extends TransactionalGraph> extends FramedGraph<T> implements TransactionalGraph {
 
 
-	FramedTransactionalGraph(T baseGraph, FramedGraphConfiguration config,
-			TransactionalGraph configuredBaseGraph) {
-		super(baseGraph, config, configuredBaseGraph);
+	protected FramedTransactionalGraph(T baseGraph, FramedGraphConfiguration config) {
+		super(baseGraph, config);
 		
 	}
 

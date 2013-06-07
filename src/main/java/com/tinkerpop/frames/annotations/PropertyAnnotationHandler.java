@@ -1,6 +1,5 @@
 package com.tinkerpop.frames.annotations;
 
-import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedGraph;
@@ -16,7 +15,7 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
     }
 
     @Override
-    public Object processElement(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
+    public Object processElement(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element) {
         if (ClassUtilities.isGetMethod(method)) {
             Object value = element.getProperty(annotation.value());
             if (method.getReturnType().isEnum())

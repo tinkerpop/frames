@@ -1,6 +1,5 @@
 package com.tinkerpop.frames.annotations.gremlin;
 
-import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
@@ -43,7 +42,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
 
     @Override
     public Object processElement(final GremlinGroovy annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph,
-                                 final Element element, final Direction direction) {
+                                 final Element element) {
         if (element instanceof Vertex) {
             return processVertex(annotation, method, arguments, framedGraph, (Vertex) element);
         } else {

@@ -18,7 +18,6 @@ import java.util.Map;
  */
 public class FramedElement implements InvocationHandler {
 
-    private final Direction direction;
     protected final FramedGraph framedGraph;
     protected final Element element;
     private static Method hashCodeMethod;
@@ -41,7 +40,7 @@ public class FramedElement implements InvocationHandler {
         }
     }
 
-    public FramedElement(final FramedGraph framedGraph, final Element element, final Direction direction) {
+    public FramedElement(final FramedGraph framedGraph, final Element element) {
         if (null == framedGraph) {
             throw new IllegalArgumentException("FramedGraph can not be null");
         }
@@ -52,11 +51,6 @@ public class FramedElement implements InvocationHandler {
 
         this.element = element;
         this.framedGraph = framedGraph;
-        this.direction = direction;
-    }
-
-    public FramedElement(final FramedGraph framedGraph, final Element element) {
-        this(framedGraph, element, null);
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] arguments) {
@@ -76,7 +70,7 @@ public class FramedElement implements InvocationHandler {
         for (final Annotation annotation : annotations) {
 			AnnotationHandler annotationHandler = annotationHandlers.get(annotation.annotationType());
             if (annotationHandler != null) {
-                return annotationHandler.processElement(annotation, method, arguments, this.framedGraph, this.element, this.direction);
+                return annotationHandler.processElement(annotation, method, arguments, this.framedGraph, this.element);
             }
         }
 

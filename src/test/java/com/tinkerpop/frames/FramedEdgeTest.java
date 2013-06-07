@@ -25,7 +25,7 @@ public class FramedEdgeTest extends TestCase {
 
         Person marko = framedGraph.getVertex(1, Person.class);
         Person vadas = framedGraph.getVertex(2, Person.class);
-        Knows knows = framedGraph.getEdge(7, Direction.OUT, Knows.class);
+        Knows knows = framedGraph.getEdge(7, Knows.class);
         assertEquals(marko, knows.getDomain());
         assertEquals(vadas, knows.getRange());
 
@@ -40,7 +40,7 @@ public class FramedEdgeTest extends TestCase {
         FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
         Iterator<Edge> edges = framedGraph.getEdges("weight", 0.4f).iterator();
-        Iterator<Created> createds = framedGraph.getEdges("weight", 0.4f, Direction.OUT, Created.class).iterator();
+        Iterator<Created> createds = framedGraph.getEdges("weight", 0.4f, Created.class).iterator();
 
         int counter = 0;
         while (edges.hasNext()) {
@@ -57,8 +57,8 @@ public class FramedEdgeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
-        Iterator<Created> createds1 = framedGraph.frameEdges(framedGraph.getEdges("weight", 0.4f), Direction.OUT, Created.class).iterator();
-        Iterator<Created> createds2 = framedGraph.getEdges("weight", 0.4f, Direction.OUT, Created.class).iterator();
+        Iterator<Created> createds1 = framedGraph.frameEdges(framedGraph.getEdges("weight", 0.4f), Created.class).iterator();
+        Iterator<Created> createds2 = framedGraph.getEdges("weight", 0.4f, Created.class).iterator();
 
         int counter = 0;
         while (createds1.hasNext()) {
@@ -78,7 +78,7 @@ public class FramedEdgeTest extends TestCase {
         Person marko = framedGraph.getVertex(1, Person.class);
         Person vadas = framedGraph.getVertex(2, Person.class);
         Created created = marko.getCreated().iterator().next();
-        WeightedEdge weightedEdge = framedGraph.frame(created.asEdge(), Direction.OUT, WeightedEdge.class);
+        WeightedEdge weightedEdge = framedGraph.frame(created.asEdge(), WeightedEdge.class);
 
         assertEquals(created, weightedEdge);
     }

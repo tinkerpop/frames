@@ -12,10 +12,10 @@ import com.tinkerpop.frames.domain.classes.Project;
  */
 public interface Created extends EdgeFrame {
     @Domain
-    public Project getDomain();
+    public Person getDomain();
 
     @Range
-    public Person getRange();
+    public Project getRange();
 
     @Property("weight")
     public Float getWeight();

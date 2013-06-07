@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Features;
 import com.tinkerpop.blueprints.Graph;
@@ -113,8 +112,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return an iterable of proxy objects backed by an edge and interpreted
 	 *         from the perspective of the annotate interface
 	 */
-	public <F> F frame(final Edge edge, final Direction direction,
-			final Class<F> kind) {
+	public <F> F frame(final Edge edge, final Class<F> kind) {
 		Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
 		resolvedTypes.add(EdgeFrame.class);
 		resolvedTypes.add(kind);
@@ -124,7 +122,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 		}
 		return (F) Proxy.newProxyInstance(kind.getClassLoader(),
 				resolvedTypes.toArray(new Class[resolvedTypes.size()]),
-				new FramedElement(this, edge, direction));
+				new FramedElement(this, edge));
 	}
 
 	/**
@@ -158,9 +156,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return an iterable of proxy objects backed by an edge and interpreted
 	 *         from the perspective of the annotate interface
 	 */
-	public <F> Iterable<F> frameEdges(final Iterable<Edge> edges,
-			final Direction direction, final Class<F> kind) {
-		return new FramedEdgeIterable<F>(this, edges, direction, kind);
+	public <F> Iterable<F> frameEdges(final Iterable<Edge> edges, final Class<F> kind) {
+		return new FramedEdgeIterable<F>(this, edges, kind);
 	}
 
 	public Vertex getVertex(final Object id) {
@@ -225,9 +222,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return a proxy object backed by the edge and interpreted from the
 	 *         perspective of the annotate interface
 	 */
-	public <F> F getEdge(final Object id, final Direction direction,
-			final Class<F> kind) {
-		return this.frame(config.getConfiguredGraph().getEdge(id), direction, kind);
+	public <F> F getEdge(final Object id, final Class<F> kind) {
+		return this.frame(config.getConfiguredGraph().getEdge(id), kind);
 	}
 
 	public Edge addEdge(final Object id, final Vertex outVertex,
@@ -257,12 +253,12 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 */
 	public <F> F addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label,
-			final Direction direction, final Class<F> kind) {
+			final Class<F> kind) {
 		Edge edge = config.getConfiguredGraph().addEdge(id, outVertex, inVertex, label);
 		for (FrameInitializer initializer : config.getFrameInitializers()) {
 			initializer.initElement(kind, this, edge);
 		}
-		return this.frame(edge, direction, kind);
+		return this.frame(edge, kind);
 	}
 
 	public void removeVertex(final Vertex vertex) {
@@ -326,9 +322,9 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         from the perspective of the annotate interface
 	 */
 	public <F> Iterable<F> getEdges(final String key, final Object value,
-			final Direction direction, final Class<F> kind) {
+			final Class<F> kind) {
 		return new FramedEdgeIterable<F>(this, config.getConfiguredGraph().getEdges(key,
-				value), direction, kind);
+				value), kind);
 	}
 
 	public Features getFeatures() {

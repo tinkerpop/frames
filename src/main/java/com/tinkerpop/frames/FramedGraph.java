@@ -180,7 +180,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface
 	 */
 	public <F> F getVertex(final Object id, final Class<F> kind) {
-		return this.frame(config.getConfiguredGraph().getVertex(id), kind);
+		return this.frame(getVertex(id), kind);
 	}
 
 	public Vertex addVertex(final Object id) {
@@ -200,7 +200,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface
 	 */
 	public <F> F addVertex(final Object id, final Class<F> kind) {
-		Vertex vertex = config.getConfiguredGraph().addVertex(id);
+		Vertex vertex = addVertex(id);
 		for (FrameInitializer initializer : config.getFrameInitializers()) {
 			initializer.initElement(kind, this, vertex);
 		}
@@ -227,7 +227,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 */
 	public <F> F getEdge(final Object id, final Direction direction,
 			final Class<F> kind) {
-		return this.frame(config.getConfiguredGraph().getEdge(id), direction, kind);
+		return this.frame(getEdge(id), direction, kind);
 	}
 
 	public Edge addEdge(final Object id, final Vertex outVertex,
@@ -258,7 +258,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	public <F> F addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label,
 			final Direction direction, final Class<F> kind) {
-		Edge edge = config.getConfiguredGraph().addEdge(id, outVertex, inVertex, label);
+		Edge edge = addEdge(id, outVertex, inVertex, label);
 		for (FrameInitializer initializer : config.getFrameInitializers()) {
 			initializer.initElement(kind, this, edge);
 		}

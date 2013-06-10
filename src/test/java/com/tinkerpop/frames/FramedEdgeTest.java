@@ -21,7 +21,7 @@ public class FramedEdgeTest extends TestCase {
 
     public void testGettingDomainAndRange() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         Person vadas = framedGraph.getVertex(2, Person.class);
@@ -37,7 +37,7 @@ public class FramedEdgeTest extends TestCase {
 
     public void testGettingIterable() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Iterator<Edge> edges = framedGraph.getEdges("weight", 0.4f).iterator();
         Iterator<Created> createds = framedGraph.getEdges("weight", 0.4f, Direction.OUT, Created.class).iterator();
@@ -55,7 +55,7 @@ public class FramedEdgeTest extends TestCase {
 
     public void testEqualityOfIterableMethods() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Iterator<Created> createds1 = framedGraph.frameEdges(framedGraph.getEdges("weight", 0.4f), Direction.OUT, Created.class).iterator();
         Iterator<Created> createds2 = framedGraph.getEdges("weight", 0.4f, Direction.OUT, Created.class).iterator();
@@ -73,7 +73,7 @@ public class FramedEdgeTest extends TestCase {
 
     public void testEquality() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         Person vadas = framedGraph.getVertex(2, Person.class);

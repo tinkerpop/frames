@@ -21,9 +21,14 @@ public class FrameInitializerTest {
     @Before
     public void setup() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        framedGraph = new FramedGraph<Graph>(graph);
-        framedGraph.registerFrameInitializer(nameDefaulter);
-        framedGraph.registerFrameInitializer(weightDefaulter);
+        framedGraph = new FramedGraphFactory(new AbstractModule(){
+        	@Override
+        	protected void doConfigure(FramedGraphConfiguration config) {
+	        	config.addFrameInitializer(nameDefaulter);
+	        	config.addFrameInitializer(weightDefaulter);
+        	}
+        }).create(graph);
+        
     }
 
     @Test

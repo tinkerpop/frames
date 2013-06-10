@@ -17,7 +17,7 @@ public class FramedElementTest extends TestCase {
 
     public void testGettingProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getName(), "marko");
@@ -41,7 +41,7 @@ public class FramedElementTest extends TestCase {
 
     public void testSettingProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getName(), "marko");
@@ -59,7 +59,7 @@ public class FramedElementTest extends TestCase {
 
     public void testRemoveProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getAge(), new Integer(29));
@@ -69,7 +69,7 @@ public class FramedElementTest extends TestCase {
 
     public void testSetPropertiesToNull() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getAge(), new Integer(29));
@@ -79,7 +79,7 @@ public class FramedElementTest extends TestCase {
 
     public void testEnumProperty() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getGender(), null);
@@ -95,7 +95,7 @@ public class FramedElementTest extends TestCase {
 
     public void testToString() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals("v[1]", marko.toString());
@@ -106,7 +106,7 @@ public class FramedElementTest extends TestCase {
 
     public void testEquality() {
         TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<TinkerGraph> framedGraph = new FramedGraph<TinkerGraph>(graph);
+        FramedGraph<TinkerGraph> framedGraph = new FramedGraphFactory().create(graph);
 
         assertEquals(framedGraph.getVertex(1, Person.class), framedGraph.frame(graph.getVertex(1), Person.class));
 

@@ -1,8 +1,8 @@
 package com.tinkerpop.frames;
 
-import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.sail.SailGraph;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +14,9 @@ import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.memory.MemoryStore;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import com.tinkerpop.blueprints.TransactionalGraph;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.impls.sail.SailGraph;
 
 /**
  * @author Joshua Shinavier (http://fortytwo.net)
@@ -53,7 +54,7 @@ public class SailFramesTest {
 
         Vertex p = sailGraph.getVertex(planet.stringValue());
 
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(sailGraph);
+        FramedGraph<SailGraph> framedGraph = new FramedGraphFactory().create(sailGraph);
         Concept planetFrame = framedGraph.frame(p, Concept.class);
         assertNotNull(planetFrame);
 

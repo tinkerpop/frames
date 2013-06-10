@@ -45,7 +45,7 @@ public class FramedGraphTest extends GraphTest {
 
     public void testFrameEquality() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         assertEquals(framedGraph.frame(graph.getVertex(1), Person.class), framedGraph.getVertex(1, Person.class));
         assertEquals(framedGraph.frame(graph.getEdge(7), Direction.OUT, Knows.class), framedGraph.getEdge(7, Direction.OUT, Knows.class));
@@ -53,7 +53,7 @@ public class FramedGraphTest extends GraphTest {
 
     public void testFrameVertices() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         int counter = 0;
         for (Person person : framedGraph.getVertices("name", "marko", Person.class)) {
@@ -73,7 +73,7 @@ public class FramedGraphTest extends GraphTest {
 
     public void testCreateFrame() {
         Graph graph = new TinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
         Person person = framedGraph.addVertex(null, Person.class);
         assertEquals(person.asVertex(), graph.getVertices().iterator().next());
         int counter = 0;

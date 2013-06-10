@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyModule;
 import com.tinkerpop.frames.domain.classes.NamedObject;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
@@ -25,7 +26,7 @@ import static org.junit.Assert.*;
  */
 public class FramedVertexTest {
     private Graph graph = TinkerGraphFactory.createTinkerGraph();
-    private FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+    private FramedGraph<Graph> framedGraph = new FramedGraphFactory(new GremlinGroovyModule()).create(graph);
 
     @Test
     public void testGettingAdjacencies() {

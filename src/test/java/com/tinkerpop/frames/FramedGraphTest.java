@@ -3,6 +3,8 @@ package com.tinkerpop.frames;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 
+import junit.framework.Assert;
+
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.EdgeTestSuite;
@@ -97,6 +99,21 @@ public class FramedGraphTest extends GraphTest {
 
     }
 
+    public void testCreateFrameForNonexistantElements() {
+        Graph graph = new TinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
+        Person vertex = framedGraph.getVertex(-1, Person.class);
+        Assert.assertNull(vertex);
+        vertex = framedGraph.frame(null, Direction.IN, Person.class);
+        Assert.assertNull(vertex);
+        
+        Knows edge = framedGraph.getEdge(-1, Direction.IN, Knows.class);
+        Assert.assertNull(edge);
+        edge = framedGraph.frame(null, Direction.IN, Knows.class);
+        Assert.assertNull(edge);
+        
+    }
+    
 
     public void testVertexTestSuite() throws Exception {
         this.stopWatch();

@@ -86,6 +86,10 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface
 	 */
 	public <F> F frame(final Vertex vertex, final Class<F> kind) {
+		if(vertex == null) {
+			return null;
+		}
+		
 		Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
 		resolvedTypes.add(VertexFrame.class);
 		resolvedTypes.add(kind);
@@ -115,6 +119,11 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 */
 	public <F> F frame(final Edge edge, final Direction direction,
 			final Class<F> kind) {
+		
+		if(edge == null) {
+			return null;
+		}
+		
 		Collection<Class<?>> resolvedTypes = new HashSet<Class<?>>();
 		resolvedTypes.add(EdgeFrame.class);
 		resolvedTypes.add(kind);

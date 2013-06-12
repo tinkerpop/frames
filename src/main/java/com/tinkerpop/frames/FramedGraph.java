@@ -83,7 +83,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @param <F>
 	 *            the default type of the annotated interface
 	 * @return a proxy objects backed by a vertex and interpreted from the
-	 *         perspective of the annotate interface
+	 *         perspective of the annotate interface or null if the vertex parameter was null
 	 */
 	public <F> F frame(final Vertex vertex, final Class<F> kind) {
 		if(vertex == null) {
@@ -114,8 +114,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *            the default annotated interface to frame the edges as
 	 * @param <F>
 	 *            the default type of the annotated interface
-	 * @return an iterable of proxy objects backed by an edge and interpreted
-	 *         from the perspective of the annotate interface
+	 * @return a proxy objects backed by an edge and interpreted from the
+	 *         perspective of the annotate interface or null if the edge paramenter was null
 	 */
 	public <F> F frame(final Edge edge, final Direction direction,
 			final Class<F> kind) {

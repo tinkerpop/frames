@@ -4,6 +4,7 @@ import com.tinkerpop.frames.Domain;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.Range;
 import com.tinkerpop.frames.domain.classes.Person;
+import com.tinkerpop.frames.modules.javahandler.JavaHandler;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -21,4 +22,7 @@ public interface Knows {
 
     @Range
     public Person getRange();
+    
+    @JavaHandler
+    public String getNames();
 }

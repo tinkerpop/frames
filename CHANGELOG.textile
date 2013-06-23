@@ -15,6 +15,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* @JavaHandler@ to support using Java to handle frame methods 
 * Framing a null element returns null   
 * Fixed NPE when enum property type set to null
 * Inheritance/Poymorphism support

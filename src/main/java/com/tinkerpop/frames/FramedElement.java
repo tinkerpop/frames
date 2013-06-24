@@ -41,6 +41,9 @@ public class FramedElement implements InvocationHandler {
         }
     }
 
+    /**
+     * @deprecated The direction field will be dropped in 2.4.0
+     */
     public FramedElement(final FramedGraph framedGraph, final Element element, final Direction direction) {
         if (null == framedGraph) {
             throw new IllegalArgumentException("FramedGraph can not be null");

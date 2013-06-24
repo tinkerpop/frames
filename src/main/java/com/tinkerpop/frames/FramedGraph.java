@@ -116,6 +116,9 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *            the default type of the annotated interface
 	 * @return a proxy objects backed by an edge and interpreted from the
 	 *         perspective of the annotate interface or null if the edge paramenter was null
+	 *         
+	 * @deprecated Use {@link #frame(Edge, Class)}, which uses the edge direction to determine
+	 *             {@link Domain} and {@link Range} of the frame.
 	 */
 	public <F> F frame(final Edge edge, final Direction direction,
 			final Class<F> kind) {
@@ -134,6 +137,23 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 		return (F) Proxy.newProxyInstance(kind.getClassLoader(),
 				resolvedTypes.toArray(new Class[resolvedTypes.size()]),
 				new FramedElement(this, edge, direction));
+	}
+	
+	/**
+	 * A helper method for framing an edge. Note that all framed edges implement
+	 * {@link EdgeFrame} to allow access to the underlying element
+	 * 
+	 * @param edge
+	 *            the edge to frame
+	 * @param kind
+	 *            the default annotated interface to frame the edges as
+	 * @param <F>
+	 *            the default type of the annotated interface
+	 * @return a proxy objects backed by an edge and interpreted from the
+	 *         perspective of the annotate interface or null if the edge paramenter was null
+	 */
+	public <F> F frame(final Edge edge, final Class<F> kind) {
+		return frame(edge, null, kind);
 	}
 
 	/**
@@ -166,10 +186,32 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *            the default type of the annotated interface
 	 * @return an iterable of proxy objects backed by an edge and interpreted
 	 *         from the perspective of the annotate interface
+	 *         
+	 * @deprecated Use {@link #frameEdges(Iterable, Class)}, which uses the edge direction to determine
+	 *             {@link Domain} and {@link Range} of the framed edges.
 	 */
 	public <F> Iterable<F> frameEdges(final Iterable<Edge> edges,
 			final Direction direction, final Class<F> kind) {
 		return new FramedEdgeIterable<F>(this, edges, direction, kind);
+	}
+	
+	/**
+	 * A helper method for framing an iterable of edges.
+	 * 
+	 * @param edges
+	 *            the edges to frame
+	 * @param direction
+	 *            the direction of the edges
+	 * @param kind
+	 *            the default annotated interface to frame the edges as
+	 * @param <F>
+	 *            the default type of the annotated interface
+	 * @return an iterable of proxy objects backed by an edge and interpreted
+	 *         from the perspective of the annotate interface
+	 */
+	public <F> Iterable<F> frameEdges(final Iterable<Edge> edges,
+			final Class<F> kind) {
+		return new FramedEdgeIterable<F>(this, edges, kind);
 	}
 
 	public Vertex getVertex(final Object id) {
@@ -233,10 +275,31 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *            the default type of the annotated interface
 	 * @return a proxy object backed by the edge and interpreted from the
 	 *         perspective of the annotate interface
+	 *         
+	 * @deprecated Use {@link #getEdges(Object, Class)}, which uses the edge direction to determine
+	 *             {@link Domain} and {@link Range} of the framed edge.      
 	 */
 	public <F> F getEdge(final Object id, final Direction direction,
 			final Class<F> kind) {
 		return this.frame(getEdge(id), direction, kind);
+	}
+	
+	/**
+	 * Frame an edge according to a particular kind of annotated interface.
+	 * 
+	 * @param id
+	 *            the id of the edge
+	 * @param direction
+	 *            the direction of the edge
+	 * @param kind
+	 *            the default annotated interface to frame the edge as
+	 * @param <F>
+	 *            the default type of the annotated interface
+	 * @return a proxy object backed by the edge and interpreted from the
+	 *         perspective of the annotate interface     
+	 */
+	public <F> F getEdge(final Object id, final Class<F> kind) {
+		return this.frame(getEdge(id), kind);
 	}
 
 	public Edge addEdge(final Object id, final Vertex outVertex,
@@ -263,6 +326,10 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *            the default type of the annotated interface
 	 * @return a proxy object backed by the edge and interpreted from the
 	 *         perspective of the annotate interface
+	 *         
+	 * @deprecated Use {@link #addEdge(Object, Vertex, Vertex, String, Class)},
+	 *             which uses the edge direction to determine {@link Domain}
+	 *             and {@link Range} of the framed edge.
 	 */
 	public <F> F addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label,
@@ -272,6 +339,12 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 			initializer.initElement(kind, this, edge);
 		}
 		return this.frame(edge, direction, kind);
+	}
+	
+	public <F> F addEdge(final Object id, final Vertex outVertex,
+			final Vertex inVertex, final String label,
+			final Class<F> kind) {
+		return addEdge(id, outVertex, inVertex, label, null, kind);
 	}
 
 	public void removeVertex(final Vertex vertex) {
@@ -333,11 +406,41 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *            the default type of the annotated interface
 	 * @return an iterable of proxy objects backed by the edges and interpreted
 	 *         from the perspective of the annotate interface
+	 *         
+	 * @deprecated Use {@link #getEdges(String, Object, Class)},
+	 *             which uses the edge direction to determine {@link Domain}
+	 *             and {@link Range} of the framed edges.
 	 */
 	public <F> Iterable<F> getEdges(final String key, final Object value,
 			final Direction direction, final Class<F> kind) {
 		return new FramedEdgeIterable<F>(this, config.getConfiguredGraph().getEdges(key,
 				value), direction, kind);
+	}
+	
+	/**
+	 * Frame edges according to a particular kind of annotated interface.
+	 * 
+	 * @param key
+	 *            the key of the edges to get
+	 * @param value
+	 *            the value of the edges to get
+	 * @param direction
+	 *            the direction of the edges
+	 * @param kind
+	 *            the default annotated interface to frame the edges as
+	 * @param <F>
+	 *            the default type of the annotated interface
+	 * @return an iterable of proxy objects backed by the edges and interpreted
+	 *         from the perspective of the annotate interface
+	 *         
+	 * @deprecated Use {@link #getEdges(String, Object, Class)},
+	 *             which uses the edge direction to determine {@link Domain}
+	 *             and {@link Range} of the framed edges.
+	 */
+	public <F> Iterable<F> getEdges(final String key, final Object value,
+			final Class<F> kind) {
+		return new FramedEdgeIterable<F>(this, config.getConfiguredGraph().getEdges(key,
+				value), kind);
 	}
 
 	public Features getFeatures() {

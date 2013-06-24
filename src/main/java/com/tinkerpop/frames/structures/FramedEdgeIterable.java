@@ -3,7 +3,9 @@ package com.tinkerpop.frames.structures;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.frames.Domain;
 import com.tinkerpop.frames.FramedGraph;
+import com.tinkerpop.frames.Range;
 
 import java.util.Iterator;
 
@@ -16,11 +18,22 @@ public class FramedEdgeIterable<T> implements Iterable<T> {
     protected final Iterable<Edge> iterable;
     protected final FramedGraph<? extends Graph> framedGraph;
 
+    /**
+	 * @deprecated Use {@link #FramedEdgeIterable(FramedGraph, Iterable, Class)}, which uses
+	 *             the edge direction to determine {@link Domain} and {@link Range} of the frame.
+	 */
     public FramedEdgeIterable(final FramedGraph<? extends Graph> framedGraph, final Iterable<Edge> iterable, final Direction direction, final Class<T> kind) {
         this.framedGraph = framedGraph;
         this.iterable = iterable;
         this.kind = kind;
         this.direction = direction;
+    }
+    
+    public FramedEdgeIterable(final FramedGraph<? extends Graph> framedGraph, final Iterable<Edge> iterable, final Class<T> kind) {
+        this.framedGraph = framedGraph;
+        this.iterable = iterable;
+        this.kind = kind;
+        this.direction = null;
     }
 
     public Iterator<T> iterator() {

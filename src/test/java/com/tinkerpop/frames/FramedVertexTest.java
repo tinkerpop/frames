@@ -10,6 +10,8 @@ import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
+import com.tinkerpop.frames.domain.incidences.DeprecatedCreated;
+import com.tinkerpop.frames.domain.incidences.DeprecatedCreatedBy;
 import com.tinkerpop.frames.domain.incidences.Knows;
 import org.junit.Test;
 
@@ -130,7 +132,7 @@ public class FramedVertexTest {
     public void testGettingIncidences() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
-        for (Created created : marko.getCreated()) {
+        for (DeprecatedCreated created : marko.getDeprecatedCreated()) {
             counter++;
             assertEquals("lop", created.getRange().getName());
             assertEquals(0.4f, created.getWeight(), 0.01f);
@@ -160,9 +162,9 @@ public class FramedVertexTest {
         Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
         Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
 
-        Created markoCreatedRipple = marko.addCreated(ripple);
+        DeprecatedCreated markoCreatedRipple = marko.addDeprecatedCreated(ripple);
         int counter = 0;
-        for (Created created : marko.getCreated()) {
+        for (DeprecatedCreated created : marko.getDeprecatedCreated()) {
             counter++;
             assertTrue(created.getRange().getName().equals("lop") || created.getRange().getName().equals("ripple"));
         }

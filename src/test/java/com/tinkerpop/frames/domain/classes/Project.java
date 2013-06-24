@@ -5,6 +5,7 @@ import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
+import com.tinkerpop.frames.domain.incidences.DeprecatedCreatedBy;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

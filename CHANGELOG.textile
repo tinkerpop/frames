@@ -15,6 +15,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Deprecate direction parameter for framing Edges from FramedGraph.frame. Starting from 2.4.0 the direction for Domain/Range annotations is taken from the edge direction.
 * Framing a null element returns null   
 * Fixed NPE when enum property type set to null
 * Inheritance/Poymorphism support

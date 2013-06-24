@@ -8,6 +8,9 @@ import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
+import com.tinkerpop.frames.domain.incidences.DeprecatedCreated;
+import com.tinkerpop.frames.domain.incidences.DeprecatedCreatedBy;
+
 import junit.framework.TestCase;
 
 /**
@@ -26,12 +29,18 @@ public class FramedElementTest extends TestCase {
         Project lop = framedGraph.getVertex(3, Project.class);
         assertEquals(lop.getName(), "lop");
         assertEquals(lop.getLanguage(), "java");
-
-        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
+        
+        Created markoCreatedLop = framedGraph.getEdge(9, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
 
-        CreatedBy lopCreatedByMarko = framedGraph.getEdge(9, Direction.IN, CreatedBy.class);
+        CreatedBy lopCreatedByMarko = framedGraph.getEdge(9, CreatedBy.class);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
+
+        DeprecatedCreated deprMarkoCreatedLop = framedGraph.getEdge(9, Direction.OUT, DeprecatedCreated.class);
+        assertEquals(deprMarkoCreatedLop.getWeight(), 0.4f);
+
+        DeprecatedCreatedBy deprLopCreatedByMarko = framedGraph.getEdge(9, Direction.IN, DeprecatedCreatedBy.class);
+        assertEquals(deprLopCreatedByMarko.getWeight(), 0.4f);
 
         Person temp = framedGraph.frame(graph.addVertex(null), Person.class);
         assertNull(temp.getName());
@@ -51,10 +60,15 @@ public class FramedElementTest extends TestCase {
         marko.setAge(31);
         assertEquals(marko.getAge(), new Integer(31));
 
-        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
+        Created markoCreatedLop = framedGraph.getEdge(9, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
         markoCreatedLop.setWeight(99.0f);
         assertEquals(markoCreatedLop.getWeight(), 99.0f);
+        
+        DeprecatedCreated deprMarkoCreatedLop = framedGraph.getEdge(9, Direction.OUT, DeprecatedCreated.class);
+        assertEquals(deprMarkoCreatedLop.getWeight(), 99.0f);
+        deprMarkoCreatedLop.setWeight(0.4f);
+        assertEquals(deprMarkoCreatedLop.getWeight(), 0.4f);
     }
 
     public void testRemoveProperties() {
@@ -100,7 +114,7 @@ public class FramedElementTest extends TestCase {
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals("v[1]", marko.toString());
 
-        Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
+        Created markoCreatedLop = framedGraph.getEdge(9, Created.class);
         assertEquals("e[9][1-created->3]", markoCreatedLop.toString());
     }
 

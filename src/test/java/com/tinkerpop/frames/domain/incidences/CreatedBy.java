@@ -11,14 +11,10 @@ import com.tinkerpop.frames.domain.classes.Project;
  */
 public interface CreatedBy {
 
-	// Domain and Range are respective to the actual edge, which is a "created" edge, with a Person
-	// at the domain side. So the Person is the domain here, because it is the domain (source) of the
-	// "created" edge.
-	// Typically you would call these methods getPerson() and getProject() to avoid confusion.
-	@Range
+    @Domain
     public Project getDomain();
 
-    @Domain
+    @Range
     public Person getRange();
 
     @Property("weight")

@@ -7,7 +7,7 @@ import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovy;
 import com.tinkerpop.frames.annotations.gremlin.GremlinParam;
 import com.tinkerpop.frames.domain.incidences.Created;
-import com.tinkerpop.frames.domain.incidences.DeprecatedCreated;
+import com.tinkerpop.frames.domain.incidences.CreatedInfo;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
 import java.util.Map;
@@ -49,7 +49,7 @@ public interface Person extends NamedObject {
     public Iterable<Created> getCreated();
     
     @Incidence(label = "created")
-    public Iterable<DeprecatedCreated> getDeprecatedCreated();
+    public Iterable<CreatedInfo> getCreatedInfo();
 
     @Adjacency(label = "created")
     public Iterable<Project> getCreatedProjects();
@@ -70,7 +70,7 @@ public interface Person extends NamedObject {
     public Created addCreated(final Project project);
     
     @Incidence(label = "created")
-    public DeprecatedCreated addDeprecatedCreated(final Project project);
+    public CreatedInfo addCreatedInfo(final Project project);
 
     @Adjacency(label = "knows")
     public void removeKnowsPerson(final Person person);
@@ -132,7 +132,4 @@ public interface Person extends NamedObject {
     
     @Incidence(label = "created", direction=Direction.BOTH)
     public Created addCreatedDirectionBothError(final Project project);
-    
-    @Incidence(label = "created", direction=Direction.BOTH)
-    public DeprecatedCreated addDeprecatedCreatedDirectionBothError(final Project project);
 }

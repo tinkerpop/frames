@@ -15,7 +15,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Deprecate direction parameter for framing Edges from FramedGraph.frame. Starting from 2.4.0 the direction for Domain/Range annotations is taken from the edge direction.
+* Deprecate direction parameter for framing Edges from FramedGraph.frame. Starting from the next major release the direction parameter will be dropped. Instead of using Domain/Range annotations with a frame direction, you should use EdgeSource/EdgeTarget annotations that use the implicit direction of the edge.
 * Framing a null element returns null   
 * Fixed NPE when enum property type set to null
 * Inheritance/Poymorphism support

@@ -1,8 +1,8 @@
 package com.tinkerpop.frames.domain.incidences;
 
-import com.tinkerpop.frames.Domain;
+import com.tinkerpop.frames.Initial;
 import com.tinkerpop.frames.Property;
-import com.tinkerpop.frames.Range;
+import com.tinkerpop.frames.Terminal;
 import com.tinkerpop.frames.domain.classes.Person;
 
 /**
@@ -16,9 +16,9 @@ public interface Knows {
     @Property("weight")
     public Float setWeight(float weight);
 
-    @Domain
-    public Person getDomain();
+    @Initial
+    public Person getInitial();
 
-    @Range
-    public Person getRange();
+    @Terminal
+    public Person getTerminal();
 }

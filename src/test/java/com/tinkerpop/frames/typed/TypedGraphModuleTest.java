@@ -2,6 +2,7 @@ package com.tinkerpop.frames.typed;
 
 import junit.framework.TestCase;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -68,8 +69,8 @@ public class TypedGraphModuleTest extends TestCase {
 		FramedGraph<Graph> framedGraph = factory.create(graph);
 		Vertex v1 = graph.addVertex(null);
 		Vertex v2 = graph.addVertex(null);
-		A a = framedGraph.addEdge(null, v1, v2, "label", A.class);
-		C c = framedGraph.addEdge(null, v1, v2, "label", C.class);
+		A a = framedGraph.addEdge(null, v1, v2, "label", Direction.OUT, A.class);
+		C c = framedGraph.addEdge(null, v1, v2, "label", Direction.OUT, C.class);
 		assertEquals("A", ((EdgeFrame) a).asEdge().getProperty("type"));
 		assertEquals("C", ((EdgeFrame) c).asEdge().getProperty("type"));
 	}
@@ -83,7 +84,7 @@ public class TypedGraphModuleTest extends TestCase {
 		Vertex v2 = graph.addVertex(null);
 		Edge cE = graph.addEdge(null, v1, v2, "label");
 		cE.setProperty("type", "C");
-		Base c = framedGraph.getEdge(cE.getId(), Base.class);
+		Base c = framedGraph.getEdge(cE.getId(), Direction.OUT, Base.class);
 		assertTrue(c instanceof C);
 	}
 }

@@ -18,8 +18,10 @@ import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
 import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
+import com.tinkerpop.frames.annotations.InitialAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
+import com.tinkerpop.frames.annotations.TerminalAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
 import com.tinkerpop.frames.structures.FramedEdgeIterable;
 import com.tinkerpop.frames.structures.FramedVertexIterable;
@@ -68,6 +70,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 		registerAnnotationHandler(new IncidenceAnnotationHandler());
 		registerAnnotationHandler(new DomainAnnotationHandler());
 		registerAnnotationHandler(new RangeAnnotationHandler());
+		registerAnnotationHandler(new InitialAnnotationHandler());
+		registerAnnotationHandler(new TerminalAnnotationHandler());
 		registerAnnotationHandler(new GremlinGroovyAnnotationHandler());
 	}
 
@@ -117,8 +121,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return a proxy objects backed by an edge and interpreted from the
 	 *         perspective of the annotate interface or null if the edge paramenter was null
 	 *         
-	 * @deprecated Use {@link #frame(Edge, Class)}, which uses the edge direction to determine
-	 *             {@link Domain} and {@link Range} of the frame.
+	 * @deprecated Use {@link #frame(Edge, Class)}, in combination with {@link Initial}
+	 *             and {@link Terminal}.
 	 */
 	public <F> F frame(final Edge edge, final Direction direction,
 			final Class<F> kind) {
@@ -141,7 +145,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	
 	/**
 	 * A helper method for framing an edge. Note that all framed edges implement
-	 * {@link EdgeFrame} to allow access to the underlying element
+	 * {@link EdgeFrame} to allow access to the underlying element.
 	 * 
 	 * @param edge
 	 *            the edge to frame
@@ -153,7 +157,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface or null if the edge paramenter was null
 	 */
 	public <F> F frame(final Edge edge, final Class<F> kind) {
-		return frame(edge, null, kind);
+		return frame(edge, Direction.OUT, kind);
 	}
 
 	/**
@@ -187,8 +191,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return an iterable of proxy objects backed by an edge and interpreted
 	 *         from the perspective of the annotate interface
 	 *         
-	 * @deprecated Use {@link #frameEdges(Iterable, Class)}, which uses the edge direction to determine
-	 *             {@link Domain} and {@link Range} of the framed edges.
+	 * @deprecated Use {@link #frameEdges(Iterable, Class)}, in combination with {@link Initial}
+	 *             and {@link Terminal}.
 	 */
 	public <F> Iterable<F> frameEdges(final Iterable<Edge> edges,
 			final Direction direction, final Class<F> kind) {
@@ -276,8 +280,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return a proxy object backed by the edge and interpreted from the
 	 *         perspective of the annotate interface
 	 *         
-	 * @deprecated Use {@link #getEdges(Object, Class)}, which uses the edge direction to determine
-	 *             {@link Domain} and {@link Range} of the framed edge.      
+	 * @deprecated Use {@link #getEdges(Object, Class)}, in combination with {@link Initial}
+	 *             and {@link Terminal}.      
 	 */
 	public <F> F getEdge(final Object id, final Direction direction,
 			final Class<F> kind) {
@@ -328,8 +332,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface
 	 *         
 	 * @deprecated Use {@link #addEdge(Object, Vertex, Vertex, String, Class)},
-	 *             which uses the edge direction to determine {@link Domain}
-	 *             and {@link Range} of the framed edge.
+     *             in combination with {@link Initial} and {@link Terminal}.
 	 */
 	public <F> F addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label,
@@ -344,7 +347,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	public <F> F addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label,
 			final Class<F> kind) {
-		return addEdge(id, outVertex, inVertex, label, null, kind);
+		return addEdge(id, outVertex, inVertex, label, Direction.OUT, kind);
 	}
 
 	public void removeVertex(final Vertex vertex) {
@@ -407,9 +410,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return an iterable of proxy objects backed by the edges and interpreted
 	 *         from the perspective of the annotate interface
 	 *         
-	 * @deprecated Use {@link #getEdges(String, Object, Class)},
-	 *             which uses the edge direction to determine {@link Domain}
-	 *             and {@link Range} of the framed edges.
+	 * @deprecated Use {@link #getEdges(String, Object, Class)}, in combination with
+	 *             {@link Initial} and {@link Terminal}.
 	 */
 	public <F> Iterable<F> getEdges(final String key, final Object value,
 			final Direction direction, final Class<F> kind) {
@@ -432,10 +434,6 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *            the default type of the annotated interface
 	 * @return an iterable of proxy objects backed by the edges and interpreted
 	 *         from the perspective of the annotate interface
-	 *         
-	 * @deprecated Use {@link #getEdges(String, Object, Class)},
-	 *             which uses the edge direction to determine {@link Domain}
-	 *             and {@link Range} of the framed edges.
 	 */
 	public <F> Iterable<F> getEdges(final String key, final Object value,
 			final Class<F> kind) {

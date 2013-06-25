@@ -25,11 +25,7 @@ public class DomainAnnotationHandler implements AnnotationHandler<Domain> {
     }
 
     public Object processEdge(final Domain annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Edge edge, final Direction direction) {
-    	if (direction != null)
-    		//deprecated behavior: the edge direction should be used instead
-    		return framedGraph.frame(edge.getVertex(direction), method.getReturnType());
-    	//correct behavior (not using deprecated edge-framing is used):
-    	return framedGraph.frame(edge.getVertex(Direction.OUT), method.getReturnType());
+        return framedGraph.frame(edge.getVertex(direction), method.getReturnType());
     }
 
 }

@@ -6,13 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The target of the adjacency.
- *
- * @author Marko A. Rodriguez (http://markorodriguez.com)
- * 
- * @deprecated Use {@link Initial} or {@link Terminal} instead.
+ * Marks the Terminal Vertex (target) of a framed edge.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Range {
+public @interface Terminal {
 }

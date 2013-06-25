@@ -5,6 +5,7 @@ import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
+import com.tinkerpop.frames.domain.incidences.CreatedInfo;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -19,6 +20,9 @@ public interface Project extends NamedObject {
 
     @Incidence(label = "created", direction = Direction.IN)
     public Iterable<CreatedBy> getCreatedBy();
+    
+    @Incidence(label = "created", direction = Direction.IN)
+    public Iterable<CreatedInfo> getCreatedInfo();
 
     @Adjacency(label = "created", direction = Direction.IN)
     public void removeCreatedByPerson(Person person);
@@ -27,7 +31,16 @@ public interface Project extends NamedObject {
     public void removeCreatedBy(CreatedBy createdBy);
     
     @Incidence(label = "created", direction = Direction.IN)
+    public void removeCreatedInfo(CreatedInfo createdBy);
+    
+    @Incidence(label = "created", direction = Direction.IN)
     public CreatedBy addCreatedByPersonIncidence(Person person);
+    
+    @Incidence(label = "created", direction = Direction.IN)
+    public CreatedInfo addCreatedByPersonInfo(Person person);
+    
+    @Incidence(label = "created", direction = Direction.IN)
+    public CreatedBy addCreatedInfo(CreatedInfo person);
 
     @Adjacency(label = "created", direction = Direction.IN)
     public void addCreatedByPersonAdjacency(Person person);

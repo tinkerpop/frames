@@ -4,11 +4,15 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
 public interface JavaHandlerImpl<C extends Element> {
 
-	
+	/**
+	 * @return The framed graph
+	 */
+	public FramedGraph<?> g();
 	
 	/**
 	 * @return The element that was framed

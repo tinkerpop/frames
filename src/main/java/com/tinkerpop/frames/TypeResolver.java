@@ -6,6 +6,8 @@ import com.tinkerpop.blueprints.Vertex;
 /**
  * Allows dynamic resolution of interfaces that a frame will implement when framing an element.
  * For instance the java type information may retrieved from a property on the element.
+ * Instances of this class should be threadsafe.
+ * 
  * @author Bryn Cooke
  */
 public interface TypeResolver {

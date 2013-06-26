@@ -4,7 +4,8 @@ import com.tinkerpop.blueprints.Element;
 
 /**
  * Allows new framed vertices and edges to be initialized before they are returned to the user. This can be used for defaulting of properties.
- *
+ * Instances of this class should be threadsafe.
+ * 
  * @author Bryn Cooke
  */
 public interface FrameInitializer {

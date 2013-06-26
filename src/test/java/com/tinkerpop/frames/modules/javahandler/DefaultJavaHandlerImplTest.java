@@ -65,47 +65,73 @@ public class DefaultJavaHandlerImplTest {
 		getHandler(graph, edge, getMethod("getA")).frame(edge, Direction.OUT, B.class);
 		Mockito.verify(graph).frame(edge, Direction.OUT, B.class);
 	}
+	
+	@Test
+	public void testFrameEdgeDefaultNoDirection() throws NoSuchMethodException {
+		getHandler(graph, edge, getMethod("getA")).frame(edge);
+		Mockito.verify(graph).frame(edge, A.class);
+	}
+
+	@Test
+	public void testFrameEdgeDefaultExplicitNoDirection() throws NoSuchMethodException {
+		getHandler(graph, edge, getMethod("getA")).frame(edge, B.class);
+		Mockito.verify(graph).frame(edge, B.class);
+	}
 
 	
 	@Test(expected=JavaHandlerException.class)
 	public void testFrameNotIterable() throws NoSuchMethodException {
 		
-		getHandler(graph, vertex, getMethod("getA")).frame(Lists.newArrayList(vertex));
+		getHandler(graph, vertex, getMethod("getA")).frameVertices(Lists.newArrayList(vertex));
 		Mockito.verify(graph).frame(vertex, A.class);
 	}
 
 	@Test(expected=JavaHandlerException.class)
 	public void testFrameIterableNotGeneric() throws NoSuchMethodException {
-		getHandler(graph, vertex, getMethod("getUnknownIterable")).frame(Lists.newArrayList(vertex));
+		getHandler(graph, vertex, getMethod("getUnknownIterable")).frameVertices(Lists.newArrayList(vertex));
 		Mockito.verify(graph).frame(vertex, A.class);
 	}
 	
 	@Test
 	public void testFrameIterableVertex() throws NoSuchMethodException {
 		ArrayList<Vertex> iterable = Lists.newArrayList(vertex);
-		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable);
+		getHandler(graph, vertex, getMethod("getIterable")).frameVertices(iterable);
 		Mockito.verify(graph).frameVertices(iterable, A.class);
 	}
 	
 	@Test
 	public void testFrameIterableVertexExplicit() throws NoSuchMethodException {
 		ArrayList<Vertex> iterable = Lists.newArrayList(vertex);
-		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable, B.class);
+		getHandler(graph, vertex, getMethod("getIterable")).frameVertices(iterable, B.class);
 		Mockito.verify(graph).frameVertices(iterable, B.class);
 	}
 	
 	@Test
-	public void testFrameIterableVertexEdge() throws NoSuchMethodException {
+	public void testFrameIterableEdge() throws NoSuchMethodException {
 		ArrayList<Edge> iterable = Lists.newArrayList(edge);
-		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable, Direction.OUT);
+		getHandler(graph, vertex, getMethod("getIterable")).frameEdges(iterable, Direction.OUT);
 		Mockito.verify(graph).frameEdges(iterable, Direction.OUT, A.class);
 	}
 	
 	@Test
 	public void testFrameIterableEdgeExplicit() throws NoSuchMethodException {
 		ArrayList<Edge> iterable = Lists.newArrayList(edge);
-		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable, Direction.OUT, B.class);
+		getHandler(graph, vertex, getMethod("getIterable")).frameEdges(iterable, Direction.OUT, B.class);
 		Mockito.verify(graph).frameEdges(iterable, Direction.OUT, B.class);
+	}
+	
+	@Test
+	public void testFrameIterableEdgeNoDirection() throws NoSuchMethodException {
+		ArrayList<Edge> iterable = Lists.newArrayList(edge);
+		getHandler(graph, vertex, getMethod("getIterable")).frameEdges(iterable);
+		Mockito.verify(graph).frameEdges(iterable, A.class);
+	}
+	
+	@Test
+	public void testFrameIterableEdgeExplicitNoDirection() throws NoSuchMethodException {
+		ArrayList<Edge> iterable = Lists.newArrayList(edge);
+		getHandler(graph, vertex, getMethod("getIterable")).frameEdges(iterable, B.class);
+		Mockito.verify(graph).frameEdges(iterable, B.class);
 	}
 	
 	@Test

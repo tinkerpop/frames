@@ -49,6 +49,24 @@ public interface JavaHandlerImpl<C extends Element> {
 	 * Frame an edge using the return type of the method
 	 * 
 	 * @param edge The edge to frame
+	 * @return The framed edge
+	 */
+	public <T> T frame(Edge edge);
+	
+	
+	/**
+	 * Frame an edge using an explicit kind of frame
+	 * 
+	 * @param edge The edge to frame
+	 * @param kind The type of frame
+	 * @return The framed edge
+	 */
+	public <T> T frame(Edge edge, Class<T> kind);
+	
+	/**
+	 * Frame an edge using the return type of the method
+	 * 
+	 * @param edge The edge to frame
 	 * @param direction The direction of the edge
 	 * @return The framed edge
 	 */
@@ -70,7 +88,7 @@ public interface JavaHandlerImpl<C extends Element> {
 	 * @param vertices The vertices to frame
 	 * @return The framed vertices
 	 */
-	public <T> Iterable<T> frame(Iterable<Vertex> vertices);
+	public <T> Iterable<T> frameVertices(Iterable<Vertex> vertices);
 
 	/**
 	 * Frame some vertices using an explicit kind of frame
@@ -79,8 +97,9 @@ public interface JavaHandlerImpl<C extends Element> {
 	 * @param kind The kind of frame
 	 * @return The framed vertices
 	 */
-	public <T> Iterable<T> frame(Iterable<Vertex> vertices, Class<T> kind);
+	public <T> Iterable<T> frameVertices(Iterable<Vertex> vertices, Class<T> kind);
 
+	
 	/**
 	 * Frame some edges using the return type of the method
 	 * 
@@ -88,7 +107,7 @@ public interface JavaHandlerImpl<C extends Element> {
 	 * @param direction The direction of the edges
 	 * @return The framed edges
 	 */
-	public <T> Iterable<T> frame(Iterable<Edge> edges, Direction direction);
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges);
 
 	/**
 	 * Frame some edges using an explicit kind of frame
@@ -98,6 +117,26 @@ public interface JavaHandlerImpl<C extends Element> {
 	 * @param kind The kind of frame
 	 * @return The framed edges
 	 */
-	public <T> Iterable<T> frame(Iterable<Edge> edges, Direction direction, Class<T> kind);
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges, Class<T> kind);
+	
+	
+	/**
+	 * Frame some edges using the return type of the method
+	 * 
+	 * @param edges the edges to frame
+	 * @param direction The direction of the edges
+	 * @return The framed edges
+	 */
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges, Direction direction);
+
+	/**
+	 * Frame some edges using an explicit kind of frame
+	 * 
+	 * @param edges the edges to frame
+	 * @param direction The direction of the edges
+	 * @param kind The kind of frame
+	 * @return The framed edges
+	 */
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges, Direction direction, Class<T> kind);
 
 }

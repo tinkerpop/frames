@@ -15,7 +15,7 @@ public abstract class PersonImpl implements JavaHandlerImpl<Vertex>, Person {
 	@Override
 	@JavaHandler
 	public Iterable<Person> getCoCreatorsJava() {
-		return frame(gremlin().as("x").out("created").in("created").except("x"));
+		return frameVertices(gremlin().as("x").out("created").in("created").except("x"));
 		
 	}
 }

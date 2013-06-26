@@ -111,7 +111,7 @@ public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImp
 	 * @param vertices The vertices to frame
 	 * @return The framed vertices
 	 */
-	public <T> Iterable<T> frame(Iterable<Vertex> vertices) {
+	public <T> Iterable<T> frameVertices(Iterable<Vertex> vertices) {
 		Type type = getIterableType();
 		
 		return g().frameVertices(vertices, (Class<T>) type);
@@ -126,7 +126,7 @@ public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImp
 	 * @param kind The kind of frame
 	 * @return The framed vertices
 	 */
-	public <T> Iterable<T> frame(Iterable<Vertex> vertices, Class<T> kind) {
+	public <T> Iterable<T> frameVertices(Iterable<Vertex> vertices, Class<T> kind) {
 		return (Iterable<T>) g().frameVertices(vertices, kind);
 	}
 
@@ -137,7 +137,7 @@ public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImp
 	 * @param direction The direction of the edges
 	 * @return The framed edges
 	 */
-	public <T> Iterable<T> frame(Iterable<Edge> edges, Direction direction) {
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges, Direction direction) {
 		Type type = getIterableType();
 		return g().frameEdges(edges, direction, (Class<T>) type);
 	}
@@ -150,7 +150,7 @@ public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImp
 	 * @param kind The kind of frame
 	 * @return The framed edges
 	 */
-	public <T> Iterable<T> frame(Iterable<Edge> edges, Direction direction, Class<T> kind) {
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges, Direction direction, Class<T> kind) {
 		return (Iterable<T>) g().frameEdges(edges, direction, kind);
 	}
 
@@ -168,5 +168,28 @@ public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImp
 		Type type = parameterizedType.getActualTypeArguments()[0];
 		return type;
 	}
+
+	@Override
+	public <T> T frame(Edge edge) {
+		return g().frame(edge, (Class<T>) method.getReturnType());
+	}
+
 	
+	@Override
+	public <T> T frame(Edge edge, Class<T> kind) {
+		return g().frame(edge, kind);
+	}
+	
+	@Override
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges) {
+		Type type = getIterableType();
+		return g().frameEdges(edges, (Class<T>) type);
+	}
+
+	@Override
+	public <T> Iterable<T> frameEdges(Iterable<Edge> edges, Class<T> kind) {
+		return g().frameEdges(edges, kind);
+	}
+
+
 }

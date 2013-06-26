@@ -1,5 +1,14 @@
 package com.tinkerpop.frames.annotations.gremlin;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.script.Bindings;
+import javax.script.CompiledScript;
+import javax.script.ScriptException;
+
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
@@ -8,17 +17,10 @@ import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.structures.FramedVertexIterable;
 import com.tinkerpop.frames.structures.FramedVertexMap;
+import com.tinkerpop.frames.util.ExceptionUtils;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
-
-import javax.script.Bindings;
-import javax.script.CompiledScript;
-import javax.script.ScriptException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -82,7 +84,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
             }
 
         } catch (ScriptException e) {
-            rethrow(e); //Preserve original exception functionality.
+        	ExceptionUtils.sneakyThrow(e); //Preserve original exception functionality.
             return null;
         }
     }
@@ -103,13 +105,5 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
         return bindings;
     }
 
-    public static void rethrow(final Throwable checkedException) {
-        GremlinGroovyAnnotationHandler.<RuntimeException>thrownInsteadOf(checkedException);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends Throwable> void thrownInsteadOf(Throwable t) throws T {
-        throw (T) t;
-    }
 
 }

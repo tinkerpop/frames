@@ -1,0 +1,157 @@
+package com.tinkerpop.frames.modules.javahandler;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import com.google.common.collect.Lists;
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Element;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.FramedGraph;
+
+public class DefaultJavaHandlerImplTest {
+
+	private FramedGraph<?> graph;
+	private Vertex vertex;
+	private Edge edge;
+
+	@Before
+	public void setup() {
+		graph = Mockito.mock(FramedGraph.class);
+		vertex = Mockito.mock(Vertex.class);
+		edge = Mockito.mock(Edge.class);
+	}
+	
+	@Test
+	public void testGetGraph() throws NoSuchMethodException {
+		Assert.assertEquals(graph, getHandler(graph, null, null).g());
+	}
+	
+	@Test
+	public void testGetContext() throws NoSuchMethodException {
+		Assert.assertEquals(vertex, getHandler(graph, vertex, null).it());
+	}
+	
+	@Test
+	public void testFrameVertexDefault() throws NoSuchMethodException {
+		
+		getHandler(graph, vertex, getMethod("getA")).frame(vertex);
+		Mockito.verify(graph).frame(vertex, A.class);
+	}
+	
+	@Test
+	public void testFrameVertexExplicit() throws NoSuchMethodException {
+		getHandler(graph, vertex, getMethod("getA")).frame(vertex, B.class);
+		Mockito.verify(graph).frame(vertex, B.class);
+	}
+	
+		
+	@Test
+	public void testFrameEdgeDefault() throws NoSuchMethodException {
+		getHandler(graph, edge, getMethod("getA")).frame(edge, Direction.OUT);
+		Mockito.verify(graph).frame(edge, Direction.OUT, A.class);
+	}
+
+	@Test
+	public void testFrameEdgeDefaultExplicit() throws NoSuchMethodException {
+		getHandler(graph, edge, getMethod("getA")).frame(edge, Direction.OUT, B.class);
+		Mockito.verify(graph).frame(edge, Direction.OUT, B.class);
+	}
+
+	
+	@Test(expected=JavaHandlerException.class)
+	public void testFrameNotIterable() throws NoSuchMethodException {
+		
+		getHandler(graph, vertex, getMethod("getA")).frame(Lists.newArrayList(vertex));
+		Mockito.verify(graph).frame(vertex, A.class);
+	}
+
+	@Test(expected=JavaHandlerException.class)
+	public void testFrameIterableNotGeneric() throws NoSuchMethodException {
+		getHandler(graph, vertex, getMethod("getUnknownIterable")).frame(Lists.newArrayList(vertex));
+		Mockito.verify(graph).frame(vertex, A.class);
+	}
+	
+	@Test
+	public void testFrameIterableVertex() throws NoSuchMethodException {
+		ArrayList<Vertex> iterable = Lists.newArrayList(vertex);
+		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable);
+		Mockito.verify(graph).frameVertices(iterable, A.class);
+	}
+	
+	@Test
+	public void testFrameIterableVertexExplicit() throws NoSuchMethodException {
+		ArrayList<Vertex> iterable = Lists.newArrayList(vertex);
+		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable, B.class);
+		Mockito.verify(graph).frameVertices(iterable, B.class);
+	}
+	
+	@Test
+	public void testFrameIterableVertexEdge() throws NoSuchMethodException {
+		ArrayList<Edge> iterable = Lists.newArrayList(edge);
+		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable, Direction.OUT);
+		Mockito.verify(graph).frameEdges(iterable, Direction.OUT, A.class);
+	}
+	
+	@Test
+	public void testFrameIterableEdgeExplicit() throws NoSuchMethodException {
+		ArrayList<Edge> iterable = Lists.newArrayList(edge);
+		getHandler(graph, vertex, getMethod("getIterable")).frame(iterable, Direction.OUT, B.class);
+		Mockito.verify(graph).frameEdges(iterable, Direction.OUT, B.class);
+	}
+	
+	@Test
+	public void testGremlinContext() throws NoSuchMethodException {
+		DefaultJavaHandlerImpl<Edge> handler = getHandler(graph, edge, getMethod("getA"));
+		Assert.assertEquals(edge, handler.gremlin().next());
+		
+	}
+
+	@Test
+	public void testGremlinExplicit() throws NoSuchMethodException {
+		DefaultJavaHandlerImpl<Edge> handler = getHandler(graph, edge, getMethod("getA"));
+		Assert.assertEquals(vertex, handler.gremlin(vertex).next());
+		
+	}
+
+	private Method getMethod(String name) throws NoSuchMethodException {
+		return DefaultJavaHandlerImplTest.class.getMethod(name);
+	}
+	
+	
+
+	private <T extends Element> DefaultJavaHandlerImpl<T> getHandler(FramedGraph<?> graph, T element, Method method) {
+		DefaultJavaHandlerImpl<T> impl = new DefaultJavaHandlerImpl<T>(graph, method, element);
+		return impl;
+	}
+	
+	public A getA() {
+		return null;
+	}
+	
+	public Iterable getUnknownIterable() {
+		return null;
+	}
+	
+	public Iterable<A> getIterable() {
+		return null;
+	}
+	
+	public static interface A {
+		
+	}
+
+	public static interface B {
+		
+	}
+
+	
+}

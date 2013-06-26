@@ -9,6 +9,7 @@ import com.tinkerpop.frames.annotations.gremlin.GremlinParam;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedInfo;
 import com.tinkerpop.frames.domain.incidences.Knows;
+import com.tinkerpop.frames.modules.javahandler.JavaHandler;
 
 import java.util.Map;
 
@@ -132,4 +133,10 @@ public interface Person extends NamedObject {
     
     @Incidence(label = "created", direction=Direction.BOTH)
     public Created addCreatedDirectionBothError(final Project project);
+    
+    @JavaHandler
+    public String getNameAndAge();
+    
+    @JavaHandler
+    public Iterable<Person> getCoCreatorsJava();
 }

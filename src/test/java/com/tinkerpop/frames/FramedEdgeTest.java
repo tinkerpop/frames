@@ -46,6 +46,12 @@ public class FramedEdgeTest extends TestCase {
 
         Person marko = framedGraph.getVertex(1, Person.class);
         Project lop = framedGraph.getVertex(3, Project.class);
+        Person vadas = framedGraph.getVertex(2, Person.class);
+
+        Knows knows = framedGraph.getEdge(7, Direction.OUT, Knows.class);
+        assertEquals(marko, knows.getDomain());
+        assertEquals(vadas, knows.getRange());
+
         CreatedBy createdBy = lop.getCreatedBy().iterator().next();
         assertEquals(lop, createdBy.getDomain());
         assertEquals(marko, createdBy.getRange());
@@ -57,8 +63,15 @@ public class FramedEdgeTest extends TestCase {
         // the now deprecated annotations are quite confusing:
         assertEquals(lop, created.getRange()); //range actually returns a Person, not a Project...
         assertEquals(marko, created.getDomain()); //domain actually returns a Project, not a Person...
+        
+
+
+
     }
 
+    
+
+    
     /**
      * Uses deprecated Domain/range annotations
      */

@@ -41,7 +41,7 @@ public class JavaHandlerModule implements Module {
 
 	private JavaHandlerFactory factory = new JavaHandlerFactory() {
 
-		
+		//We don't want to use the global class cache. Instead we cache the classes at the module level.
 		private LoadingCache<Class<?>, Class<?>> classCache = CacheBuilder.newBuilder().build(
 				new CacheLoader<Class<?>, Class<?>>() {
 
@@ -65,11 +65,10 @@ public class JavaHandlerModule implements Module {
 
 			try {
 				final Class<?> frameClass = method.getDeclaringClass();
-				Class<?> returnType = method.getReturnType();
 				Class<T> implClass = (Class<T>) classCache.get(frameClass);
 				T handler = implClass.newInstance();
 				((Proxy) handler).setHandler(new MethodHandler() {
-					private DefaultJavaHandlerImpl defaultJavahandlerImpl = new DefaultJavaHandlerImpl(graph, method, element);
+					private DefaultJavaHandlerImpl<Element> defaultJavahandlerImpl = new DefaultJavaHandlerImpl<Element>(graph, method, element);
 					private Object framedElement;
 
 					@Override

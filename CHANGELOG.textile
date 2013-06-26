@@ -15,26 +15,14 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Framing a null element returns null   
-* Fixed NPE when enum property type set to null
+* Framing a @null@ element returns @null@
+* Fixed @NullPointerException@ when enum property type set to @null@
 * Inheritance/Poymorphism support
 * Factory/Module support
 * Fix detection of parameterized return types
 * @AdjacencyAnnotationHandler@ operates against the graph being framed rather than the base graph
 * @FramedTransactionalGraph@ support
-* Support subclassing in @FramedGraphFactory@
-==<hr/>==
-
-h3. Version 2.3.2 (NOT OFFICIALLY RELEASED YET)
-
-```xml
-<dependency>
-  <groupId>com.tinkerpop</groupId>
-  <artifactId>frames</artifactId>
-  <version>2.3.2</version>
-</dependency>
-```
-
+* Support for subclassing in @FramedGraphFactory@
 * @GremlinGroovyAnnotationHandler@ provides access to the underlying @GremlinGroovyScriptEngine@
 * Fixed a sort order bug in @FrameVertexMap@ (using @LinkedHashSet@ now)
 

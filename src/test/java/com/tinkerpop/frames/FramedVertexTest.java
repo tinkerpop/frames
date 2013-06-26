@@ -10,6 +10,7 @@ import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
+import com.tinkerpop.frames.domain.incidences.CreatedInfo;
 import com.tinkerpop.frames.domain.incidences.Knows;
 import org.junit.Test;
 
@@ -130,9 +131,9 @@ public class FramedVertexTest {
     public void testGettingIncidences() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         int counter = 0;
-        for (Created created : marko.getCreated()) {
+        for (CreatedInfo created : marko.getCreatedInfo()) {
             counter++;
-            assertEquals("lop", created.getRange().getName());
+            assertEquals("lop", created.getProject().getName());
             assertEquals(0.4f, created.getWeight(), 0.01f);
         }
         assertEquals(1, counter);
@@ -140,9 +141,33 @@ public class FramedVertexTest {
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas"));
+            assertTrue(knows.getTerminal().getName().equals("josh") || knows.getTerminal().getName().equals("vadas"));
         }
         assertEquals(2, counter);
+
+        counter = 0;
+        Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
+        for (CreatedInfo createdBy : ripple.getCreatedInfo()) {
+            counter++;
+            assertEquals("josh", createdBy.getPerson().getName());
+            assertEquals(1.0f, createdBy.getWeight(), 0.01f);
+        }
+        assertEquals(1, counter);
+    }
+
+    /**
+     * Uses deprecated Domain/Range annotations
+     */
+    @Test
+    public void testGettingIncidencesDeprecated() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        int counter = 0;
+        for (Created created : marko.getCreated()) {
+            counter++;
+            assertEquals("lop", created.getRange().getName());
+            assertEquals(0.4f, created.getWeight(), 0.01f);
+        }
+        assertEquals(1, counter);
 
         counter = 0;
         Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
@@ -153,14 +178,14 @@ public class FramedVertexTest {
         }
         assertEquals(1, counter);
     }
-
+    
     @Test
     public void testAddingIncidences() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
         Person peter = framedGraph.frame(graph.getVertex(6), Person.class);
 
-        Created markoCreatedRipple = marko.addCreated(ripple);
+        CreatedInfo markoCreatedRipple = marko.addCreatedInfo(ripple);
         int counter = 0;
         for (Created created : marko.getCreated()) {
             counter++;
@@ -175,12 +200,33 @@ public class FramedVertexTest {
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas") || knows.getRange().getName().equals("peter"));
+            assertTrue(knows.getTerminal().getName().equals("josh") || knows.getTerminal().getName().equals("vadas") || knows.getTerminal().getName().equals("peter"));
         }
         assertEquals(3, counter);
         assertNull(markoKnowsPeter.getWeight());
         markoKnowsPeter.setWeight(1.0f);
         assertEquals(1.0f, markoKnowsPeter.getWeight(), 0.01f);
+    }
+
+
+    /**
+     * Uses deprecated Domain/Range annotations
+     */
+    @Test
+    public void testAddingIncidencesDeprecated() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project ripple = framedGraph.frame(graph.getVertex(5), Project.class);
+
+        Created markoCreatedRipple = marko.addCreated(ripple);
+        int counter = 0;
+        for (Created created : marko.getCreated()) {
+            counter++;
+            assertTrue(created.getRange().getName().equals("lop") || created.getRange().getName().equals("ripple"));
+        }
+        assertEquals(2, counter);
+        assertNull(markoCreatedRipple.getWeight());
+        markoCreatedRipple.setWeight(0.0f);
+        assertEquals(0.0f, markoCreatedRipple.getWeight(), 0.01f);
     }
 
     @Test
@@ -196,7 +242,7 @@ public class FramedVertexTest {
         int counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertTrue(knows.getRange().getName().equals("josh") || knows.getRange().getName().equals("vadas") || knows.getRange().getName().equals("peter") || knows.getRange().getName().equals("bryn"));
+            assertTrue(knows.getTerminal().getName().equals("josh") || knows.getTerminal().getName().equals("vadas") || knows.getTerminal().getName().equals("peter") || knows.getTerminal().getName().equals("bryn"));
         }
         assertEquals(4, counter);
 
@@ -210,7 +256,7 @@ public class FramedVertexTest {
 
 
     }
-
+    
     @Test
     public void testRemoveIncidences() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
@@ -218,7 +264,7 @@ public class FramedVertexTest {
         List<Knows> toRemove = new ArrayList<Knows>();
         for (Knows knows : marko.getKnows()) {
             counter++;
-            if (knows.getRange().getName().equals("josh")) {
+            if (knows.getTerminal().getName().equals("josh")) {
                 toRemove.add(knows);
             }
         }
@@ -229,12 +275,37 @@ public class FramedVertexTest {
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertEquals("vadas", knows.getRange().getName());
+            assertEquals("vadas", knows.getTerminal().getName());
         }
         assertEquals(1, counter);
 
         Project lop = framedGraph.frame(graph.getVertex(3), Project.class);
         counter = 0;
+        List<CreatedInfo> toRemove2 = new ArrayList<CreatedInfo>();
+        for (CreatedInfo createdBy : lop.getCreatedInfo()) {
+            counter++;
+            toRemove2.add(createdBy);
+        }
+        assertEquals(3, counter);
+        for (CreatedInfo createdBy : toRemove2) {
+            lop.removeCreatedInfo(createdBy);
+        }
+        counter = 0;
+        for (CreatedInfo createdInfo : lop.getCreatedInfo()) {
+            counter++;
+        }
+        assertEquals(0, counter);
+    }
+
+
+    /**
+     * Uses deprecated Domain/Range annotations
+     */
+    @Test
+    public void testRemoveIncidencesDeprecated() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project lop = framedGraph.frame(graph.getVertex(3), Project.class);
+        int counter = 0;
         List<CreatedBy> toRemove2 = new ArrayList<CreatedBy>();
         for (CreatedBy createdBy : lop.getCreatedBy()) {
             counter++;
@@ -427,9 +498,24 @@ public class FramedVertexTest {
         assertTrue(rdfAgents.getCreatedByPeople().iterator().hasNext());
         assertEquals(marko, rdfAgents.getCreatedByPeople().iterator().next());
     }
-    
+
     @Test
     public void testAddIncidenceIn() {
+        Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
+        Project rdfAgents = framedGraph.addVertex(null, Project.class);
+        CreatedInfo createdInfo = rdfAgents.addCreatedByPersonInfo(marko);
+           
+        assertEquals(marko, createdInfo.getPerson());
+        assertEquals(rdfAgents, createdInfo.getProject());
+        assertTrue(rdfAgents.getCreatedByPeople().iterator().hasNext());
+        assertEquals(marko, rdfAgents.getCreatedByPeople().iterator().next());
+    }
+
+    /**
+     * Use deprecated Domain/Range annotations on edge
+     */
+    @Test
+    public void testAddIncidenceInDeprecated() {
         Person marko = framedGraph.frame(graph.getVertex(1), Person.class);
         Project rdfAgents = framedGraph.addVertex(null, Project.class);
         CreatedBy createdBy = rdfAgents.addCreatedByPersonIncidence(marko);

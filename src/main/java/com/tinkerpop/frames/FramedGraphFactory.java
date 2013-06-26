@@ -5,8 +5,10 @@ import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
 import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
+import com.tinkerpop.frames.annotations.InitialAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
+import com.tinkerpop.frames.annotations.TerminalAnnotationHandler;
 
 /**
  * Creates a factory for creating {@link FramedGraph}s using a set of modules to
@@ -86,6 +88,8 @@ public class FramedGraphFactory {
 		config.addAnnotationhandler(new IncidenceAnnotationHandler());
 		config.addAnnotationhandler(new DomainAnnotationHandler());
 		config.addAnnotationhandler(new RangeAnnotationHandler());
+		config.addAnnotationhandler(new InitialAnnotationHandler());
+		config.addAnnotationhandler(new TerminalAnnotationHandler());
 		return config;
 	}
 

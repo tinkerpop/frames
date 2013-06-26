@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
  * The source of the adjacency.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * 
+ * @deprecated Use {@link Initial} or {@link Terminal} instead.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

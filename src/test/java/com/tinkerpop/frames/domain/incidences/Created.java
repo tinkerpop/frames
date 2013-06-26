@@ -11,6 +11,9 @@ import com.tinkerpop.frames.domain.classes.Project;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public interface Created extends EdgeFrame {
+	//Please note: Domain and Range are incorrectly annotated here, they should be inverted if you want this interface working
+	// with @Incidence annotations. See FramedEdgeTest.testGettingDomainAndRange.
+	
     @Domain
     public Project getDomain();
 

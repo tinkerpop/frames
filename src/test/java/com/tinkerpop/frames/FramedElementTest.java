@@ -8,6 +8,8 @@ import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
+import com.tinkerpop.frames.domain.incidences.CreatedInfo;
+
 import junit.framework.TestCase;
 
 /**
@@ -27,9 +29,11 @@ public class FramedElementTest extends TestCase {
         assertEquals(lop.getName(), "lop");
         assertEquals(lop.getLanguage(), "java");
 
+        CreatedInfo markoCreatedLopInfo = framedGraph.getEdge(9, CreatedInfo.class);
+        assertEquals(markoCreatedLopInfo.getWeight(), 0.4f);
+        //Same with using deprecated Domain/Range annotations:
         Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
-
         CreatedBy lopCreatedByMarko = framedGraph.getEdge(9, Direction.IN, CreatedBy.class);
         assertEquals(lopCreatedByMarko.getWeight(), 0.4f);
 
@@ -50,7 +54,14 @@ public class FramedElementTest extends TestCase {
         assertEquals(marko.getAge(), new Integer(29));
         marko.setAge(31);
         assertEquals(marko.getAge(), new Integer(31));
-
+        
+        CreatedInfo markoCreatedLopInfo = framedGraph.getEdge(9, CreatedInfo.class);
+        assertEquals(markoCreatedLopInfo.getWeight(), 0.4f);
+        markoCreatedLopInfo.setWeight(99.0f);
+        assertEquals(markoCreatedLopInfo.getWeight(), 99.0f);
+        markoCreatedLopInfo.setWeight(0.4f);
+        
+        //Same with deprecated Domain/Range annotations:
         Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
         assertEquals(markoCreatedLop.getWeight(), 0.4f);
         markoCreatedLop.setWeight(99.0f);
@@ -100,6 +111,9 @@ public class FramedElementTest extends TestCase {
         Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals("v[1]", marko.toString());
 
+        CreatedInfo markoCreatedLopInfo = framedGraph.getEdge(9, CreatedInfo.class);
+        assertEquals("e[9][1-created->3]", markoCreatedLopInfo.toString());
+        //Using deprecated Domain/Range annotations:
         Created markoCreatedLop = framedGraph.getEdge(9, Direction.OUT, Created.class);
         assertEquals("e[9][1-created->3]", markoCreatedLop.toString());
     }

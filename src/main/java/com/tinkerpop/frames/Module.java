@@ -1,7 +1,6 @@
 package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 
 /**
@@ -26,7 +25,7 @@ public interface Module {
 	 * @param config The configuration for the new FramedGraph.
 	 * @return The graph being framed.
 	 */
-	<T extends Graph> T configure(Graph baseGraph, FramedGraphConfiguration config);
+	Graph configure(Graph baseGraph, FramedGraphConfiguration config);
 	
 	
 

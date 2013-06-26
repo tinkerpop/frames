@@ -116,10 +116,10 @@ public class JavaHandlerModule implements Module {
 	}
 
 	@Override
-	public <T extends Graph> T configure(Graph baseGraph, FramedGraphConfiguration config) {
+	public Graph configure(Graph baseGraph, FramedGraphConfiguration config) {
 
 		config.addAnnotationhandler(new JavaAnnotationHandler(factory));
-		return (T) baseGraph;
+		return baseGraph;
 	}
 
 }

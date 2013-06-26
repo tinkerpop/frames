@@ -70,14 +70,15 @@ public class FramedGraphFactory {
 	 * @return The configuration.
 	 */
 	protected <T extends Graph> FramedGraphConfiguration getConfiguration(Class<T> requiredType, T baseGraph) {
+		Graph configuredGraph = baseGraph;
 		FramedGraphConfiguration config = getBaseConfig();
 		for (Module module : modules) {
-			baseGraph = module.configure(baseGraph, config);
-			if(!(requiredType.isInstance(baseGraph))) {
+			configuredGraph = module.configure(configuredGraph, config);
+			if(!(requiredType.isInstance(configuredGraph))) {
 				throw new UnsupportedOperationException("Module '" + module.getClass() + "' returned a '" + baseGraph.getClass().getName() + "' but factory requires '" + requiredType.getName() + "'");
 			}
 		}
-		config.setConfiguredGraph(baseGraph);
+		config.setConfiguredGraph(configuredGraph);
 		return config;
 	}
 

@@ -100,6 +100,13 @@ public class DefaultJavaHandlerImplTest {
 	}
 	
 	@Test
+	public void testFrameIterableVertexComplex() throws NoSuchMethodException {
+		ArrayList<Vertex> iterable = Lists.newArrayList(vertex);
+		getHandler(graph, vertex, getMethod("getComplexIterable")).frameVertices(iterable);
+		Mockito.verify(graph).frameVertices(iterable, A.class);
+	}
+	
+	@Test
 	public void testFrameIterableVertexExplicit() throws NoSuchMethodException {
 		ArrayList<Vertex> iterable = Lists.newArrayList(vertex);
 		getHandler(graph, vertex, getMethod("getIterable")).frameVertices(iterable, B.class);
@@ -179,5 +186,7 @@ public class DefaultJavaHandlerImplTest {
 		
 	}
 
-	
+	public <T extends A> Iterable<T> getComplexIterable() {
+		return null;
+	}
 }

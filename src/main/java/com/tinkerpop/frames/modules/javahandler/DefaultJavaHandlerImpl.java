@@ -8,6 +8,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
@@ -164,9 +165,7 @@ public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImp
 		if(!(genericReturnType instanceof ParameterizedType)) {
 			throw new JavaHandlerException("Method must specify generic parameter for Iterable: " + method);	
 		}
-		ParameterizedType parameterizedType = (ParameterizedType) genericReturnType;
-		Type type = parameterizedType.getActualTypeArguments()[0];
-		return type;
+		return ClassUtilities.getGenericClass(method);
 	}
 
 	@Override
@@ -191,5 +190,6 @@ public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImp
 		return g().frameEdges(edges, kind);
 	}
 
+	
 
 }

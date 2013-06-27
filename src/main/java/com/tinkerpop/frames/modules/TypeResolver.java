@@ -1,4 +1,4 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.modules;
 
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;

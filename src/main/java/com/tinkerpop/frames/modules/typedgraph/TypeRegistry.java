@@ -1,4 +1,4 @@
-package com.tinkerpop.frames.typed;
+package com.tinkerpop.frames.modules.typedgraph;
 
 import java.util.HashMap;
 import java.util.Map;

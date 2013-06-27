@@ -1,4 +1,4 @@
-package com.tinkerpop.frames.typed;
+package com.tinkerpop.frames.modules.typedgraph;
 
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
@@ -6,8 +6,8 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.EdgeFrame;
 import com.tinkerpop.frames.FrameInitializer;
 import com.tinkerpop.frames.FramedGraph;
-import com.tinkerpop.frames.TypeResolver;
 import com.tinkerpop.frames.VertexFrame;
+import com.tinkerpop.frames.modules.TypeResolver;
 
 public class TypeManager implements TypeResolver, FrameInitializer {
 

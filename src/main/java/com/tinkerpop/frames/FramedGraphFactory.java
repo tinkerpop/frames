@@ -9,6 +9,7 @@ import com.tinkerpop.frames.annotations.InitialAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.TerminalAnnotationHandler;
+import com.tinkerpop.frames.modules.Module;
 
 /**
  * Creates a factory for creating {@link FramedGraph}s using a set of modules to

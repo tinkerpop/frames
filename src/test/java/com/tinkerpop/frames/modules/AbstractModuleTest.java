@@ -1,4 +1,4 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.modules;
 
 import junit.framework.Assert;
 
@@ -7,6 +7,8 @@ import org.mockito.Mockito;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.TransactionalGraph;
+import com.tinkerpop.frames.FramedGraphConfiguration;
+import com.tinkerpop.frames.modules.AbstractModule;
 
 public class AbstractModuleTest {
 

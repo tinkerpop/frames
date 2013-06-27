@@ -1,9 +1,13 @@
-package com.tinkerpop.frames.typed;
+package com.tinkerpop.frames.modules.typedgraph;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
+
+import com.tinkerpop.frames.modules.typedgraph.TypeField;
+import com.tinkerpop.frames.modules.typedgraph.TypeRegistry;
+import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 
 public class TypeRegistryTest {
 	@Test(expected = IllegalArgumentException.class) public void noAnotations() {

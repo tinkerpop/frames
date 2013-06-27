@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyModule;
 import com.tinkerpop.frames.domain.classes.NamedObject;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
@@ -12,6 +11,8 @@ import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
 import com.tinkerpop.frames.domain.incidences.CreatedInfo;
 import com.tinkerpop.frames.domain.incidences.Knows;
+import com.tinkerpop.frames.modules.gremlingroovy.GremlinGroovyModule;
+
 import org.junit.Test;
 
 import java.util.ArrayList;

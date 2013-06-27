@@ -1,6 +1,10 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.modules;
 
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.frames.FrameInitializer;
+import com.tinkerpop.frames.FramedGraph;
+import com.tinkerpop.frames.FramedGraphConfiguration;
+import com.tinkerpop.frames.FramedGraphFactory;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 
 /**

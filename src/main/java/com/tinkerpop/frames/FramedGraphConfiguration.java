@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
+import com.tinkerpop.frames.modules.Module;
+import com.tinkerpop.frames.modules.TypeResolver;
 
 /**
  * A configuration for a {@link FramedGraph}. These are supplied to

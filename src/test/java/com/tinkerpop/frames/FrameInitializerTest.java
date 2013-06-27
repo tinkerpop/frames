@@ -5,6 +5,8 @@ import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.incidences.Knows;
+import com.tinkerpop.frames.modules.AbstractModule;
+
 import org.junit.Before;
 import org.junit.Test;
 

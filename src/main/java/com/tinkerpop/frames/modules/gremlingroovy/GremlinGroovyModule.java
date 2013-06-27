@@ -1,7 +1,8 @@
-package com.tinkerpop.frames.annotations.gremlin;
+package com.tinkerpop.frames.modules.gremlingroovy;
 
-import com.tinkerpop.frames.AbstractModule;
 import com.tinkerpop.frames.FramedGraphConfiguration;
+import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
+import com.tinkerpop.frames.modules.AbstractModule;
 
 /**
  * Adds <code>@GremlinGroovy</code> support to the framed graph.

@@ -1,4 +1,4 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.modules;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,8 +8,13 @@ import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.frames.FramedGraph;
+import com.tinkerpop.frames.FramedGraphConfiguration;
+import com.tinkerpop.frames.FramedGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.incidences.Knows;
+import com.tinkerpop.frames.modules.AbstractModule;
+import com.tinkerpop.frames.modules.TypeResolver;
 
 /**
  * @author Bryn Cooke

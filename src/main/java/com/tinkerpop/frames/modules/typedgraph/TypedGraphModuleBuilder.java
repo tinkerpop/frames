@@ -1,8 +1,8 @@
-package com.tinkerpop.frames.typed;
+package com.tinkerpop.frames.modules.typedgraph;
 
-import com.tinkerpop.frames.AbstractModule;
 import com.tinkerpop.frames.FramedGraphConfiguration;
-import com.tinkerpop.frames.Module;
+import com.tinkerpop.frames.modules.AbstractModule;
+import com.tinkerpop.frames.modules.Module;
 
 /**
  * TODO

@@ -1,7 +1,8 @@
-package com.tinkerpop.frames;
+package com.tinkerpop.frames.modules;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.TransactionalGraph;
+import com.tinkerpop.frames.FramedGraphConfiguration;
 
 /**
  * Helper base module to simplify configuring different types of graph. Override doConfigure for the appropriate type of graph.

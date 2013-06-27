@@ -18,7 +18,7 @@ import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.FramedGraphConfiguration;
-import com.tinkerpop.frames.Module;
+import com.tinkerpop.frames.modules.Module;
 
 /**
  * <p>

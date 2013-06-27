@@ -1,4 +1,4 @@
-package com.tinkerpop.frames.typed;
+package com.tinkerpop.frames.modules.typedgraph;
 
 import junit.framework.TestCase;
 
@@ -12,6 +12,9 @@ import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.FramedGraphFactory;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.VertexFrame;
+import com.tinkerpop.frames.modules.typedgraph.TypeField;
+import com.tinkerpop.frames.modules.typedgraph.TypeValue;
+import com.tinkerpop.frames.modules.typedgraph.TypedGraphModuleBuilder;
 
 
 public class TypedGraphModuleTest extends TestCase {

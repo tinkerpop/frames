@@ -10,6 +10,7 @@ import org.mockito.internal.stubbing.answers.ReturnsArgumentAt;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.modules.Module;
 
 public class FramedGraphFactoryTest {
 

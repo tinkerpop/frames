@@ -1,11 +1,15 @@
 package com.tinkerpop.frames;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
 import junit.framework.Assert;
 
-import com.tinkerpop.blueprints.Direction;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.EdgeTestSuite;
 import com.tinkerpop.blueprints.Graph;
@@ -19,7 +23,15 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.blueprints.util.io.gml.GMLReaderTestSuite;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReaderTestSuite;
 import com.tinkerpop.blueprints.util.io.graphson.GraphSONReaderTestSuite;
+import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
+import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
+import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
+import com.tinkerpop.frames.annotations.InitialAnnotationHandler;
+import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
+import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
+import com.tinkerpop.frames.annotations.TerminalAnnotationHandler;
+import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Knows;
@@ -30,7 +42,7 @@ import com.tinkerpop.frames.domain.incidences.Knows;
  */
 public class FramedGraphTest extends GraphTest {
 
-    public void testAnnotationHandlingBasics() {
+    public void testDeprecatedAnnotationUnregister() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
 
@@ -44,6 +56,38 @@ public class FramedGraphTest extends GraphTest {
         }
         assertEquals(framedGraph.getAnnotationHandlers().size(), 0);
     }
+    
+    
+	public void testDeprecatedConfigContainsCoreAnnotationHandlers() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        Collection<Class<?>> collections = Collections2.transform(framedGraph.getAnnotationHandlers(), new Function<AnnotationHandler<? extends Annotation>, Class<?>>() {
+			@Override
+			public Class<?> apply(AnnotationHandler<? extends Annotation> handler) {
+				return handler.getClass();
+			}
+        });
+        Assert.assertTrue(collections.containsAll(Arrays.asList(PropertyAnnotationHandler.class, 
+        		AdjacencyAnnotationHandler.class, 
+        		IncidenceAnnotationHandler.class, 
+        		DomainAnnotationHandler.class,
+        		RangeAnnotationHandler.class,
+        		InitialAnnotationHandler.class,
+        		TerminalAnnotationHandler.class, 
+        		GremlinGroovyAnnotationHandler.class)));
+    }
+	
+	public void testDeprecatedConfigRegisterAnnotationHandlers() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph<Graph>(graph);
+        framedGraph.getAnnotationHandlers().clear();
+        AnnotationHandler<?> handler = new PropertyAnnotationHandler();
+        framedGraph.registerAnnotationHandler(handler);
+        Assert.assertEquals(1, framedGraph.getAnnotationHandlers().size());
+        Assert.assertTrue(framedGraph.getAnnotationHandlers().contains(handler));
+        
+    }
+
 
     public void testFrameEquality() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();

@@ -32,6 +32,17 @@ public class FrameInitializerTest {
         }).create(graph);
         
     }
+    
+    @Test
+    public void testDeprecatedRegistration() {
+    	Graph graph = TinkerGraphFactory.createTinkerGraph();
+        FramedGraph<Graph> framedGraph = new FramedGraph(graph);
+        framedGraph.registerFrameInitializer(nameDefaulter);
+        Person person = framedGraph.addVertex(null, Person.class);
+        assertEquals("Defaulted", person.getName());
+        
+    }
+
 
     @Test
     public void testVertexInitialization() {

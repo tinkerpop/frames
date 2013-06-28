@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
+import com.tinkerpop.frames.modules.MethodHandler;
 import com.tinkerpop.frames.modules.Module;
 import com.tinkerpop.frames.modules.TypeResolver;
 
@@ -24,6 +25,7 @@ import com.tinkerpop.frames.modules.TypeResolver;
  */
 public class FramedGraphConfiguration {
 	private Map<Class<? extends Annotation>, AnnotationHandler<?>> annotationHandlers = new HashMap<Class<? extends Annotation>, AnnotationHandler<?>>();
+	private Map<Class<? extends Annotation>, MethodHandler<?>> methodHandlers = new HashMap<Class<? extends Annotation>, MethodHandler<?>>();
 	private List<FrameInitializer> frameInitializers = new ArrayList<FrameInitializer>();
 	private List<TypeResolver> typeResolvers = new ArrayList<TypeResolver>();
 	private Graph configuredGraph;
@@ -35,8 +37,18 @@ public class FramedGraphConfiguration {
 	 *            The {@link AnnotationHandler} to add to the
 	 *            {@link FramedGraph}.
 	 */
-	public void addAnnotationhandler(AnnotationHandler<?> annotationHandler) {
+	public void addAnnotationHandler(AnnotationHandler<?> annotationHandler) {
 		annotationHandlers.put(annotationHandler.getAnnotationType(), annotationHandler);
+	}
+	
+	
+	/**
+	 * @param methodHandler
+	 *            The {@link MethodHandler} to add to the
+	 *            {@link FramedGraph}.
+	 */
+	public void addMethodHandler(MethodHandler<?> methodHandler) {
+		methodHandlers.put(methodHandler.getAnnotationType(), methodHandler);
 	}
 
 	/**
@@ -74,5 +86,9 @@ public class FramedGraphConfiguration {
 
 	Graph getConfiguredGraph() {
 		return configuredGraph;
+	}
+	
+	Map<Class<? extends Annotation>, MethodHandler<?>> getMethodHandlers() {
+		return methodHandlers;
 	}
 }

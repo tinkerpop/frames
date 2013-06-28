@@ -5,6 +5,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Iterables;
@@ -20,10 +21,11 @@ import com.tinkerpop.frames.domain.incidences.Knows;
 
 public class JavaHandlerTest {
 
+	private FramedGraph<TinkerGraph> g;
+
 	@Test
 	public void testJavaHandlerVertices() {
-		TinkerGraph base = TinkerGraphFactory.createTinkerGraph();
-		FramedGraph<TinkerGraph> g = new FramedGraphFactory(new JavaHandlerModule()).create(base);
+		
 		Person person = g.getVertex(1, Person.class);
 		String profile = person.getNameAndAge();
 		Assert.assertEquals("marko (29)", profile);
@@ -41,8 +43,6 @@ public class JavaHandlerTest {
 
 	@Test
 	public void testJavaHandlerEdges() {
-		TinkerGraph base = TinkerGraphFactory.createTinkerGraph();
-		FramedGraph<TinkerGraph> g = new FramedGraphFactory(new JavaHandlerModule()).create(base);
 		Knows knows = g.getEdge(7, Direction.OUT, Knows.class);
 		Assert.assertEquals("marko<->vadas", knows.getNames());
 	}
@@ -50,10 +50,21 @@ public class JavaHandlerTest {
 	
 	@Test
 	public void testJavaHandlerClassAnnotation() {
-		TinkerGraph base = TinkerGraphFactory.createTinkerGraph();
-		FramedGraph<TinkerGraph> g = new FramedGraphFactory(new JavaHandlerModule()).create(base);
 		Project project = g.getVertex(5, Project.class);
 		Assert.assertEquals("java", project.getLanguageUsingMixin());
+	}
+	
+	@Test(expected=JavaHandlerException.class)
+	public void testMethodNotImplemented() {
+		Person person = g.getVertex(1, Person.class);
+		person.notImplemented();
+	}
+
+	@Before
+	public void setup() {
+		TinkerGraph base = TinkerGraphFactory.createTinkerGraph();
+		g = new FramedGraphFactory(new JavaHandlerModule()).create(base);
+		
 	}
 	
 	

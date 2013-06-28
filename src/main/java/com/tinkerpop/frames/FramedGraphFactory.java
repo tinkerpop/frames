@@ -85,13 +85,13 @@ public class FramedGraphFactory {
 
 	private FramedGraphConfiguration getBaseConfig() {
 		FramedGraphConfiguration config = new FramedGraphConfiguration();
-		config.addAnnotationhandler(new PropertyAnnotationHandler());
-		config.addAnnotationhandler(new AdjacencyAnnotationHandler());
-		config.addAnnotationhandler(new IncidenceAnnotationHandler());
-		config.addAnnotationhandler(new DomainAnnotationHandler());
-		config.addAnnotationhandler(new RangeAnnotationHandler());
-		config.addAnnotationhandler(new InitialAnnotationHandler());
-		config.addAnnotationhandler(new TerminalAnnotationHandler());
+		config.addAnnotationHandler(new PropertyAnnotationHandler());
+		config.addAnnotationHandler(new AdjacencyAnnotationHandler());
+		config.addAnnotationHandler(new IncidenceAnnotationHandler());
+		config.addAnnotationHandler(new DomainAnnotationHandler());
+		config.addAnnotationHandler(new RangeAnnotationHandler());
+		config.addAnnotationHandler(new InitialAnnotationHandler());
+		config.addAnnotationHandler(new TerminalAnnotationHandler());
 		return config;
 	}
 

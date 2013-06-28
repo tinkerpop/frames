@@ -7,25 +7,18 @@ import java.util.concurrent.ExecutionException;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.Proxy;
-import javassist.util.proxy.ProxyFactory;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.FramedGraph;
-import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.util.ExceptionUtils;
 
-public class JavaAnnotationHandler implements AnnotationHandler<JavaHandler> {
+public class JavaMethodHandler implements com.tinkerpop.frames.modules.MethodHandler<JavaHandler> {
 
 	private JavaHandlerFactory factory;
 	private LoadingCache<Class<?>, Class<?>> handlerClassCache;
 
-	public JavaAnnotationHandler(JavaHandlerFactory factory, LoadingCache<Class<?>, Class<?>> handlerClassCache) {
+	public JavaMethodHandler(JavaHandlerFactory factory, LoadingCache<Class<?>, Class<?>> handlerClassCache) {
 		this.factory = factory;
 		this.handlerClassCache = handlerClassCache;
 	}
@@ -37,8 +30,8 @@ public class JavaAnnotationHandler implements AnnotationHandler<JavaHandler> {
 
 	
 
-	public <T> T create(final FramedGraph<?> graph, final Element element,
-			final Method method, final Direction direction) {
+	public <T> T create(final Object framedElement, final FramedGraph<?> graph, final Element element,
+			final Method method) {
 
 		try {
 			final Class<?> frameClass = method.getDeclaringClass();
@@ -49,7 +42,7 @@ public class JavaAnnotationHandler implements AnnotationHandler<JavaHandler> {
 			((Proxy) handler).setHandler(new MethodHandler() {
 				private DefaultJavaHandlerImpl<Element> defaultJavahandlerImpl = new DefaultJavaHandlerImpl<Element>(
 						graph, method, element);
-				private Object framedElement;
+				
 
 				@Override
 				public Object invoke(Object o, Method m, Method proceed,
@@ -57,18 +50,13 @@ public class JavaAnnotationHandler implements AnnotationHandler<JavaHandler> {
 					if (!Modifier.isAbstract(m.getModifiers())) {
 						return proceed.invoke(o, args);
 					} else {
+						if(m.getAnnotation(JavaHandler.class) != null) {
+							throw new JavaHandlerException("Method " + m.getDeclaringClass().getName() + "." + m.getName() + " is marked with @JavaHandler but is not implemented");
+						}
 						if (m.getDeclaringClass() == JavaHandlerImpl.class) {
 							return m.invoke(defaultJavahandlerImpl, args);
 						}
-						if (framedElement == null) {
-							if (element instanceof Vertex) {
-								framedElement = graph.frame((Vertex) element,
-										frameClass);
-							} else {
-								framedElement = graph.frame((Edge) element,
-										direction, frameClass);
-							}
-						}
+						
 						return m.invoke(framedElement, args);
 					}
 				}
@@ -101,13 +89,13 @@ public class JavaAnnotationHandler implements AnnotationHandler<JavaHandler> {
 				frameClass.getName() + "$Impl");
 	}
 
-	@Override
-	public Object processElement(JavaHandler annotation, Method method,
-			Object[] arguments, FramedGraph framedGraph, Element element,
-			Direction direction) {
 
+	@Override
+	public Object processElement(Object framedElement, Method method,
+			Object[] arguments, JavaHandler annotation,
+			FramedGraph<?> framedGraph, Element element) {
 		try {
-			Object handler = create(framedGraph, element, method, direction);
+			Object handler = create(framedElement, framedGraph, element, method);
 			return method.invoke(handler, arguments);
 		} catch (IllegalArgumentException e) {
 			throw new JavaHandlerException("Problem calling Java handler", e);

@@ -1,22 +1,11 @@
 package com.tinkerpop.frames.modules.javahandler;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.concurrent.ExecutionException;
-
-import javassist.util.proxy.MethodHandler;
-import javassist.util.proxy.Proxy;
 import javassist.util.proxy.ProxyFactory;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.FramedGraphConfiguration;
 import com.tinkerpop.frames.modules.Module;
 
@@ -85,7 +74,7 @@ public class JavaHandlerModule implements Module {
 	@Override
 	public Graph configure(Graph baseGraph, FramedGraphConfiguration config) {
 
-		config.addAnnotationhandler(new JavaAnnotationHandler(factory, classCache));
+		config.addMethodHandler(new JavaMethodHandler(factory, classCache));
 		return baseGraph;
 	}
 

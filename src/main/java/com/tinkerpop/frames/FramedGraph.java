@@ -477,7 +477,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	public void registerAnnotationHandler(
 			final AnnotationHandler<? extends Annotation> handler) {
 		checkFactoryConfig();
-		config.addAnnotationhandler(handler);
+		config.addAnnotationHandler(handler);
 	}
 
 	/**

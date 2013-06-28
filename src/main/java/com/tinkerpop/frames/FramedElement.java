@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.util.ElementHelper;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
+import com.tinkerpop.frames.modules.MethodHandler;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -76,6 +77,13 @@ public class FramedElement implements InvocationHandler {
 
         final Annotation[] annotations = method.getAnnotations();
         Map<Class<? extends Annotation>, AnnotationHandler<?>> annotationHandlers = this.framedGraph.getConfig().getAnnotationHandlers();
+        Map<Class<? extends Annotation>, MethodHandler<?>> methodHandlers = this.framedGraph.getConfig().getMethodHandlers();
+        for (final Annotation annotation : annotations) {
+			MethodHandler methodHandler = methodHandlers.get(annotation.annotationType());
+            if (methodHandler != null) {
+                return methodHandler.processElement(proxy, method, arguments, annotation, this.framedGraph, this.element);
+            }
+        }
         for (final Annotation annotation : annotations) {
 			AnnotationHandler annotationHandler = annotationHandlers.get(annotation.annotationType());
             if (annotationHandler != null) {

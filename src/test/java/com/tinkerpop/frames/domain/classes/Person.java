@@ -142,6 +142,10 @@ public interface Person extends NamedObject {
     @JavaHandler
     public Iterable<Person> getCoCreatorsJava();
     
+    @JavaHandler
+    public void notImplemented();
+    
+    
     abstract class Impl implements JavaHandlerImpl<Vertex>, Person {
 
     	@Override

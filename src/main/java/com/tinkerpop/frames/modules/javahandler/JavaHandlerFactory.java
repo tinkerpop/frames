@@ -18,6 +18,8 @@ public interface JavaHandlerFactory {
 	 * @param method The method called
 	 * @param direction The drection of the edge if applicable
 	 * @return An object that contains the method being called. 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	public <T> T create(FramedGraph<?> graph, Element element, Method method, Direction direction);
+	public <T> T create(Class<T> handlerClass) throws InstantiationException, IllegalAccessException;
 }

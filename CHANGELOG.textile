@@ -15,6 +15,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* @AnnotationHandler@ deprecated in favour of MethodHandler. Method handler will receive a reference to the frame object.
 * @JavaHandler@ to support using Java to handle frame methods 
 * Deprecate the direction parameter for framing Edges from FramedGraph.frame. When using Initial/Terminal to annotate the out/in vertices of an edgeframe, the direction parameter is not used. The deprecated methods will be removed in the next major release.
 * Deprecate the Domain and Range annotations in favour of Initial and Terminal. See #65 and #57 for the rationale behind this change. Domain and Range will be removed from the next major release.

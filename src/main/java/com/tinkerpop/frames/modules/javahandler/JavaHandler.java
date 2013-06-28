@@ -6,7 +6,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Use a Java class to handle frame method calls.
+ * <p>
+ * Use a Java class to handle frame method calls. Unless overridden using the
+ * {@link JavaHandlerClass} annotation the default handler will be a nested
+ * class inside your frame interface called Impl. For example:
+ * </p>
+ * <pre>
+ * 
+ * interface Person {
+ * 
+ * 	abstract class PersonImpl implements Person, JavaHandlerImpl {
+ * 
+ * 	}
+ * }
+ * 
+ * </pre>
+ * 
  * @author Bryn Cooke
  */
 @Retention(RetentionPolicy.RUNTIME)

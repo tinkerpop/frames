@@ -6,10 +6,13 @@ import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.domain.incidences.CreatedBy;
 import com.tinkerpop.frames.domain.incidences.CreatedInfo;
+import com.tinkerpop.frames.modules.javahandler.JavaHandler;
+import com.tinkerpop.frames.modules.javahandler.JavaHandlerClass;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
+@JavaHandlerClass(ProjectImpl.class)
 public interface Project extends NamedObject {
 
     @Property("lang")
@@ -44,5 +47,9 @@ public interface Project extends NamedObject {
 
     @Adjacency(label = "created", direction = Direction.IN)
     public void addCreatedByPersonAdjacency(Person person);
+    
+    @JavaHandler
+    public String getLanguageUsingMixin();
+    
 }
 

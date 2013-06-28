@@ -46,15 +46,14 @@ public class JavaHandlerModule implements Module {
 				new CacheLoader<Class<?>, Class<?>>() {
 
 					@Override
-					public Class<?> load(final Class<?> frameClass) throws Exception {
+					public Class<?> load(final Class<?> handlerClass) throws Exception {
 						ProxyFactory proxyFactory = new ProxyFactory(){
 							protected ClassLoader getClassLoader() {
-								return frameClass.getClassLoader();
+								return handlerClass.getClassLoader();
 							};
 						};
 						proxyFactory.setUseCache(false);
-						String implementationClass = frameClass.getName() + "Impl";
-						proxyFactory.setSuperclass(Class.forName(implementationClass));
+						proxyFactory.setSuperclass(handlerClass);
 						Class<?> proxyClass = proxyFactory.createClass();
 						return proxyClass;
 					}
@@ -65,7 +64,10 @@ public class JavaHandlerModule implements Module {
 
 			try {
 				final Class<?> frameClass = method.getDeclaringClass();
-				Class<T> implClass = (Class<T>) classCache.get(frameClass);
+				
+				Class<T> handlerClass = (Class<T>) getHandlerClass(frameClass);
+				
+				Class<T> implClass = (Class<T>) classCache.get(handlerClass);
 				T handler = implClass.newInstance();
 				((Proxy) handler).setHandler(new MethodHandler() {
 					private DefaultJavaHandlerImpl<Element> defaultJavahandlerImpl = new DefaultJavaHandlerImpl<Element>(graph, method, element);
@@ -95,9 +97,11 @@ public class JavaHandlerModule implements Module {
 			} catch (ExecutionException e) {
 				throw new JavaHandlerException("Cannot create class for handling framed method", e);
 			} catch (InstantiationException e) {
-				throw new JavaHandlerException("Problem instantiating Java handler", e);
+				throw new JavaHandlerException("Problem instantiating handler class", e);
 			} catch (IllegalAccessException e) {
-				throw new JavaHandlerException("Problem instantiating Java handler", e);
+				throw new JavaHandlerException("Problem instantiating handler class", e);
+			} catch (ClassNotFoundException e) {
+				throw new JavaHandlerException("Problem location handler class", e);
 			}
 
 		}
@@ -122,4 +126,12 @@ public class JavaHandlerModule implements Module {
 		return baseGraph;
 	}
 
+	
+	public Class<?> getHandlerClass(Class<?> frameClass) throws ClassNotFoundException {
+		JavaHandlerClass handlerClass = frameClass.getAnnotation(JavaHandlerClass.class);
+		if(handlerClass != null) {
+			return handlerClass.value();
+		}
+		return frameClass.getClassLoader().loadClass(frameClass.getName() + "$Impl");
+	}
 }

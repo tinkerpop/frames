@@ -1,6 +1,9 @@
 package com.tinkerpop.frames.domain.classes;
 
+import java.util.Map;
+
 import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Incidence;
 import com.tinkerpop.frames.Property;
@@ -10,8 +13,7 @@ import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedInfo;
 import com.tinkerpop.frames.domain.incidences.Knows;
 import com.tinkerpop.frames.modules.javahandler.JavaHandler;
-
-import java.util.Map;
+import com.tinkerpop.frames.modules.javahandler.JavaHandlerImpl;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -139,4 +141,21 @@ public interface Person extends NamedObject {
     
     @JavaHandler
     public Iterable<Person> getCoCreatorsJava();
+    
+    abstract class Impl implements JavaHandlerImpl<Vertex>, Person {
+
+    	@Override
+    	@JavaHandler
+    	public String getNameAndAge() {
+    		return getName() + " (" + getAge() + ")";
+    	}
+    	
+    	@Override
+    	@JavaHandler
+    	public Iterable<Person> getCoCreatorsJava() {
+    		return frameVertices(gremlin().as("x").out("created").in("created").except("x"));
+    		
+    	}
+    }
+
 }

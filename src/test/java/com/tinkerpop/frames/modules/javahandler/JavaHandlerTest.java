@@ -15,6 +15,7 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.FramedGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
+import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
 public class JavaHandlerTest {
@@ -44,6 +45,15 @@ public class JavaHandlerTest {
 		FramedGraph<TinkerGraph> g = new FramedGraphFactory(new JavaHandlerModule()).create(base);
 		Knows knows = g.getEdge(7, Direction.OUT, Knows.class);
 		Assert.assertEquals("marko<->vadas", knows.getNames());
+	}
+	
+	
+	@Test
+	public void testJavaHandlerClassAnnotation() {
+		TinkerGraph base = TinkerGraphFactory.createTinkerGraph();
+		FramedGraph<TinkerGraph> g = new FramedGraphFactory(new JavaHandlerModule()).create(base);
+		Project project = g.getVertex(5, Project.class);
+		Assert.assertEquals("java", project.getLanguageUsingMixin());
 	}
 	
 	

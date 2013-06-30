@@ -15,6 +15,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.ClassUtilities;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
+import com.tinkerpop.frames.modules.MethodHandler;
 import com.tinkerpop.frames.structures.FramedVertexIterable;
 import com.tinkerpop.frames.structures.FramedVertexMap;
 import com.tinkerpop.frames.util.ExceptionUtils;
@@ -26,7 +27,7 @@ import com.tinkerpop.pipes.util.iterators.SingleIterator;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @author Bryn Cooke
  */
-public class GremlinGroovyAnnotationHandler implements AnnotationHandler<GremlinGroovy> {
+public class GremlinGroovyAnnotationHandler implements AnnotationHandler<GremlinGroovy>, MethodHandler<GremlinGroovy> {
     private static final String PIPE = "_()";
     private final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
     private static final String IT = "it";
@@ -104,6 +105,17 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
         }
         return bindings;
     }
+
+	@Override
+	public Object processElement(Object framedElement, Method method,
+			Object[] arguments, GremlinGroovy annotation,
+			FramedGraph<?> framedGraph, Element element) {
+		if (element instanceof Vertex) {
+            return processVertex(annotation, method, arguments, framedGraph, (Vertex) element);
+        } else {
+            throw new UnsupportedOperationException("This method only works for vertices");
+        }
+	}
 
 
 }

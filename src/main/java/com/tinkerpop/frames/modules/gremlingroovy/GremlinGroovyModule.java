@@ -14,7 +14,7 @@ public class GremlinGroovyModule extends AbstractModule {
 
 	@Override
 	public void doConfigure(FramedGraphConfiguration config) {
-		config.addAnnotationHandler(handler);
+		config.addMethodHandler(handler);
 		
 	}
 

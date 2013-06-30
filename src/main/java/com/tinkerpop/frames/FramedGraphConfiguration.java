@@ -37,7 +37,7 @@ public class FramedGraphConfiguration {
 	 *            The {@link AnnotationHandler} to add to the
 	 *            {@link FramedGraph}.
 	 */
-	public void addAnnotationHandler(AnnotationHandler<?> annotationHandler) {
+	void addAnnotationHandler(AnnotationHandler<?> annotationHandler) {
 		annotationHandlers.put(annotationHandler.getAnnotationType(), annotationHandler);
 	}
 	

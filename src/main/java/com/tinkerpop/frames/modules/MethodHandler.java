@@ -7,7 +7,7 @@ import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.frames.FramedGraph;
 
 /**
- * Allows handling of method on frames. Only the first annotation handler found is called.
+ * Allows handling of method on frames. Only the first method handler found is called.
  * Instances of this class should be threadsafe.
  * 
  * @param <T> The type of annotation handled.

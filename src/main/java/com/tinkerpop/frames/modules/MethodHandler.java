@@ -19,7 +19,7 @@ public interface MethodHandler<T extends Annotation> {
     public Class<T> getAnnotationType();
 
     /**
-     * @param framedElement The framed element that this is being called on.
+     * @param frame The frame upon which the method is being called.
      * @param method The method being called on the frame.
      * @param arguments The arguments to the method.
      * @param annotation The annotation
@@ -27,5 +27,5 @@ public interface MethodHandler<T extends Annotation> {
      * @param element The underlying element.
      * @return A return value for the method.
      */
-    public Object processElement(final Object framedElement, final Method method, final Object[] arguments, final T annotation, final FramedGraph<?> framedGraph, final Element element);
+    public Object processElement(final Object frame, final Method method, final Object[] arguments, final T annotation, final FramedGraph<?> framedGraph, final Element element);
 }

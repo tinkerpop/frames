@@ -20,15 +20,15 @@ import java.util.Iterator;
  */
 public class FramedEdgeTest extends TestCase {
 
-    public void testGettingInitialAndTerminal() {
+    public void testGettingOutAndIn() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
 
         Person marko = framedGraph.getVertex(1, Person.class);
         Person vadas = framedGraph.getVertex(2, Person.class);
         Knows knows = framedGraph.getEdge(7, Knows.class);
-        assertEquals(marko, knows.getInitial());
-        assertEquals(vadas, knows.getTerminal());
+        assertEquals(marko, knows.getOut());
+        assertEquals(vadas, knows.getIn());
 
         Project lop = framedGraph.getVertex(3, Project.class);
         CreatedInfo created = lop.getCreatedInfo().iterator().next();

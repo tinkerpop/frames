@@ -142,7 +142,7 @@ public class FramedVertexTest {
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertTrue(knows.getTerminal().getName().equals("josh") || knows.getTerminal().getName().equals("vadas"));
+            assertTrue(knows.getIn().getName().equals("josh") || knows.getIn().getName().equals("vadas"));
         }
         assertEquals(2, counter);
 
@@ -201,7 +201,7 @@ public class FramedVertexTest {
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertTrue(knows.getTerminal().getName().equals("josh") || knows.getTerminal().getName().equals("vadas") || knows.getTerminal().getName().equals("peter"));
+            assertTrue(knows.getIn().getName().equals("josh") || knows.getIn().getName().equals("vadas") || knows.getIn().getName().equals("peter"));
         }
         assertEquals(3, counter);
         assertNull(markoKnowsPeter.getWeight());
@@ -243,7 +243,7 @@ public class FramedVertexTest {
         int counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertTrue(knows.getTerminal().getName().equals("josh") || knows.getTerminal().getName().equals("vadas") || knows.getTerminal().getName().equals("peter") || knows.getTerminal().getName().equals("bryn"));
+            assertTrue(knows.getIn().getName().equals("josh") || knows.getIn().getName().equals("vadas") || knows.getIn().getName().equals("peter") || knows.getIn().getName().equals("bryn"));
         }
         assertEquals(4, counter);
 
@@ -265,7 +265,7 @@ public class FramedVertexTest {
         List<Knows> toRemove = new ArrayList<Knows>();
         for (Knows knows : marko.getKnows()) {
             counter++;
-            if (knows.getTerminal().getName().equals("josh")) {
+            if (knows.getIn().getName().equals("josh")) {
                 toRemove.add(knows);
             }
         }
@@ -276,7 +276,7 @@ public class FramedVertexTest {
         counter = 0;
         for (Knows knows : marko.getKnows()) {
             counter++;
-            assertEquals("vadas", knows.getTerminal().getName());
+            assertEquals("vadas", knows.getIn().getName());
         }
         assertEquals(1, counter);
 

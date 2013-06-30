@@ -1,11 +1,11 @@
 package com.tinkerpop.frames.domain.incidences;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.frames.Domain;
-import com.tinkerpop.frames.Initial;
+import com.tinkerpop.frames.Link;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.Range;
-import com.tinkerpop.frames.Terminal;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.modules.javahandler.JavaHandler;
 import com.tinkerpop.frames.modules.javahandler.JavaHandlerImpl;
@@ -21,12 +21,12 @@ public interface Knows {
     @Property("weight")
     public Float setWeight(float weight);
 
-    @Initial
-    public Person getInitial();
+    @Link(Direction.OUT)
+    public Person getOut();
 
 
-    @Terminal
-    public Person getTerminal();
+    @Link(Direction.IN)
+    public Person getIn();
 
     @Domain
     public Person getDomain();

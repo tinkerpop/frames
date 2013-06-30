@@ -3,8 +3,7 @@ package com.tinkerpop.frames.structures;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.frames.Initial;
-import com.tinkerpop.frames.Terminal;
+import com.tinkerpop.frames.Link;
 import com.tinkerpop.frames.FramedGraph;
 
 import java.util.Iterator;
@@ -19,8 +18,7 @@ public class FramedEdgeIterable<T> implements Iterable<T> {
     protected final FramedGraph<? extends Graph> framedGraph;
 
     /**
-	 * @deprecated Use {@link #FramedEdgeIterable(FramedGraph, Iterable, Class)}, in combination with {@link Initial}
-	 *             and {@link Terminal}.
+	 * @deprecated Use {@link #FramedEdgeIterable(FramedGraph, Iterable, Class)}, in combination with {@link Link}.
 	 */
     public FramedEdgeIterable(final FramedGraph<? extends Graph> framedGraph, final Iterable<Edge> iterable, final Direction direction, final Class<T> kind) {
         this.framedGraph = framedGraph;

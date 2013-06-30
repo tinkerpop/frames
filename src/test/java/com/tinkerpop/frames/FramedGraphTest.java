@@ -27,10 +27,9 @@ import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
 import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
-import com.tinkerpop.frames.annotations.InitialAnnotationHandler;
+import com.tinkerpop.frames.annotations.LinkAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
-import com.tinkerpop.frames.annotations.TerminalAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
@@ -72,8 +71,7 @@ public class FramedGraphTest extends GraphTest {
         		IncidenceAnnotationHandler.class, 
         		DomainAnnotationHandler.class,
         		RangeAnnotationHandler.class,
-        		InitialAnnotationHandler.class,
-        		TerminalAnnotationHandler.class, 
+        		LinkAnnotationHandler.class, 
         		GremlinGroovyAnnotationHandler.class)));
     }
 	

@@ -6,13 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The source of the adjacency.
- *
- * @author Marko A. Rodriguez (http://markorodriguez.com)
- * 
- * @deprecated Use {@link InVertex} or {@link OutVertex} instead.
+ * Marks the in vertex (head) of a framed edge.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Domain {
+public @interface InVertex {
 }

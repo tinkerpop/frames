@@ -5,9 +5,10 @@ import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
 import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
-import com.tinkerpop.frames.annotations.LinkAnnotationHandler;
+import com.tinkerpop.frames.annotations.InVertexAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
+import com.tinkerpop.frames.annotations.OutVertexAnnotationHandler;
 import com.tinkerpop.frames.modules.Module;
 
 /**
@@ -89,7 +90,8 @@ public class FramedGraphFactory {
 		config.addAnnotationHandler(new IncidenceAnnotationHandler());
 		config.addAnnotationHandler(new DomainAnnotationHandler());
 		config.addAnnotationHandler(new RangeAnnotationHandler());
-		config.addAnnotationHandler(new LinkAnnotationHandler());
+		config.addAnnotationHandler(new InVertexAnnotationHandler());
+		config.addAnnotationHandler(new OutVertexAnnotationHandler());
 		return config;
 	}
 

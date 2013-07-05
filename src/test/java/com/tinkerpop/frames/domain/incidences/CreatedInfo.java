@@ -1,22 +1,22 @@
 package com.tinkerpop.frames.domain.incidences;
 
-import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.frames.EdgeFrame;
-import com.tinkerpop.frames.Link;
+import com.tinkerpop.frames.InVertex;
+import com.tinkerpop.frames.OutVertex;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 
 /**
  * This class frames "created" edges (just like Created and CreatedBy), but uses
- * the {@link Out} and {@link Link} annotations instead of the now deprecated
+ * the {@link InVertex} and {@link OutVertex} annotations instead of the now deprecated
  * Source/Target.
  */
 public interface CreatedInfo extends EdgeFrame {
-	@Link(Direction.OUT)
+	@OutVertex
 	Person getPerson();
 
-	@Link(Direction.IN)
+	@InVertex
 	Project getProject();
 
 	@Property("weight")

@@ -17,8 +17,9 @@ import com.tinkerpop.blueprints.util.wrappers.WrapperGraph;
 import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
+import com.tinkerpop.frames.annotations.InVertexAnnotationHandler;
 import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
-import com.tinkerpop.frames.annotations.LinkAnnotationHandler;
+import com.tinkerpop.frames.annotations.OutVertexAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
@@ -71,7 +72,8 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 		registerAnnotationHandler(new IncidenceAnnotationHandler());
 		registerAnnotationHandler(new DomainAnnotationHandler());
 		registerAnnotationHandler(new RangeAnnotationHandler());
-		registerAnnotationHandler(new LinkAnnotationHandler());
+		registerAnnotationHandler(new InVertexAnnotationHandler());
+		registerAnnotationHandler(new OutVertexAnnotationHandler());
 		registerAnnotationHandler(new GremlinGroovyAnnotationHandler());
 	}
 
@@ -121,8 +123,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return a proxy objects backed by an edge and interpreted from the
 	 *         perspective of the annotate interface or null if the edge paramenter was null
 	 *         
-	 * @deprecated Use {@link #frame(Edge, Class)}, in combination with {@link Out}
-	 *             and {@link Link}.
+	 * @deprecated Use {@link #frame(Edge, Class)}, in combination with {@link InVertex} and {@link OutVertex}.
 	 */
 	public <F> F frame(final Edge edge, final Direction direction,
 			final Class<F> kind) {
@@ -191,8 +192,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return an iterable of proxy objects backed by an edge and interpreted
 	 *         from the perspective of the annotate interface
 	 *         
-	 * @deprecated Use {@link #frameEdges(Iterable, Class)}, in combination with {@link Out}
-	 *             and {@link Link}.
+	 * @deprecated Use {@link #frameEdges(Iterable, Class)}, in combination with {@link InVertex} and {@link OutVertex}.
 	 */
 	public <F> Iterable<F> frameEdges(final Iterable<Edge> edges,
 			final Direction direction, final Class<F> kind) {
@@ -280,8 +280,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 * @return a proxy object backed by the edge and interpreted from the
 	 *         perspective of the annotate interface
 	 *         
-	 * @deprecated Use {@link #getEdges(Object, Class)}, in combination with {@link Out}
-	 *             and {@link Link}.      
+	 * @deprecated Use {@link #getEdges(Object, Class)}, in combination with {@link InVertex} and {@link OutVertex}.      
 	 */
 	public <F> F getEdge(final Object id, final Direction direction,
 			final Class<F> kind) {
@@ -332,7 +331,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         perspective of the annotate interface
 	 *         
 	 * @deprecated Use {@link #addEdge(Object, Vertex, Vertex, String, Class)},
-     *             in combination with {@link Out} and {@link Link}.
+     *             in combination with {@link InVertex} and {@link OutVertex}.
 	 */
 	public <F> F addEdge(final Object id, final Vertex outVertex,
 			final Vertex inVertex, final String label,
@@ -411,7 +410,7 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 	 *         from the perspective of the annotate interface
 	 *         
 	 * @deprecated Use {@link #getEdges(String, Object, Class)}, in combination with
-	 *             {@link Out} and {@link Link}.
+	 *             {@link InVertex} and {@link OutVertex}.
 	 */
 	public <F> Iterable<F> getEdges(final String key, final Object value,
 			final Direction direction, final Class<F> kind) {

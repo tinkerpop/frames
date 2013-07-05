@@ -26,8 +26,9 @@ import com.tinkerpop.blueprints.util.io.graphson.GraphSONReaderTestSuite;
 import com.tinkerpop.frames.annotations.AdjacencyAnnotationHandler;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
 import com.tinkerpop.frames.annotations.DomainAnnotationHandler;
+import com.tinkerpop.frames.annotations.InVertexAnnotationHandler;
 import com.tinkerpop.frames.annotations.IncidenceAnnotationHandler;
-import com.tinkerpop.frames.annotations.LinkAnnotationHandler;
+import com.tinkerpop.frames.annotations.OutVertexAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
@@ -71,7 +72,8 @@ public class FramedGraphTest extends GraphTest {
         		IncidenceAnnotationHandler.class, 
         		DomainAnnotationHandler.class,
         		RangeAnnotationHandler.class,
-        		LinkAnnotationHandler.class, 
+        		InVertexAnnotationHandler.class,
+        		OutVertexAnnotationHandler.class,
         		GremlinGroovyAnnotationHandler.class)));
     }
 	

@@ -1,9 +1,9 @@
 package com.tinkerpop.frames.domain.incidences;
 
-import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.frames.Domain;
-import com.tinkerpop.frames.Link;
+import com.tinkerpop.frames.InVertex;
+import com.tinkerpop.frames.OutVertex;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.Range;
 import com.tinkerpop.frames.domain.classes.Person;
@@ -21,11 +21,11 @@ public interface Knows {
     @Property("weight")
     public Float setWeight(float weight);
 
-    @Link(Direction.OUT)
+    @OutVertex
     public Person getOut();
 
 
-    @Link(Direction.IN)
+    @InVertex
     public Person getIn();
 
     @Domain

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * 
- * @deprecated Use {@link Link} instead.
+ * @deprecated Use {@link InVertex} or {@link OutVertex} instead.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

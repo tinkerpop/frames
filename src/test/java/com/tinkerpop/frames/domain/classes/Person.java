@@ -13,7 +13,7 @@ import com.tinkerpop.frames.domain.incidences.Created;
 import com.tinkerpop.frames.domain.incidences.CreatedInfo;
 import com.tinkerpop.frames.domain.incidences.Knows;
 import com.tinkerpop.frames.modules.javahandler.JavaHandler;
-import com.tinkerpop.frames.modules.javahandler.JavaHandlerImpl;
+import com.tinkerpop.frames.modules.javahandler.JavaHandlerContext;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -146,7 +146,7 @@ public interface Person extends NamedObject {
     public void notImplemented();
     
     
-    abstract class Impl implements JavaHandlerImpl<Vertex>, Person {
+    abstract class Impl implements JavaHandlerContext<Vertex>, Person {
 
     	@Override
     	@JavaHandler

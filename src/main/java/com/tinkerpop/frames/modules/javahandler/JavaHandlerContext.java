@@ -7,7 +7,14 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
-public interface JavaHandlerImpl<C extends Element> {
+/**
+ * By implementing this interface your Java handler implementation can access the underlying graph and the framed vertex/edge.
+ * 
+ * @author Bryn Cooke
+ *
+ * @param <C>
+ */
+public interface JavaHandlerContext<C extends Element> {
 
 	/**
 	 * @return The framed graph

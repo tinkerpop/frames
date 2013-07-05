@@ -8,7 +8,7 @@ import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.Range;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.modules.javahandler.JavaHandler;
-import com.tinkerpop.frames.modules.javahandler.JavaHandlerImpl;
+import com.tinkerpop.frames.modules.javahandler.JavaHandlerContext;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -37,7 +37,7 @@ public interface Knows {
     @JavaHandler
     public String getNames();
 
-    abstract class Impl implements Knows, JavaHandlerImpl<Edge> {
+    abstract class Impl implements Knows, JavaHandlerContext<Edge> {
 
     	@Override
     	@JavaHandler

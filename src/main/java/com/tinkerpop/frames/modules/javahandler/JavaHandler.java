@@ -15,11 +15,15 @@ import java.lang.annotation.Target;
  * 
  * interface Person {
  * 
- * 	abstract class PersonImpl implements Person, JavaHandlerImpl {
+ *   &#064;JavaHandler
+ *   public String doSomething(); 
  * 
- * 	}
+ *   abstract class Impl implements Person, JavaHandlerContext {
+ *     public String doSomething() {
+ *       return "Use Frames!";
+ *     }
+ *   }
  * }
- * 
  * </pre>
  * 
  * @author Bryn Cooke

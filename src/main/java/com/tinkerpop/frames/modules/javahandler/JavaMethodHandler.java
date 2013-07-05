@@ -40,7 +40,7 @@ public class JavaMethodHandler implements com.tinkerpop.frames.modules.MethodHan
 			Class<T> implClass = (Class<T>) handlerClassCache.get(handlerClass);
 			T handler = factory.create(implClass);
 			((Proxy) handler).setHandler(new MethodHandler() {
-				private DefaultJavaHandlerImpl<Element> defaultJavahandlerImpl = new DefaultJavaHandlerImpl<Element>(
+				private JavaHandlerContextImpl<Element> defaultJavahandlerImpl = new JavaHandlerContextImpl<Element>(
 						graph, method, element);
 				
 
@@ -53,7 +53,7 @@ public class JavaMethodHandler implements com.tinkerpop.frames.modules.MethodHan
 						if(m.getAnnotation(JavaHandler.class) != null) {
 							throw new JavaHandlerException("Method " + m.getDeclaringClass().getName() + "." + m.getName() + " is marked with @JavaHandler but is not implemented");
 						}
-						if (m.getDeclaringClass() == JavaHandlerImpl.class) {
+						if (m.getDeclaringClass() == JavaHandlerContext.class) {
 							return m.invoke(defaultJavahandlerImpl, args);
 						}
 						

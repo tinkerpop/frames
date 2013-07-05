@@ -17,7 +17,7 @@ import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.FramedGraph;
 
-public class DefaultJavaHandlerImplTest {
+public class JavaHandlerContextImplTest {
 
 	private FramedGraph<?> graph;
 	private Vertex vertex;
@@ -143,26 +143,26 @@ public class DefaultJavaHandlerImplTest {
 	
 	@Test
 	public void testGremlinContext() throws NoSuchMethodException {
-		DefaultJavaHandlerImpl<Edge> handler = getHandler(graph, edge, getMethod("getA"));
+		JavaHandlerContextImpl<Edge> handler = getHandler(graph, edge, getMethod("getA"));
 		Assert.assertEquals(edge, handler.gremlin().next());
 		
 	}
 
 	@Test
 	public void testGremlinExplicit() throws NoSuchMethodException {
-		DefaultJavaHandlerImpl<Edge> handler = getHandler(graph, edge, getMethod("getA"));
+		JavaHandlerContextImpl<Edge> handler = getHandler(graph, edge, getMethod("getA"));
 		Assert.assertEquals(vertex, handler.gremlin(vertex).next());
 		
 	}
 
 	private Method getMethod(String name) throws NoSuchMethodException {
-		return DefaultJavaHandlerImplTest.class.getMethod(name);
+		return JavaHandlerContextImplTest.class.getMethod(name);
 	}
 	
 	
 
-	private <T extends Element> DefaultJavaHandlerImpl<T> getHandler(FramedGraph<?> graph, T element, Method method) {
-		DefaultJavaHandlerImpl<T> impl = new DefaultJavaHandlerImpl<T>(graph, method, element);
+	private <T extends Element> JavaHandlerContextImpl<T> getHandler(FramedGraph<?> graph, T element, Method method) {
+		JavaHandlerContextImpl<T> impl = new JavaHandlerContextImpl<T>(graph, method, element);
 		return impl;
 	}
 	

@@ -17,10 +17,16 @@ import java.lang.annotation.Target;
  * &#064;JavaHandlerClass(PersonImpl.class)
  * interface Person {
  * 
+ *   &#064;JavaHandler
+ *   public String doSomething(); 
+ * 
+ *   
  * }
  * 
- * class PersonImpl implements Person, JavaHandlerImpl {
- * 
+ * abstract class PersonImpl implements Person, JavaHandlerContext {
+ *   public String doSomething() {
+ *     return "Use Frames!";
+ *   }
  * }
  * 
  * </pre>

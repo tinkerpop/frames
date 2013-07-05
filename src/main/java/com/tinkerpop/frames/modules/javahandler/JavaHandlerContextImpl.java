@@ -13,18 +13,18 @@ import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
 /**
- * Helper base class for java handler implementations.
+ * Implementation for java handler context.
  * 
  * @author Bryn Cooke
  * 
  */
-public class DefaultJavaHandlerImpl<C extends Element> implements JavaHandlerImpl<C> {
+public class JavaHandlerContextImpl<C extends Element> implements JavaHandlerContext<C> {
 
 	private final FramedGraph<?> graph;
 	private final Method method;
 	private final C context;
 
-	public DefaultJavaHandlerImpl(FramedGraph<?> graph, Method method, C context) {
+	public JavaHandlerContextImpl(FramedGraph<?> graph, Method method, C context) {
 		super();
 		this.graph = graph;
 		this.method = method;

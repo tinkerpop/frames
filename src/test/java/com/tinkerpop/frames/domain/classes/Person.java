@@ -162,4 +162,12 @@ public interface Person extends NamedObject {
     	}
     }
 
+
+	public void unhandledNoAnnotation();
+
+	@GremlinGroovy("")
+	public void unhandledNoHandler();
+	
+	
+
 }

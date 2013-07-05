@@ -28,7 +28,6 @@ public class FramedElement implements InvocationHandler {
     private static Method asVertexMethod;
     private static Method asEdgeMethod;
 
-    protected static Object NO_INVOCATION_PATH = new Object();
 
     static {
         try {
@@ -91,7 +90,10 @@ public class FramedElement implements InvocationHandler {
             }
         }
 
-        return NO_INVOCATION_PATH;
+        if(method.getAnnotations().length == 0) {
+        	throw new UnhandledMethodException("The method " + method.getDeclaringClass().getName() + "." + method.getName() + " has no annotations, therefore frames cannot handle the method.");
+        }
+        throw new UnhandledMethodException("The method " + method.getDeclaringClass().getName() + "." + method.getName() + " was not annotated with any annotations that the framed graph is configured for. Please check your frame interface and/or graph configuration.");
     }
 
     private Boolean proxyEquals(final Object other) {

@@ -15,6 +15,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Support framing graph query results.
 * UnhandledMethodException now thrown if a handler cannot be found for a method. 
 * @AnnotationHandler@ deprecated in favour of @MethodHandler@. Method handler will receive a reference to the frame object.
 * @JavaHandler@ to support using Java to handle frame methods 

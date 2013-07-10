@@ -10,7 +10,6 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Features;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.GraphQuery;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.StringFactory;
 import com.tinkerpop.blueprints.util.wrappers.WrapperGraph;
@@ -23,6 +22,7 @@ import com.tinkerpop.frames.annotations.OutVertexAnnotationHandler;
 import com.tinkerpop.frames.annotations.PropertyAnnotationHandler;
 import com.tinkerpop.frames.annotations.RangeAnnotationHandler;
 import com.tinkerpop.frames.annotations.gremlin.GremlinGroovyAnnotationHandler;
+import com.tinkerpop.frames.core.FramedGraphQueryImpl;
 import com.tinkerpop.frames.modules.Module;
 import com.tinkerpop.frames.modules.TypeResolver;
 import com.tinkerpop.frames.structures.FramedEdgeIterable;
@@ -458,10 +458,6 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 		return StringFactory.graphString(this, this.baseGraph.toString());
 	}
 
-	public GraphQuery query() {
-		return config.getConfiguredGraph().query();
-	}
-
 	/**
 	 * The method used to register a new annotation handler for every new
 	 * annotation a new annotation handler has to be registered in the framed
@@ -548,4 +544,13 @@ public class FramedGraph<T extends Graph> implements Graph, WrapperGraph<T> {
 		return config;
 	}
 
+	
+	 /**
+     * Generate a query object that can be used to fine tune which edges/vertices are retrieved from the graph.
+     *
+     * @return a graph query object with methods for constraining which data is pulled from the underlying graph
+     */
+    public FramedGraphQuery query() {
+    	return new FramedGraphQueryImpl(this, config.getConfiguredGraph().query());
+    }
 }

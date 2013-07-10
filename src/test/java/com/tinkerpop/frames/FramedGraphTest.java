@@ -6,10 +6,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.junit.Test;
+
 import junit.framework.Assert;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.EdgeTestSuite;
 import com.tinkerpop.blueprints.Graph;
@@ -213,5 +216,68 @@ public class FramedGraphTest extends GraphTest {
             }
         }
     }
+    
+    @Test
+	public void testVertexQuery() {
+		Graph graph = TinkerGraphFactory.createTinkerGraph();
+		FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
+		Assert.assertEquals(6, Iterables.size(framedGraph.query().has("name").vertices(VertexFrame.class)));
+		Iterables.elementsEqual(
+				framedGraph.query().has("name").vertices(),
+				unwrapVertices(framedGraph.query().has("name")
+						.vertices(VertexFrame.class)));
+		
+		Assert.assertEquals(1, Iterables.size(framedGraph.query().has("name").limit(1).vertices(VertexFrame.class)));
+		Iterables.elementsEqual(
+				framedGraph.query().has("name").limit(1).vertices(),
+				unwrapVertices(framedGraph.query().has("name").limit(1)
+						.vertices(VertexFrame.class)));
+
+	}
+
+	
+	@Test
+	public void testEdgeQuery() {
+		Graph graph = TinkerGraphFactory.createTinkerGraph();
+		
+		FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
+		
+		Assert.assertEquals(6, Iterables.size(framedGraph.query().has("weight").edges(EdgeFrame.class)));
+		Iterables.elementsEqual(
+				framedGraph.query().has("weight").edges(),
+				unwrapEdges(framedGraph.query().has("weight")
+						.edges(EdgeFrame.class)));
+		
+		Assert.assertEquals(1, Iterables.size(framedGraph.query().has("weight").limit(1).edges(EdgeFrame.class)));
+		Iterables.elementsEqual(
+				framedGraph.query().has("weight").limit(1).edges(),
+				unwrapEdges(framedGraph.query().has("weight").limit(1)
+						.edges(EdgeFrame.class)));
+
+	}
+
+
+
+
+
+	
+	private Iterable<Vertex> unwrapVertices(Iterable<VertexFrame> it) {
+		return Iterables.transform(it, new Function<VertexFrame, Vertex>() {
+			@Override
+			public Vertex apply(VertexFrame input) {
+				return input.asVertex();
+			}
+		});
+	}
+	
+	private Iterable<Edge> unwrapEdges(Iterable<EdgeFrame> it) {
+		return Iterables.transform(it, new Function<EdgeFrame, Edge>() {
+			@Override
+			public Edge apply(EdgeFrame input) {
+				return input.asEdge();
+			}
+		});
+	}
+
 
 }

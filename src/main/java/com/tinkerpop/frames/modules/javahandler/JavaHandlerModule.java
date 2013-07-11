@@ -17,12 +17,25 @@ import com.tinkerpop.frames.modules.Module;
  * appropriate method on it.
  * </p>
  * <p>
- * The default factory implementation creates a class who type name is the same
- * as the frame + 'Impl'. For example:
+ * The default implementation is an inner class of the frame interface named 'Impl'. For example:
  * </p>
- * <p>
- * Person (frame) => PersonImpl (handler)
- * </p>
+ * <pre>
+ * interface Person {
+ * 
+ *   &#064;JavaHandler
+ *   public String doSomething(); 
+ *   
+ *   abstract class Impl implements Person, JavaHandlerContext {
+ *     public String doSomething() {
+ *       return "Use Frames!";
+ *     }
+ *   }
+ *   
+ * }
+ * 
+ * </pre>
+ * <p>The implementation class can be overridden by using the {@link JavaHandlerClass} annotation.</p> 
+ * 
  * 
  * @author Bryn Cooke
  */

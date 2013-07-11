@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
  *   
  * }
  * 
- * abstract class PersonImpl implements Person, JavaHandlerContext {
+ * abstract class PersonImpl implements Person, JavaHandlerContext<Vertex> {
  *   public String doSomething() {
  *     return "Use Frames!";
  *   }

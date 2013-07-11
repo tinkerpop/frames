@@ -11,14 +11,20 @@ import org.junit.Test;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.FramedGraph;
 import com.tinkerpop.frames.FramedGraphFactory;
+import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
 import com.tinkerpop.frames.domain.incidences.Knows;
 
+/**
+ * @author Bryn Cooke
+ *
+ */
 public class JavaHandlerTest {
 
 	private FramedGraph<TinkerGraph> g;
@@ -58,6 +64,68 @@ public class JavaHandlerTest {
 	public void testMethodNotImplemented() {
 		Person person = g.getVertex(1, Person.class);
 		person.notImplemented();
+	}
+	
+	@Test
+	public void testIntitializersVertices() {
+		A a = g.addVertex(null, A.class);
+		Assert.assertEquals("A", a.getProperty());
+		B b = g.addVertex(null, B.class);
+		Assert.assertEquals("AB", b.getProperty());
+		C c = g.addVertex(null, C.class);
+		Assert.assertEquals("ABCC2", c.getProperty());
+	}
+	
+	@Test
+	public void testIntitializersEdges() {
+		Vertex v = g.addVertex(null);
+		
+		A a = g.addEdge(null, v, v, "test", A.class);
+		Assert.assertEquals("A", a.getProperty());
+		B b = g.addEdge(null, v, v, "test", B.class);
+		Assert.assertEquals("AB", b.getProperty());
+		C c = g.addEdge(null, v, v, "test", C.class);
+		Assert.assertEquals("ABCC2", c.getProperty());
+	}
+	
+	interface A {
+		
+		@Property("property")
+		String getProperty();
+		
+		@Property("property")
+		void setProperty(String property);
+		
+		abstract class Impl implements A {
+			@Initializer
+			void init() {
+				setProperty("A");
+			}
+		}
+	}
+	
+	interface B extends A {
+		abstract class Impl implements B {
+			@Initializer
+			void init() {
+				setProperty(getProperty() + "B");
+			}
+		}
+	}
+	
+	
+	interface C extends A, B {
+		abstract class Impl implements C {
+			@Initializer
+			void init() {
+				setProperty(getProperty() + "C");
+			}
+			
+			@Initializer
+			void init2() {
+				setProperty(getProperty() + "C2");
+			}
+		}
 	}
 
 	@Before

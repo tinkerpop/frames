@@ -18,13 +18,13 @@ import com.tinkerpop.gremlin.java.GremlinPipeline;
  * @author Bryn Cooke
  * 
  */
-public class JavaHandlerContextImpl<C extends Element> implements JavaHandlerContext<C> {
+class JavaHandlerContextImpl<C extends Element> implements JavaHandlerContext<C> {
 
 	private final FramedGraph<?> graph;
 	private final Method method;
 	private final C context;
 
-	public JavaHandlerContextImpl(FramedGraph<?> graph, Method method, C context) {
+	JavaHandlerContextImpl(FramedGraph<?> graph, Method method, C context) {
 		super();
 		this.graph = graph;
 		this.method = method;

@@ -10,7 +10,7 @@ import com.tinkerpop.blueprints.Query.Compare;
  * @author Bryn Cooke
  *
  */
-public interface FramedGraphQuery extends GraphQuery, FramedQuery {
+public interface FramedGraphQuery extends GraphQuery {
 	@Override
     public FramedGraphQuery has(String key);
 
@@ -35,4 +35,21 @@ public interface FramedGraphQuery extends GraphQuery, FramedQuery {
 
     @Override
     public FramedGraphQuery limit(int limit);
+    
+
+    /**
+     * Execute the query and return the matching edges.
+     *
+     * @param the default annotated interface to frame the edge as
+     * @return the unfiltered incident edges
+     */
+    public <T> Iterable<T> edges(Class<T> kind);
+
+    /**
+     * Execute the query and return the vertices on the other end of the matching edges.
+     *
+     * @param the default annotated interface to frame the vertex as
+     * @return the unfiltered adjacent vertices
+     */
+	public <T> Iterable<T> vertices(Class<T> kind);
 }

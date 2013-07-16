@@ -31,7 +31,7 @@ public interface FramedGraphQuery extends GraphQuery {
     public <T extends Comparable<T>> FramedGraphQuery has(String key, T value, Compare compare);
 
     @Override
-    public <T extends Comparable<T>> FramedGraphQuery interval(String key, T startValue, T endValue);
+    public <T extends Comparable<?>> FramedGraphQuery interval(String key, T startValue, T endValue);
 
     @Override
     public FramedGraphQuery limit(int limit);

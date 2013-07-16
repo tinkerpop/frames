@@ -49,7 +49,7 @@ public class FramedGraphQueryImpl implements FramedGraphQuery {
 		return this;
 	}
 
-	public <T extends Comparable<T>> FramedGraphQuery interval(String key,
+	public <T extends Comparable<?>> FramedGraphQuery interval(String key,
 			T startValue, T endValue) {
 		graphQuery = graphQuery.interval(key, startValue, endValue);
 		return this;

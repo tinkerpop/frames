@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Upgrading from 2.3.1</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Upgrading from 2.3.1</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Upgrading-from-2.3.1"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Upgrading-from-2.3.1"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>Frames 2.4.0 is fully backward compatible with 2.3.1 so you won&#x2019;t need to make any code changes if you upgrade.</p>
+<p>However there have been some significant additions to the APIs to enable some new features and pave the way for more features in the future.</p>
+<p>To this end you will find that some classes and method in Frames have been deprecated. However, these won&#x2019;t be removed until at least the next major version of Tinkerpop.</p>
+<p>For most frames users there will only be minor modifications to make to migrate to the new APIs, but for now this is completely optional.</p>
+<h3>Creating a FramedGraph</h3>
+<p>The recommended way of creating a <code>FramedGraph</code> is now via <code>FramedGraphFactory</code> rather than via the <code>FramedGraph</code> constructor.</p>
+<pre><code>FramedGraphFactory factory = new FramedGraphFactory();
+FramedGraph framedGraph = factory.create(baseGraph);</code></pre>
+<p>This has a couple of benefits:</p>
+<ul><li>Resources can be shared between graphs.</li>
+	<li>Complex configuration of the <code>FramedGraph</code> can be pushed out to separate <code>Module</code> classes with their own APIs.</li>
+</ul><p>You should ideally use the same framed graph factory to create many framed graphs.<br /><strong>Note: That the gremlin groovy module is not included by default, this is to prevent having to start up a Groovy script engine if your application doesn&#x2019;t require it. If you require <code>@GremlinGroovy</code> support make sure you are using the <code>GremlinGroovyModule</code>.</strong></p>
+<h3>Extending FramedGraph functionality.</h3>
+<p>Modules are now used to encapsulate the extensions of <code>FramedGraph</code>. This brings together MethodHandlers(was AnnotationHandlers), TypeResolvers and FrameInitializers in to single units of configuration.</p>
+<p><code>FramedGraphFactory</code> may be constructed with any number of modules which will all be applied to every <code>FramedGraph</code> created.</p>
+<pre><code>FramedGraphFactory factory = new FramedGraphFactory(
+    new GremlinGroovyModule(),
+    new TypedGraphModuleBuilder().withClass(A.class).build());
+FramedGraph framedGraph = factory.create(baseGraph);  //Groovy and typed graph created. </code></pre>
+<p>The advantage of this is that each module may internally register any number of <code>MethodHandler</code>, <code>TypeResolver</code> and <code>FrameInitializer</code> leaving the you to concentrate on the high level feature you are adding to your FramedGraphs.</p>
+<h3>Use <code>@InVertex</code> or <code>@OutVertex</code> instead of <code>@Domain</code> and <code>@Range</code></h3>
+<p>Framed edges have currently got additional internal state over and above the edge they are framing. This is the direction that the frame was created with. This direction is used to flip the meaning of <code>@Domain</code> and <code>@Range</code>.</p>
+<p>In frames 2.4.0 two new annotations have been introduced that follow the Blueprints edge <span class="caps">API</span> more closely:</p>
+<ul><li>Edge.getVertex(Direction.Out) = @OutVertex</li>
+	<li>Edge.getVertex(Direction.In) = @InVertex</li>
+</ul><p>These statements will always be true regardless of the direction that the edge was created with.</p>
+<p>Please note that <code>@Domain</code> and <code>@Range</code> do not map directly to either <code>@InVertex</code> or <code>@OutVertex</code></p>
+<p><code>@Domain</code> and <code>@Range</code> have been deprecated.</p>
+<h3>Deprecation of FramedGraph.createEdge(edge, direction)</h3>
+<p><code>@InVertex</code> and <code>@OutVertex</code> do not require the additional direction state on framed edges. <br />
+Therefore if you have migrated all your <code>@Domain</code> and <code>@Range</code> annotations to <code>@InVertex</code> and <code>@OutVertex</code> you can safely use FramedGraph.createEdge(edge) to create your edges without specifying the direction.</p>
+<h3>Use <code>MethodHandler</code> instead of <code>AnnotationHandler</code></h3>
+<p>To support the new JavaHandler module and a future validation module <code>AnnotationHandler</code> has been deprecated in favour of <code>MethodHandler</code>.<br />
+The new <code>MethodHandler</code> interface is almost identical to <code>AnnotationHandler</code> with the exception of also receiving the frame object and not receiving the Direction parameter.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:20:48</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

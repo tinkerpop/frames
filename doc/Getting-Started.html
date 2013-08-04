@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Getting Started</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Getting Started</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Getting-Started"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Getting-Started"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="http://i579.photobucket.com/albums/ss235/krissy_bby93/icon_UnderConstruction.png" width="120px" /></p>
+<h2>Creating a Domain Model with Java Interfaces</h2>
+<p>Frames makes use of Java interfaces and annotations. Here is a simple example that mixes people and software projects. People create projects and know each other. To represent such concepts in Java, do the following. First, lets create a <code>Person</code> interface.</p>
+<pre><code>public interface Person {
+  @Property("name")
+  public void setName(String name);
+  @Property("name")
+  public String getName();
+  @Property("age")
+  public void setAge(int age);
+  @Property("age")
+  public int getAge();
+  
+  @Adjacency(label="knows")
+  public Iterable&lt;Person&gt; getKnowsPeople();
+  @Adjacency(label="knows")
+  public void addKnowsPerson(Person person);
+  
+  @Adjacency(label="created")
+  public Iterable&lt;Project&gt; getCreatedProjects();
+  @Adjacency(label="created")
+  public void addCreatedProject(Project project);
+}</code></pre>
+<p>That is all there is to it. Once an interface has been constructed to represent a vertex type, then a vertex in the graph can be framed within the perspective of that interface.</p>
+<h2>Framing Graph Elements in Terms of the Java Interfaces</h2>
+<p>For the remainder of this section, the following graph example will be used. Note that this toy graph comes hardcoded with <a href="../../blueprints/2.4.0/Home.html">Blueprints</a> and is available as <code>TinkerGraphFactory.createTinkerGraph()</code>.</p>
+<p><img src="https://github.com/tinkerpop/blueprints/raw/master/doc/images/graph-example-1.jpg" width="450px" /></p>
+<p>To frame vertex 1 (marko) in terms of the <code>Person</code> interface defined previously, simply do the following.</p>
+<pre><code>Graph graph = TinkerGraphFactory.createTinkerGraph();
+FramedGraph manager = new FramedGraphFactory().create(graph);
+Person marko = manager.frame(graph.getVertex(1), Person.class);</code></pre>
+<p>Now its possible to update Marko&#x2019;s age, get his name, and determine the names of all the people he knows.</p>
+<pre><code>marko.setAge(31)
+assert marko.getName().equals("marko")
+for(Person person : marko.getKnowsPeople()) {
+  System.out.println(person.getName()); // prints vadas and josh
+}</code></pre>
+<h2>Adding a Few More Constructs</h2>
+<p>In the example graph, there are people and there are projects. Lets model a project as a Java interface.</p>
+<pre><code>public interface Project extends VertexFrame {
+  @Property("name")
+  public void setName(String name);
+  @Property("name")
+  public String getName();
+  @Property("lang")
+  public void setLanguage(String language);
+  @Property("lang")
+  public int getLanguage();
+
+  @Adjacency(label="created", direction=Direction.IN)
+  public Iterable&lt;Person&gt; getCreatedByPerson();
+
+  @Incidence(label = "created", direction = Direction.IN)
+  public Iterable&lt;CreatedInfo&gt; getCreatedInfo();
+}
+
+public interface CreatedInfo extends EdgeFrame {
+    @Property("weight")
+    public Float getWeight();
+    @Property("weight")
+    public void setWeight(float weight);
+
+    @OutVertex
+    Person getPerson();
+
+    @InVertex
+    Project getProject();
+}</code></pre>
+<p>There are a few things that are worth exemplifying. First, while the property of the project vertex may have the key <code>lang</code>, the method to get and set the property value can be anything. The <code>@Property</code> annotation makes it clear what the explicit property key is. Second, note that there is a difference between a <strong>Adjacency</strong> and an <strong>Incidence</strong>. An adjacency exists between two vertices. An incidence exists between a vertex and edge. An incidence is an <code>EdgeFrame</code> and thus, a wrapper to an edge. The frame class for the edge (<code>CreatedInfo</code>) has annotations to mark what the out-vertex (<code>@OutVertex</code>) and in-vertex (<code>@InVertex</code>) of the edge frame represent.</p>
+<p>Finally, notice that <code>Project</code> extends the special, <code>VertexFrame</code> interface.  While it is not necessary to extend <code>VertexFrame</code> in order to create and manipulate Frames objects, doing so provides access to the <code>asVertex</code> method which takes you from a frame to the underlying Blueprints vertex.  The <code>EdgeFrame</code> interface provides a similar method, <code>asEdge</code>.</p>
+<pre><code>Project ripple = manager.frame(graph.getVertex(5), Project.class);
+System.out.println(ripple.getCreatedByPerson().iterator().next().getName());  // prints "josh"
+
+System.out.println(ripple.asVertex().getId());  // prints "5"</code></pre>
+<p>The full code for this simple domain is provided in the Frames test case available <a href="https://github.com/tinkerpop/frames/tree/master/src/test/java/com/tinkerpop/frames/domain">here</a>.<br />
+There is more to Frames, but what has been presented are the basic constructs to help get you started.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:20:48</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

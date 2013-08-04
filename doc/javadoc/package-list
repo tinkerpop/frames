@@ -1,0 +1,10 @@
+com.tinkerpop.frames
+com.tinkerpop.frames.annotations
+com.tinkerpop.frames.annotations.gremlin
+com.tinkerpop.frames.core
+com.tinkerpop.frames.modules
+com.tinkerpop.frames.modules.gremlingroovy
+com.tinkerpop.frames.modules.javahandler
+com.tinkerpop.frames.modules.typedgraph
+com.tinkerpop.frames.structures
+com.tinkerpop.frames.util

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Introduction</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Introduction</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Introduction"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Introduction"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><span class="float-left"><span><img src="http://markorodriguez.files.wordpress.com/2011/01/graph-example1.png" width="150px" /></span></span></p>
+<p>A <a href="http://en.wikipedia.org/wiki/Graph_database">graph database</a> represents a collection of vertices (nodes, dots) connected to each other by edges (arcs, lines). Some graph database vendors provide data schema functionality. In such databases, vertices and edges are typed and there are notions of data restrictions&#x2014;e.g. subclassing, data validation, rules of inference, etc. Other graph database are &#x201C;schema-free&#x201D; in that there is no notion of a type system&#x2014;only vertices, edges, and their adjacencies. When modeling worldly objects (people, places, things) and their relationships to each other, schema-based graph databases are handy. When modeling graphical data structures such as arbitrary topologies, a schema is somewhat less important. In general, as the complexity of the the domain model increases, the need for a schema system increases.</p>
+<p>The purpose of Frames it to provide a data schema layer to <a href="../../blueprints/2.4.0/Home.html">Blueprints</a> enabled graph databases. With Blueprints, there are simply vertices, edges, and key/value properties. Frames is used to represent (or <em>frame</em>) aspects of the underlying graph in terms of domain objects and their relationships to one another. As such, the developer can work in terms of real-world objects instead of vertices and edges.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:20:48</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

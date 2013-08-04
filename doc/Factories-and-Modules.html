@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Factories and Modules</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Factories and Modules</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Factories-and-Modules"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Factories-and-Modules"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <h3>Factories</h3>
+<p>To obtain a framed graph use a <code>FramedGraphFactory</code>.</p>
+<pre><code>FramedGraphFactory factory = new FramedGraphFactory();
+FramedGraph framedGraph = factory.create(baseGraph);</code></pre><br />
+TransactionalFramedGraph can be created from a TransactionalGraph<br /><pre><code>FramedGraphFactory factory = new FramedGraphFactory();
+TransactionalFramedGraph transactionalFramedGraph = factory.create(baseTransactionalGraph);</code></pre>
+<p>A factory should be reused to create many graphs. Under the hood it may share resources between graphs where appropriate. This can make a big difference to performance and memory footprint.</p>
+<h3>Modules</h3>
+<p><code>Modules</code> are used to extend the capability of FramedGraph. They are registered in the constructor of the <code>FramedGraphFactory</code>.</p>
+<p>In this example the framed graph will now support the <code>@GremlinGroovy</code> annotation on frames.<br /></p><pre><code>FramedGraphFactory factory = new FramedGraphFactory(new GremlinGroovyModule());
+FramedGraph framedGraph = factory.create(baseGraph);</code></pre><br />
+Any number of modules can be added to the factory, but a <code>FramedGraph</code> will always support the <a class="internal present" href="Core-Annotations.html">Core Annotations</a>.
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:20:48</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

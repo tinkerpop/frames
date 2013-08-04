@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Home</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Home</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Home"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Home"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="images/frames-logo.png" height="143px" /></p>
+<p>Frames exposes any <a href="../../blueprints/2.4.0/Home.html">Blueprints</a> graph as a collection of interrelated domain objects. Frames makes heavy use of <code>InvocationHandler</code>, <code>Proxy</code> classes, and <code>Annotations</code> to allow a developer to <em>frame</em> a graph element (vertex or edge) in terms of a particular Java interface. With Frames, its easy to ensure that data within a graph is respective of a schema represented as a collection of annotated Java interfaces.</p>
+<p>Please join the Gremlin users group at <a href="http://groups.google.com/group/gremlin-users">http://groups.google.com/group/gremlin-users</a> for all <a href="../../index.html">TinkerPop</a> related discussions.</p>
+<p>Frames JavaDoc: <a href="http://tinkerpop.com/docs/javadocs/frames/2.4.0/">2.4.0</a> &#x2013;  <a href="http://tinkerpop.com/docs/javadocs/frames/2.3.0/">2.3.1</a> &#x2013;  <a href="http://tinkerpop.com/docs/javadocs/frames/2.3.0/">2.3.0</a> &#x2013; <a href="http://tinkerpop.com/docs/javadocs/frames/2.2.0/">2.2.0</a> &#x2013; <a href="http://tinkerpop.com/docs/javadocs/frames/2.1.0/">2.1.0</a> &#x2013; <a href="http://tinkerpop.com/docs/javadocs/frames/2.0.0/">2.0.0</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/frames/0.7/api/">0.7</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/frames/0.6/api/">0.6</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/frames/0.5/api/">0.5</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/frames/0.4/api/">0.4</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/frames/0.3/api/">0.3</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/frames/0.2/api/">0.2</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/frames/0.1/api/">0.1</a><br />
+Frames WikiDoc: <a href="http://www.tinkerpop.com/docs/wikidocs/frames/2.4.0/Home.html">2.4.0</a> &#x2013; <a href="http://www.tinkerpop.com/docs/wikidocs/frames/2.3.0/Home.html">2.3.1</a> &#x2013; <a href="http://www.tinkerpop.com/docs/wikidocs/frames/2.3.0/Home.html">2.3.0</a> &#x2013; <a href="http://www.tinkerpop.com/docs/wikidocs/frames/2.2.0/Home.html">2.2.0</a> &#x2013; <a href="http://www.tinkerpop.com/docs/wikidocs/frames/2.1.0/Home.html">2.1.0</a> &#x2013; <a href="http://www.tinkerpop.com/docs/wikidocs/frames/2.0.0/Home.html">2.0.0</a></p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;frames&lt;/artifactId&gt;
+  &lt;version&gt;2.4.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p>Non-Maven users can get the raw release jars from Apache&#x2019;s <a href="http://maven.org">Central Repository</a>.  Snapshots can be obtained from <a href="https://oss.sonatype.org/content/repositories/snapshots/">Sonatype</a>  (see <a href="../../homepage/2.4.0/Maven-Repositories.html">Maven Repositories</a> for more information).</p>
+<p>Here is an example Frame interface:<br /></p><pre><code>public interface Person {
+  @Property("name")
+  public String getName();
+
+  @Adjacency(label="knows")
+  public Iterable&lt;Person&gt; getKnowsPeople();
+
+  @Adjacency(label="knows")
+  public void addKnowsPerson(final Person person);
+
+  @GremlinGroovy("it.out('knows').out('knows').dedup") //Make sure you use the GremlinGroovy module! #1
+  public Iterable&lt;Person&gt; getFriendsOfAFriend()
+}</code></pre>
+<p>Now you can use it to interact with the graph:<br /></p><pre><code>TinkerGraph graph = TinkerGraphFactory.createTinkerGraph(); //This graph is pre-populated.
+FramedGraphFactory factory = new FramedGraphFactory(new GremlinGroovyModule()); //(1)
+
+FramedGraph framedGraph = factory.create(graph); //Frame the graph
+
+Person person = framedGraph.getVertex(1, Person.class);
+person.getName(); // equals "marko"</code></pre><br />
+Frames can be used with <a href="../../rexster/2.4.0/Home.html">Rexster</a> through the <a href="../../rexster/2.4.0/Rexster-Kibbles.html">Rexster Kibbles</a> Frames extension.
+<hr /><ul><li><a class="internal present" href="Introduction.html">Introduction</a>
+	<ul><li><a class="internal present" href="Getting-Started.html">Getting Started</a></li>
+		<li><a class="internal present" href="Creating-Frames.html">Creating Frames</a></li>
+		<li><a class="internal present" href="Core-Annotations.html">Core Annotations</a> (<strong>Cheat Sheet</strong>)</li>
+		<li><a class="internal present" href="Factories-and-Modules.html">Factories and Modules</a></li>
+		<li><a class="internal present" href="Frames-Ecosystem.html">Frames Ecosystem</a></li>
+		<li><a class="internal present" href="Upgrading-from-2.3.1.html">Upgrading from 2.3.1</a></li>
+	</ul></li>
+	<li>Core Modules
+	<ul><li><a class="internal present" href="Gremlin-Groovy.html">Gremlin Groovy</a></li>
+		<li><a class="internal present" href="Typed-Graph.html">Typed Graph</a></li>
+		<li><a class="internal present" href="Java-Handler.html">Java Handler</a></li>
+	</ul></li>
+	<li><a class="internal present" href="Custom-modules.html">Custom Modules</a>
+		<ul><li><a class="internal present" href="Method-Handlers.html">Method Handlers</a></li>
+			<li><a class="internal present" href="Frame-initializers.html">Frame Initializers</a></li>
+			<li><a class="internal present" href="Type-resolvers.html">Type Resolvers</a></li>
+		</ul></li>
+	<li>Conclusion
+	<ul><li><a class="internal present" href="Acknowledgments.html">Acknowledgments</a></li>
+		<li><a class="internal present" href="Release-Notes.html">Release Notes</a></li>
+	</ul></li>
+</ul>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:20:48</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

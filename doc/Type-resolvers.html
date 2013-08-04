@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Type resolvers</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Frames</a></h3>
+  <h1>Type resolvers</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Type-resolvers"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Type-resolvers"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>The <code>TypeResolver</code> interface allows you to add interfaces that a framed element will implement. These are in addition to the interface that was passed in to the framing method, and EdgeFrame or VertexFrame.</p>
+<pre><code>public interface TypeResolver {
+
+	/**
+	 * @param v The vertex being framed.
+	 * @param defaultType The default as passed in to the framing method. 
+	 * @return Any additional interfaces that the frame should implement.
+	 */
+	Class&lt;?&gt;[] resolveTypes(Vertex v, Class&lt;?&gt; defaultType);
+	/**
+	 * @param e The edge being framed.
+	 * @param defaultType The default as passed in to the framing method.
+	 * @return Any additional interfaces that the frame should implement.
+	 */
+	Class&lt;?&gt;[] resolveTypes(Edge e, Class&lt;?&gt; defaultType);
+}</code></pre>
+<p>To use the type resolver, register it via a module supplied to the <code>FramedGraphFactory</code>.<br /></p><pre><code>TypeResolver myTypeResolver = new TypeResolver() {
+  public Class&lt;?&gt;[] resolveTypes(Edge e, Class&lt;?&gt; defaultType) {
+    return new Class[] { AdditionalEdge.class }; //Add the AdditionalEdge interface
+  }
+
+  public Class&lt;?&gt;[] resolveTypes(Vertex v, Class&lt;?&gt; defaultType) {
+    return new Class[] { AdditionalVertex.class }; //Add the AdditionalVertex interface
+  }
+};
+
+FramedGraph g = new FramedGraphFactory(new AbstractModule() {
+  public void doConfigure(FramedGraphConfiguration config) {
+    config.addTypeResolver(myTypeResolver);
+  }
+}).create(baseGraph);
+
+
+Person p = g.addVertex(Person.class); //p is also an instance of AdditionalVertex
+AdditionalVertex av = (AdditionalVertex) p;</code></pre><br />
+Every registered <code>TypeResolver</code> is called before returning the new element.
+<p>Some possible use cases</p>
+<ul><li>You want to use information stored on the graph to create elements of different types.</li>
+</ul>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:20:48</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

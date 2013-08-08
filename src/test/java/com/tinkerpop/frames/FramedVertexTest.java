@@ -1,5 +1,6 @@
 package com.tinkerpop.frames;
 
+import com.google.common.collect.Sets;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
@@ -16,11 +17,16 @@ import com.tinkerpop.frames.modules.gremlingroovy.GremlinGroovyModule;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -256,6 +262,14 @@ public class FramedVertexTest {
         assertEquals(2, counter);
 
 
+    }
+
+    @Test
+    public void testAddingTwoAdjacencies() {
+        Person person = framedGraph.addVertex(null, Person.class);
+        HashSet<Person> people = Sets.newHashSet(person.addKnowsNewPerson(),
+                                                 person.addKnowsNewPerson());
+        assertEquals(people, Sets.newHashSet(person.getKnowsPeople()));
     }
     
     @Test

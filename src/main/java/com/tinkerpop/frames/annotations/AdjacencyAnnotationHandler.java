@@ -45,7 +45,7 @@ public class AdjacencyAnnotationHandler implements AnnotationHandler<Adjacency> 
             if (arguments == null) {
                 // Use this method to get the vertex so that the vertex
                 // initializer is called.
-                returnValue = framedGraph.addVertex(returnType, returnType);
+                returnValue = framedGraph.addVertex(null, returnType);
                 newVertex = ((VertexFrame) returnValue).asVertex();
             } else {
                 newVertex = ((VertexFrame) arguments[0]).asVertex();

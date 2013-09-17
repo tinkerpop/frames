@@ -51,21 +51,21 @@ public class JavaHandlerModule implements Module {
 
 	// We don't want to use the global class cache. Instead we cache the classes
 	// at the module level.
+    // Maps from frameClass -> proxy class.
 	private LoadingCache<Class<?>, Class<?>> classCache = CacheBuilder
 			.newBuilder().build(new CacheLoader<Class<?>, Class<?>>() {
 
-				@Override
-				public Class<?> load(final Class<?> handlerClass)
-						throws Exception {
-					ProxyFactory proxyFactory = new ProxyFactory() {
+                @Override
+				public Class<?> load(final Class<?> frameClass) throws Exception {
+                    final Class<?> handlerClass = getHandlerClass(frameClass);
+                    ProxyFactory proxyFactory = new ProxyFactory() {
 						protected ClassLoader getClassLoader() {
 							return handlerClass.getClassLoader();
-						};
+						}
 					};
 					proxyFactory.setUseCache(false);
 					proxyFactory.setSuperclass(handlerClass);
-					Class<?> proxyClass = proxyFactory.createClass();
-					return proxyClass;
+					return proxyFactory.createClass();
 				}
 			});
 
@@ -116,10 +116,7 @@ public class JavaHandlerModule implements Module {
 			final Method method) {
 		
 		try {
-			
-
-			Class<T> handlerClass = (Class<T>) getHandlerClass(frameClass);
-			Class<T> implClass = (Class<T>) classCache.get(handlerClass);
+			Class<T> implClass = (Class<T>) classCache.get(frameClass);
 			T handler = factory.create(implClass);
 			((Proxy) handler).setHandler(new MethodHandler() {
 				private JavaHandlerContextImpl<Element> defaultJavahandlerImpl = new JavaHandlerContextImpl<Element>(
@@ -146,16 +143,19 @@ public class JavaHandlerModule implements Module {
 			});
 			return handler;
 		} catch (ExecutionException e) {
-			throw new JavaHandlerException(
-					"Cannot create class for handling framed method", e);
+            Throwable cause = e.getCause();
+            if (cause instanceof ClassNotFoundException) {
+                throw new JavaHandlerException("Problem locating handler class for " + frameClass, e);
+            } else {
+                throw new JavaHandlerException(
+					"Cannot create class for handling framed method", cause);
+            }
 		} catch (InstantiationException e) {
 			throw new JavaHandlerException(
 					"Problem instantiating handler class", e);
 		} catch (IllegalAccessException e) {
 			throw new JavaHandlerException(
 					"Problem instantiating handler class", e);
-		} catch (ClassNotFoundException e) {
-			throw new JavaHandlerException("Problem locating handler class for " + frameClass, e);
 		}
 
 	}

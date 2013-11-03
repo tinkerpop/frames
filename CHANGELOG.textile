@@ -6,7 +6,7 @@ h2. Frames 2.y.z
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-2.png!
 
 
-h3. Version 2.4.1 (NOT OFFICIALLY RELEASED YET)
+h3. Version 2.4.1 (NOT OFFICIALLY RELEASED YET)  
 
 ```xml
 <dependency>
@@ -18,7 +18,7 @@ h3. Version 2.4.1 (NOT OFFICIALLY RELEASED YET)
 
 * Fixed @Adjacency@ handler for adding new vertexes.
 * Optimized frame initializers.
-
+* Fixed some unit test failures due to undeterministic ordering of graph elements and class methods.
 
 ==<hr/>==
 

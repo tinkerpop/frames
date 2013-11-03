@@ -1,5 +1,6 @@
 package com.tinkerpop.frames.modules.typedgraph;
 
+import com.tinkerpop.frames.*;
 import junit.framework.TestCase;
 
 import com.tinkerpop.blueprints.Direction;
@@ -7,11 +8,6 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
-import com.tinkerpop.frames.EdgeFrame;
-import com.tinkerpop.frames.FramedGraph;
-import com.tinkerpop.frames.FramedGraphFactory;
-import com.tinkerpop.frames.Property;
-import com.tinkerpop.frames.VertexFrame;
 import com.tinkerpop.frames.modules.typedgraph.TypeField;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import com.tinkerpop.frames.modules.typedgraph.TypedGraphModuleBuilder;
@@ -36,6 +32,9 @@ public class TypedGraphModuleTest extends TestCase {
 	interface C extends B {
 		@Property("label")
 		void setLabel(String label);
+
+        @InVertex
+        <T extends Base> T getInVertex();
 	};
 
 	public void testSerializeVertexType() {
@@ -90,4 +89,21 @@ public class TypedGraphModuleTest extends TestCase {
 		Base c = framedGraph.getEdge(cE.getId(), Direction.OUT, Base.class);
 		assertTrue(c instanceof C);
 	}
+
+    public void testWildcard() {
+        Graph graph = new TinkerGraph();
+        FramedGraphFactory factory = new FramedGraphFactory(new TypedGraphModuleBuilder().withClass(A.class).withClass(B.class)
+                .withClass(C.class).build());
+        FramedGraph<Graph> framedGraph = factory.create(graph);
+        Vertex v1 = graph.addVertex(null);
+
+        Vertex v2 = graph.addVertex(null);
+        v2.setProperty("type", "A");
+        Edge cE = graph.addEdge(null, v1, v2, "label");
+        cE.setProperty("type", "C");
+        Base c = framedGraph.getEdge(cE.getId(), Direction.OUT, Base.class);
+        assertTrue(c instanceof C);
+        assertTrue(((C) c).getInVertex() instanceof A);
+
+    }
 }

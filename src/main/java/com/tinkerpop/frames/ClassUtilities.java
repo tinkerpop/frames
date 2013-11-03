@@ -2,10 +2,7 @@ package com.tinkerpop.frames;
 
 import com.tinkerpop.blueprints.Vertex;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.Map;
 
 
@@ -50,16 +47,42 @@ public class ClassUtilities {
         return method.getName().startsWith(ADD);
     }
 
+    public static Type getType(Type[] types, int pos) {
+        if (pos >= types.length) {
+            throw new RuntimeException("No type can be found at position "
+                    + pos);
+        }
+        return types[pos];
+    }
+    public static Class<?> getActualType(Type genericType, int pos) {
+
+        if (genericType == null) {
+            return null;
+        }
+        if (!ParameterizedType.class.isAssignableFrom(genericType.getClass())) {
+            if (genericType instanceof TypeVariable) {
+                genericType = getType(((TypeVariable<?>) genericType).getBounds(), pos);
+            } else if (genericType instanceof WildcardType) {
+                WildcardType wildcardType = (WildcardType) genericType;
+                Type[] bounds = wildcardType.getLowerBounds();
+                if (bounds.length == 0) {
+                    bounds = wildcardType.getUpperBounds();
+                }
+                genericType = getType(bounds, pos);
+            }
+
+            Class<?> cls = (Class<?>) genericType;
+            return cls.isArray() ? cls.getComponentType() : cls;
+        }
+        ParameterizedType paramType = (ParameterizedType) genericType;
+        Type t = getType(paramType.getActualTypeArguments(), pos);
+        return t instanceof Class ? (Class<?>) t : getActualType(t, pos);
+    }
+
     @SuppressWarnings("rawtypes")
     public static Class getGenericClass(final Method method) {
         final Type returnType = method.getGenericReturnType();
-        if (returnType instanceof ParameterizedType) {
-        	Type type = ((ParameterizedType) returnType).getActualTypeArguments()[0];
-        	if (type instanceof TypeVariable) {
-        		return (Class)((TypeVariable)type).getBounds()[0];
-        	} else
-        		return (Class)type;
-        } else
-            return method.getReturnType();
+        return getActualType(returnType,0);
+
     }
 }

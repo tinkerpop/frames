@@ -73,7 +73,7 @@ public class JavaHandlerTest {
 		B b = g.addVertex(null, B.class);
 		Assert.assertEquals("AB", b.getProperty());
 		C c = g.addVertex(null, C.class);
-		Assert.assertEquals("ABCC2", c.getProperty());
+        Assert.assertTrue(c.getProperty().equals("ABCC2") || c.getProperty().equals("ABC2C"));
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ public class JavaHandlerTest {
 		B b = g.addEdge(null, v, v, "test", B.class);
 		Assert.assertEquals("AB", b.getProperty());
 		C c = g.addEdge(null, v, v, "test", C.class);
-		Assert.assertEquals("ABCC2", c.getProperty());
+		Assert.assertTrue(c.getProperty().equals("ABCC2") || c.getProperty().equals("ABC2C"));
 	}
 	
 	interface A {

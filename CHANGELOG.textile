@@ -29,6 +29,7 @@ h3. Version 2.4.1 (NOT OFFICIALLY RELEASED YET)
 
 * Fixed @Adjacency@ handler for adding new vertexes.
 * Optimized frame initializers.
+* Fixed some unit test failures due to undeterministic ordering of graph elements and class methods.
 
 ==<hr/>==
 

@@ -2,6 +2,8 @@ package com.tinkerpop.frames.modules.javahandler;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.concurrent.ExecutionException;
 
 import javassist.util.proxy.MethodHandler;
@@ -49,6 +51,7 @@ import com.tinkerpop.frames.modules.Module;
  */
 public class JavaHandlerModule implements Module {
 
+
 	// We don't want to use the global class cache. Instead we cache the classes
 	// at the module level.
     // Maps from frameClass -> proxy class.
@@ -60,7 +63,8 @@ public class JavaHandlerModule implements Module {
                     final Class<?> handlerClass = getHandlerClass(frameClass);
                     ProxyFactory proxyFactory = new ProxyFactory() {
 						protected ClassLoader getClassLoader() {
-							return handlerClass.getClassLoader();
+
+							return new URLClassLoader(new URL[0], handlerClass.getClassLoader());
 						}
 					};
 					proxyFactory.setUseCache(false);

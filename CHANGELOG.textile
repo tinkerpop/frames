@@ -32,6 +32,7 @@ h3. Version 2.4.1 (NOT OFFICIALLY RELEASED YET)
 * Optimized frame initializers.
 * Fixed some unit test failures due to undeterministic ordering of graph elements and class methods.
 * Fixed class handling for methods with parameterized return types.
+* Fixed memory leak with @JavaHandlerModule@
 
 ==<hr/>==
 

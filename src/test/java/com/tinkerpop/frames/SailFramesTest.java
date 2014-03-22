@@ -44,6 +44,7 @@ public class SailFramesTest {
 
         SailConnection sc = sail.getConnection();
         try {
+            sc.begin();
             sc.addStatement(planet, RDFS.LABEL, new LiteralImpl("planet", "en"));
             sc.addStatement(gasGiant, RDFS.LABEL, new LiteralImpl("gas giant", "en"));
             sc.addStatement(planet, narrower, gasGiant);

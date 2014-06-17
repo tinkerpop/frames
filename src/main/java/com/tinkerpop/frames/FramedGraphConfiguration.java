@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.frames.annotations.AnnotationHandler;
+import com.tinkerpop.frames.modules.DefaultClassLoaderResolver;
+import com.tinkerpop.frames.modules.FrameClassLoaderResolver;
 import com.tinkerpop.frames.modules.MethodHandler;
 import com.tinkerpop.frames.modules.Module;
 import com.tinkerpop.frames.modules.TypeResolver;
@@ -28,6 +30,7 @@ public class FramedGraphConfiguration {
 	private Map<Class<? extends Annotation>, MethodHandler<?>> methodHandlers = new HashMap<Class<? extends Annotation>, MethodHandler<?>>();
 	private List<FrameInitializer> frameInitializers = new ArrayList<FrameInitializer>();
 	private List<TypeResolver> typeResolvers = new ArrayList<TypeResolver>();
+	private FrameClassLoaderResolver frameClassLoaderResolver = new DefaultClassLoaderResolver();
 	private Graph configuredGraph;
 
 	
@@ -68,6 +71,10 @@ public class FramedGraphConfiguration {
 		typeResolvers.add(typeResolver);
 	}
 
+	public void setFrameClassLoaderResolver(FrameClassLoaderResolver frameClassLoaderResolver) {
+		this.frameClassLoaderResolver = frameClassLoaderResolver;    
+	}
+        
 	List<FrameInitializer> getFrameInitializers() {
 		return frameInitializers;
 	}
@@ -79,7 +86,11 @@ public class FramedGraphConfiguration {
 	List<TypeResolver> getTypeResolvers() {
 		return typeResolvers;
 	}
-	
+
+	FrameClassLoaderResolver getFrameClassLoaderResolver() {
+		return frameClassLoaderResolver;
+	}
+
 	public void setConfiguredGraph(Graph configuredGraph) {
 		this.configuredGraph = configuredGraph;
 	}

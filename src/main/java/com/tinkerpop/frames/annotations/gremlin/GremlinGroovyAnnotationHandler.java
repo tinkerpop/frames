@@ -32,6 +32,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
     private final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
     private static final String IT = "it";
     private static final String G = "g";
+    private static final String F = "f";
 
     private static final Logger LOGGER = Logger.getLogger(GremlinGroovyAnnotationHandler.class.getName());
 
@@ -61,6 +62,7 @@ public class GremlinGroovyAnnotationHandler implements AnnotationHandler<Gremlin
             final Bindings bindings = getBindings(method, arguments);
             bindings.put(IT, vertex);
             bindings.put(G, framedGraph);
+            bindings.put(F, framedGraph.frame(vertex, method.getDeclaringClass()));
             final Object result = script.eval(bindings);
 
             // TODO: Deprecate the use of _() and replace with it

@@ -1,10 +1,17 @@
 package com.tinkerpop.frames;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
@@ -20,6 +27,15 @@ import com.tinkerpop.frames.domain.incidences.CreatedInfo;
  */
 public class FramedElementTest {
 
+    Person chris;
+
+    @Before
+    public void buildPerson() {
+      Graph graph = TinkerGraphFactory.createTinkerGraph();
+      FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
+      chris = framedGraph.getVertex(1, Person.class);
+    }
+  
 	@Test
     public void testGettingProperties() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
@@ -109,6 +125,103 @@ public class FramedElementTest {
         marko.setGender(Person.Gender.MALE);
         marko.removeGender();
         assertEquals(marko.getGender(), null);
+    }
+
+    @Test
+    public void testAddSingleProperty() {
+      chris.addInterest("music");
+      assertThat("Single interest should be added", chris.getInterests(), hasItems("music"));
+    }
+
+    @Test
+    public void testAddPropertyCollection() {;
+      chris.addInterests(newArrayList("music", "food"));
+      assertThat("Multiple interests should be added", chris.getInterests(), hasItems("music", "food"));
+    }
+
+    @Test
+    public void testAddDuplicateSingleProperties() {
+      chris.addInterest("music");
+      chris.addInterest("music");
+      assertThat("Collected properties should stay unique", chris.getInterests(), hasItems("music"));
+    }
+
+    @Test
+    public void testDuplicatePropertyCollection() {
+      chris.addInterests(newArrayList("music", "music"));
+      assertThat("Collected properties should stay unique", chris.getInterests(), hasItems("music"));
+    }
+
+    @Test
+    public void testAddMultipleProperties() {
+      chris.addInterest("music");
+      chris.addInterest("food");
+      assertThat("Multiple interests should be added", chris.getInterests(), hasItems("music", "food"));
+    }
+
+    @Test
+    public void testSetAndAddDuplicateProperties() {
+      chris.setInterest("music");
+      chris.addInterests(newArrayList("music", "food"));
+      assertThat("Multiple interests should be added", chris.getInterests(), hasItems("music", "food"));
+    }
+
+    @Test
+    public void testResetToSingleProperty() {
+      chris.addInterests(newArrayList("music", "food"));
+      chris.setInterest("music");
+      assertThat("Properties should reset", chris.getInterests(), hasItems("music"));
+      assertThat("Properties should reset", chris.getInterest(), is("music"));
+    }
+
+    @Test
+    public void testNonStringTypes() {
+      chris.addFavoriteNumber(1);
+      chris.addFavoriteNumber(2);
+      assertThat(chris.getFavoriteNumbers(), hasItems(1, 2));
+    }
+
+    @Test(expected=IllegalStateException.class)
+    public void testPrimitiveGetMethodOnMultivaluedProperty() {
+      chris.addInterest("a");
+      chris.addInterest("b");
+      chris.getInterest();
+    }
+
+    @Test
+    public void testRemove() {
+      chris.addInterest("a");
+      chris.removeInterests();
+      assertThat(chris.getInterest(), is(nullValue()));
+      assertThat(Iterables.isEmpty(chris.getInterests()), is(true));
+    }
+
+    @Test(expected=ClassCastException.class)
+    public void testIncompatibleTypes() {
+      chris.addFavoriteNumber(1);
+      chris.addFavoriteNumber(false);
+    }
+
+    @Test(expected=ClassCastException.class)
+    public void testIncompatibleTypesCollections() {
+      chris.addFavoriteNumber(1);
+      Iterable<Boolean> bools = chris.getFavoriteNumbersAsBoolean();
+      bools.iterator().next().booleanValue();
+    }
+
+    @Test
+    public void testHasMethod() {
+      assertThat("Node should not have any interests", chris.hasInterests(), is(false));
+      chris.addInterest("music");
+      assertThat("Node should now have interests", chris.hasInterests(), is(true));
+    }
+
+    @Test
+    public void testIsMethods() {
+      chris.setAwesome(true);
+      assertThat(chris.isAwesome(), is(true));
+      chris.setAwesome(false);
+      assertThat(chris.isAwesome(), is(false));
     }
 
     @Test

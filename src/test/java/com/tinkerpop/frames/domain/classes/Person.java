@@ -21,6 +21,8 @@ import com.tinkerpop.frames.modules.javahandler.JavaHandlerContext;
 public interface Person extends NamedObject {
     enum Gender {FEMALE, MALE};
 
+    enum Title {MR, DR};
+    
     @Property("age")
     public Integer getAge();
 
@@ -38,6 +40,12 @@ public interface Person extends NamedObject {
 
     @Property("gender")
     public void removeGender();
+    
+    @Property("title")
+    public Iterable<Title> getTitles();
+    
+    @Property("title")
+    public void addTitle(Title title);
     
     @Property("interests")
     public boolean hasInterests();

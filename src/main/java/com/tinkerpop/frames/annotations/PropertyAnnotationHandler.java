@@ -31,37 +31,15 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
 
     @Override
     public Object processElement(final Property annotation, final Method method, final Object[] arguments, final FramedGraph framedGraph, final Element element, final Direction direction) {
-        /*if (ClassUtilities.isGetMethod(method)) {
-            Object value = element.getProperty(annotation.value());
-            if (method.getReturnType().isEnum())
-                return getValueAsEnum(method, value);
-            else
-                return value;
-        } else if (ClassUtilities.isSetMethod(method)) {
-            Object value = arguments[0];
-            if (null == value) {
-                element.removeProperty(annotation.value());
-            } else {
-                if (value.getClass().isEnum()) {
-                    element.setProperty(annotation.value(), ((Enum<?>) value).name());
-                } else {
-                    element.setProperty(annotation.value(), value);
-                }
-            }
-            return null;
-        } else if (ClassUtilities.isRemoveMethod(method)) {
-            element.removeProperty(annotation.value());
-            return null;
-        }*/
       String property = annotation.value();
 
       if (isGetMethod(method)) {
         return processGet(element, property, method);
       } else if (isAddMethod(method)) {
-        processAdd(element, property, arguments[0], method);
+        processAdd(element, property, arguments[0]);
       } else if (isSetMethod(method)) {
         element.removeProperty(property);
-        processAdd(element, property, arguments[0], method); 
+        processAdd(element, property, arguments[0]); 
       } else if (isHasMethod(method)) {
         return hasProperty(element, property);
       } else if (isRemoveMethod(method)) {
@@ -82,30 +60,30 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
       return object;
     }
     
-    void processAdd(Element node, String property, Object value, Method method) {
+    void processAdd(Element node, String property, Object value) {
       if (null == value) {
         node.removeProperty(property);
       } else if (hasProperty(node, property)) {
         Object originalValue = (Object)node.getProperty(property);
-        Set<Object> originalCollection = new LinkedHashSet<Object>();
+        Set<Object> valueSet = new LinkedHashSet<Object>();
         if (isIterable(originalValue)) {
-          originalCollection = newLinkedHashSet((Iterable<?>)originalValue);
+          valueSet = newLinkedHashSet((Iterable<?>)originalValue);
         } else {
-          originalCollection.add(originalValue);
+          valueSet.add(originalValue);
         }
-        Class<?> klass = getFirst(originalCollection, null).getClass();
+        Class<?> klass = getFirst(valueSet, null).getClass();
         if (isIterable(value)) {
           for (Object val: (Iterable<?>)value) {
-            originalCollection.add(checkClass(klass, val));
+            valueSet.add(checkClass(klass, val));
           }
         } else {
-          originalCollection.add(checkClass(klass, value));
+          valueSet.add(checkClass(klass, value));
         }
-        node.setProperty(property, originalCollection);
+        node.setProperty(property, valueSet);
       } else {
         if (isIterable(value)) {
           for (Object o: (Iterable<?>)value) {
-            processAdd(node, property, o, method);
+            processAdd(node, property, o);
           }
         } else {
           node.setProperty(property, value);
@@ -132,13 +110,5 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
         }
       }
     }
-    
 
-    protected Enum getValueAsEnum(final Method method, final Object value) {
-        Class<Enum> en = (Class<Enum>) method.getReturnType();
-        if (value != null)
-            return Enum.valueOf(en, value.toString());
-
-        return null;
-    }
 }

@@ -1,7 +1,6 @@
 package com.tinkerpop.frames.annotations;
 
 import static com.google.common.collect.Iterables.getFirst;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newLinkedHashSet;
 import static com.tinkerpop.frames.ClassUtilities.isAddMethod;
@@ -61,39 +60,39 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
     }
     
     void processAdd(Element node, String property, Object value) {
-      if (null == value) {
-        node.removeProperty(property);
-      } else if (hasProperty(node, property)) {
-        Object originalValue = (Object)node.getProperty(property);
-        Set<Object> valueSet = new LinkedHashSet<Object>();
-        if (isIterable(originalValue)) {
-          valueSet = newLinkedHashSet((Iterable<?>)originalValue);
-        } else {
-          valueSet.add(originalValue);
-        }
-        Class<?> klass = getFirst(valueSet, null).getClass();
-        if (isIterable(value)) {
-          for (Object val: (Iterable<?>)value) {
-            valueSet.add(checkClass(klass, val));
+      if (null != value) {
+        if (hasProperty(node, property)) {
+          Object originalValue = (Object)node.getProperty(property);
+          Set<Object> valueSet = new LinkedHashSet<Object>();
+          if (isIterable(originalValue)) {
+            valueSet = newLinkedHashSet((Iterable<?>)originalValue);
+          } else {
+            valueSet.add(originalValue);
           }
-        } else {
-          valueSet.add(checkClass(klass, value));
-        }
-        node.setProperty(property, valueSet);
-      } else {
-        if (isIterable(value)) {
-          for (Object o: (Iterable<?>)value) {
-            processAdd(node, property, o);
+          Class<?> klass = getFirst(valueSet, null).getClass();
+          if (isIterable(value)) {
+            for (Object val: (Iterable<?>) value) {
+              valueSet.add(checkClass(klass, val));
+            }
+          } else {
+            valueSet.add(checkClass(klass, value));
           }
+          node.setProperty(property, valueSet);
         } else {
-          node.setProperty(property, value);
+          if (isIterable(value)) {
+            for (Object o: (Iterable<?>) value) {
+              processAdd(node, property, o);
+            }
+          } else {
+            node.setProperty(property, value);
+          }
         }
       }
     }
 
     Object processGet(Element node, String property, Method method) {
       if (returnsIterable(method)) {
-        if (null == node.getProperty(property)) {
+        if (!hasProperty(node, property)) {
           return Collections.emptySet();
         } else if (isIterable(node.getProperty(property))) {
           return (Set<?>)node.getProperty(property);
@@ -101,7 +100,7 @@ public class PropertyAnnotationHandler implements AnnotationHandler<Property> {
           return newHashSet(node.getProperty(property));
         }
       } else {
-        if (null == node.getProperty(property)) {
+        if (!hasProperty(node, property)) {
           return null;
         } else if (isIterable(node.getProperty(property))) {
           throw new IllegalStateException("Can't call " + method.getName() + " when its property is multivalued");

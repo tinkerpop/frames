@@ -28,7 +28,6 @@ public class FramedElementTest {
 
     Graph graph;
     FramedGraph<Graph> framedGraph;
-    Person chris;
     Person marko;
 
     @Before
@@ -36,7 +35,6 @@ public class FramedElementTest {
       graph = TinkerGraphFactory.createTinkerGraph();
       framedGraph = new FramedGraphFactory().create(graph);
       marko = framedGraph.getVertex(1, Person.class);
-      chris = framedGraph.getVertex(2, Person.class);
     }
   
 	@Test
@@ -119,99 +117,107 @@ public class FramedElementTest {
 
     @Test
     public void testAddSingleProperty() {
-      chris.addInterest("music");
-      assertThat("Single interest should be added", chris.getInterests(), hasItems("music"));
+      marko.addInterest("music");
+      assertThat("Single interest should be added", marko.getInterests(), hasItems("music"));
     }
 
     @Test
     public void testAddPropertyCollection() {;
-      chris.addInterests(newArrayList("music", "food"));
-      assertThat("Multiple interests should be added", chris.getInterests(), hasItems("music", "food"));
+      marko.addInterests(newArrayList("music", "food"));
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
     }
 
     @Test
     public void testAddDuplicateSingleProperties() {
-      chris.addInterest("music");
-      chris.addInterest("music");
-      assertThat("Collected properties should stay unique", chris.getInterests(), hasItems("music"));
+      marko.addInterest("music");
+      marko.addInterest("music");
+      assertThat("Collected properties should stay unique", marko.getInterests(), hasItems("music"));
     }
 
     @Test
     public void testDuplicatePropertyCollection() {
-      chris.addInterests(newArrayList("music", "music"));
-      assertThat("Collected properties should stay unique", chris.getInterests(), hasItems("music"));
+      marko.addInterests(newArrayList("music", "music"));
+      assertThat("Collected properties should stay unique", marko.getInterests(), hasItems("music"));
     }
 
     @Test
     public void testAddMultipleProperties() {
-      chris.addInterest("music");
-      chris.addInterest("food");
-      assertThat("Multiple interests should be added", chris.getInterests(), hasItems("music", "food"));
+      marko.addInterest("music");
+      marko.addInterest("food");
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
+    }
+    
+    @Test
+    public void testAddNullProperty() {
+      marko.addInterest("music");
+      marko.addInterest("food");
+      marko.addInterest(null);
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
     }
 
     @Test
     public void testSetAndAddDuplicateProperties() {
-      chris.setInterest("music");
-      chris.addInterests(newArrayList("music", "food"));
-      assertThat("Multiple interests should be added", chris.getInterests(), hasItems("music", "food"));
+      marko.setInterest("music");
+      marko.addInterests(newArrayList("music", "food"));
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
     }
 
     @Test
     public void testResetToSingleProperty() {
-      chris.addInterests(newArrayList("music", "food"));
-      chris.setInterest("music");
-      assertThat("Properties should reset", chris.getInterests(), hasItems("music"));
-      assertThat("Properties should reset", chris.getInterest(), is("music"));
+      marko.addInterests(newArrayList("music", "food"));
+      marko.setInterest("music");
+      assertThat("Properties should reset", marko.getInterests(), hasItems("music"));
+      assertThat("Properties should reset", marko.getInterest(), is("music"));
     }
 
     @Test
     public void testNonStringTypes() {
-      chris.addFavoriteNumber(1);
-      chris.addFavoriteNumber(2);
-      assertThat(chris.getFavoriteNumbers(), hasItems(1, 2));
+      marko.addFavoriteNumber(1);
+      marko.addFavoriteNumber(2);
+      assertThat(marko.getFavoriteNumbers(), hasItems(1, 2));
     }
 
     @Test(expected=IllegalStateException.class)
     public void testPrimitiveGetMethodOnMultivaluedProperty() {
-      chris.addInterest("a");
-      chris.addInterest("b");
-      chris.getInterest();
+      marko.addInterest("a");
+      marko.addInterest("b");
+      marko.getInterest();
     }
 
     @Test
     public void testRemove() {
-      chris.addInterest("a");
-      chris.removeInterests();
-      assertThat(chris.getInterest(), is(nullValue()));
-      assertThat(Iterables.isEmpty(chris.getInterests()), is(true));
+      marko.addInterest("a");
+      marko.removeInterests();
+      assertThat(marko.getInterest(), is(nullValue()));
+      assertThat(Iterables.isEmpty(marko.getInterests()), is(true));
     }
 
     @Test(expected=ClassCastException.class)
     public void testIncompatibleTypes() {
-      chris.addFavoriteNumber(1);
-      chris.addFavoriteNumber(false);
+      marko.addFavoriteNumber(1);
+      marko.addFavoriteNumber(false);
     }
 
     @Test(expected=ClassCastException.class)
     public void testIncompatibleTypesCollections() {
-      chris.addFavoriteNumber(1);
-      Iterable<Boolean> bools = chris.getFavoriteNumbersAsBoolean();
+      marko.addFavoriteNumber(1);
+      Iterable<Boolean> bools = marko.getFavoriteNumbersAsBoolean();
       bools.iterator().next().booleanValue();
     }
 
     @Test
     public void testHasMethod() {
-      assertThat("Node should not have any interests", chris.hasInterests(), is(false));
-      chris.addInterest("music");
-      assertThat("Node should now have interests", chris.hasInterests(), is(true));
+      assertThat("Node should not have any interests", marko.hasInterests(), is(false));
+      marko.addInterest("music");
+      assertThat("Node should now have interests", marko.hasInterests(), is(true));
     }
 
     @Test
     public void testIsMethods() {
-      chris.setAwesome(true);
-      assertThat(chris.isAwesome(), is(true));
-      chris.setAwesome(false);
-      assertThat(chris.isAwesome(), is(false));
+      marko.setAwesome(true);
+      assertThat(marko.isAwesome(), is(true));
+      marko.setAwesome(false);
+      assertThat(marko.isAwesome(), is(false));
     }
 
     @Test

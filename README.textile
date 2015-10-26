@@ -1,5 +1,7 @@
 !https://github.com/tinkerpop/frames/raw/master/doc/images/frames-logo.png!
 
+<img alt="" height="170" src="https://raw.githubusercontent.com/apache/incubator-tinkerpop/master/docs/static/images/not-tinkerpop3-gremlin.png" />
+
 *IMPORTANT* - TinkerPop is now a part of the Apache Software Foundation and "TinkerPop 3.x":http://tinkerpop.incubator.apache.org/ is the latest incarnation of The TinkerPop.  This project is TinkerPop 2.x and is in maintenance mode.  
 
 Frames exposes the elements of a "Blueprints":http://blueprints.tinkerpop.com graph as Java objects. Instead of writing software in terms of vertices and edges, with Frames, software is written in terms of domain objects and their relationships to each other.

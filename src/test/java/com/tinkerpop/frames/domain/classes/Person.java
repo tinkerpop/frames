@@ -21,6 +21,8 @@ import com.tinkerpop.frames.modules.javahandler.JavaHandlerContext;
 public interface Person extends NamedObject {
     enum Gender {FEMALE, MALE};
 
+    enum Title {MR, DR};
+    
     @Property("age")
     public Integer getAge();
 
@@ -38,7 +40,55 @@ public interface Person extends NamedObject {
 
     @Property("gender")
     public void removeGender();
+    
+    @Property("title")
+    public Iterable<Title> getTitles();
+    
+    @Property("title")
+    public void addTitle(Title title);
+    
+    @Property("interests")
+    public boolean hasInterests();
+    
+    @Property("interests")
+    public Iterable<String> getInterests();
+    
+    @Property("interests")
+    public String getInterest();
+    
+    @Property("interests")
+    public void setInterest(String interest);
+    
+    @Property("interests")
+    public void addInterests(Iterable<String> interests);
+    
+    @Property("interests")
+    public void addInterest(String interest);
+    
+    @Property("interests")
+    public void removeInterests();
+    
+    @Property("favoriteNumbers")
+    public Iterable<Integer> getFavoriteNumbers();
+    
+    @Property("favoriteNumbers")
+    public Iterable<Boolean> getFavoriteNumbersAsBoolean();
+    
+    @Property("favoriteNumbers")
+    public void addFavoriteNumber(Integer number);
+    
+    @Property("favoriteNumbers")
+    public void addFavoriteNumber(Boolean number);
 
+    @Property("favoriteNumbers")
+    public void setFavoriteNumbers(Iterable<Integer> number);
+    
+    @Property("awesome")
+    public void setAwesome(boolean awesome);
+    
+    @Property("awesome")
+    public boolean isAwesome();
+    
     @Incidence(label = "knows")
     public Iterable<Knows> getKnows();
 

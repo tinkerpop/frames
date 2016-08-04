@@ -13,6 +13,7 @@ public class ClassUtilities {
     private static final String ADD = "add";
     private static final String IS = "is";
     private static final String CAN = "can";
+    private static final String HAS = "has";
 
     public static boolean isGetMethod(final Method method) {
         Class<?> returnType = method.getReturnType();
@@ -25,6 +26,14 @@ public class ClassUtilities {
 
     public static boolean isRemoveMethod(final Method method) {
         return method.getName().startsWith(REMOVE);
+    }
+
+    public static boolean isHasMethod(final Method method) {
+      return method.getName().startsWith(HAS);
+    }
+
+    public static boolean isIterable(final Object object) {
+      return Iterable.class.isAssignableFrom(object.getClass());
     }
 
     public static boolean acceptsIterable(final Method method) {

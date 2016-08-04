@@ -1,13 +1,19 @@
 package com.tinkerpop.frames;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.frames.domain.classes.Person;
 import com.tinkerpop.frames.domain.classes.Project;
@@ -20,12 +26,19 @@ import com.tinkerpop.frames.domain.incidences.CreatedInfo;
  */
 public class FramedElementTest {
 
+    Graph graph;
+    FramedGraph<Graph> framedGraph;
+    Person marko;
+
+    @Before
+    public void buildPerson() {
+      graph = TinkerGraphFactory.createTinkerGraph();
+      framedGraph = new FramedGraphFactory().create(graph);
+      marko = framedGraph.getVertex(1, Person.class);
+    }
+  
 	@Test
     public void testGettingProperties() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getName(), "marko");
         assertEquals(marko.getAge(), new Integer(29));
 
@@ -49,10 +62,6 @@ public class FramedElementTest {
 
 	@Test
     public void testSettingProperties() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getName(), "marko");
         marko.setName("pavel");
         assertEquals(marko.getName(), "pavel");
@@ -75,10 +84,6 @@ public class FramedElementTest {
 
     @Test
     public void testRemoveProperties() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getAge(), new Integer(29));
         marko.removeAge();
         assertNull(marko.getAge());
@@ -86,10 +91,6 @@ public class FramedElementTest {
 
     @Test
     public void testSetPropertiesToNull() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getAge(), new Integer(29));
         marko.setAge(null);
         assertNull(marko.getAge());
@@ -97,10 +98,6 @@ public class FramedElementTest {
 
     @Test
     public void testEnumProperty() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals(marko.getGender(), null);
         marko.setGender(Person.Gender.MALE);
         assertEquals(Person.Gender.MALE, marko.getGender());
@@ -110,13 +107,121 @@ public class FramedElementTest {
         marko.removeGender();
         assertEquals(marko.getGender(), null);
     }
+    
+    @Test
+    public void testMultipleEnumProperties() {
+      marko.addTitle(Person.Title.MR);
+      marko.addTitle(Person.Title.DR);
+      assertThat(marko.getTitles(), hasItems(Person.Title.MR, Person.Title.DR));
+    }
+
+    @Test
+    public void testAddSingleProperty() {
+      marko.addInterest("music");
+      assertThat("Single interest should be added", marko.getInterests(), hasItems("music"));
+    }
+
+    @Test
+    public void testAddPropertyCollection() {;
+      marko.addInterests(newArrayList("music", "food"));
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
+    }
+
+    @Test
+    public void testAddDuplicateSingleProperties() {
+      marko.addInterest("music");
+      marko.addInterest("music");
+      assertThat("Collected properties should stay unique", marko.getInterests(), hasItems("music"));
+    }
+
+    @Test
+    public void testDuplicatePropertyCollection() {
+      marko.addInterests(newArrayList("music", "music"));
+      assertThat("Collected properties should stay unique", marko.getInterests(), hasItems("music"));
+    }
+
+    @Test
+    public void testAddMultipleProperties() {
+      marko.addInterest("music");
+      marko.addInterest("food");
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
+    }
+    
+    @Test
+    public void testAddNullProperty() {
+      marko.addInterest("music");
+      marko.addInterest("food");
+      marko.addInterest(null);
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
+    }
+
+    @Test
+    public void testSetAndAddDuplicateProperties() {
+      marko.setInterest("music");
+      marko.addInterests(newArrayList("music", "food"));
+      assertThat("Multiple interests should be added", marko.getInterests(), hasItems("music", "food"));
+    }
+
+    @Test
+    public void testResetToSingleProperty() {
+      marko.addInterests(newArrayList("music", "food"));
+      marko.setInterest("music");
+      assertThat("Properties should reset", marko.getInterests(), hasItems("music"));
+      assertThat("Properties should reset", marko.getInterest(), is("music"));
+    }
+
+    @Test
+    public void testNonStringTypes() {
+      marko.addFavoriteNumber(1);
+      marko.addFavoriteNumber(2);
+      assertThat(marko.getFavoriteNumbers(), hasItems(1, 2));
+    }
+
+    @Test(expected=IllegalStateException.class)
+    public void testPrimitiveGetMethodOnMultivaluedProperty() {
+      marko.addInterest("a");
+      marko.addInterest("b");
+      marko.getInterest();
+    }
+
+    @Test
+    public void testRemove() {
+      marko.addInterest("a");
+      marko.removeInterests();
+      assertThat(marko.getInterest(), is(nullValue()));
+      assertThat(Iterables.isEmpty(marko.getInterests()), is(true));
+    }
+
+    @Test(expected=ClassCastException.class)
+    public void testIncompatibleTypes() {
+      marko.addFavoriteNumber(1);
+      marko.addFavoriteNumber(false);
+    }
+
+    @Test(expected=ClassCastException.class)
+    public void testIncompatibleTypesCollections() {
+      marko.addFavoriteNumber(1);
+      Iterable<Boolean> bools = marko.getFavoriteNumbersAsBoolean();
+      bools.iterator().next().booleanValue();
+    }
+
+    @Test
+    public void testHasMethod() {
+      assertThat("Node should not have any interests", marko.hasInterests(), is(false));
+      marko.addInterest("music");
+      assertThat("Node should now have interests", marko.hasInterests(), is(true));
+    }
+
+    @Test
+    public void testIsMethods() {
+      marko.setAwesome(true);
+      assertThat(marko.isAwesome(), is(true));
+      marko.setAwesome(false);
+      assertThat(marko.isAwesome(), is(false));
+    }
 
     @Test
     public void testToString() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);
         assertEquals("v[1]", marko.toString());
 
         CreatedInfo markoCreatedLopInfo = framedGraph.getEdge(9, CreatedInfo.class);
@@ -128,28 +233,16 @@ public class FramedElementTest {
 
     @Test
     public void testEquality() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<TinkerGraph> framedGraph = new FramedGraphFactory().create(graph);
-
         assertEquals(framedGraph.getVertex(1, Person.class), framedGraph.frame(graph.getVertex(1), Person.class));
-
     }
     
     @Test(expected=UnhandledMethodException.class)
     public void testUnhandledMethodNoAnnotation() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);    	
         marko.unhandledNoAnnotation();
     }
     
     @Test(expected=UnhandledMethodException.class)
     public void testUnhandledMethodWithAnnotation() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        FramedGraph<Graph> framedGraph = new FramedGraphFactory().create(graph);
-
-        Person marko = framedGraph.getVertex(1, Person.class);    	
         marko.unhandledNoHandler();
     }
 }

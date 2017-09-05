@@ -1,10 +1,4 @@
 language: java
-notifications:
-  email:
-    - okrammarko@gmail.com
-    - spmva@genoprime.com
-    - bryncooke@gmail.com
-    - josh@fortytwo.net
 jdk:
   - oraclejdk7
   - openjdk7
